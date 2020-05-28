@@ -131,7 +131,7 @@ var techName = "";
         }
 
         //Start adding buttons, lots of buttons.
-        $("#full-container").prepend('<span> <div id="EXP"> <button type="button" class="" id="copy" style="background-color: white" >Export</button> </div> </span>') //Copy button
+        $("#full-container").prepend('<span> <div id="EXP"> <button type="button" class="" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div> </span>') //Copy button
         $("#EXP").append('<button type="button" class="" id="showAll" style="background-color: white; border-radius: 8px" >Show All</button>');
         $("#EXP").append('<button type="button" class="" id="hideAll" style="background-color: white; border-radius: 8px" >Hide All</button>');
 
