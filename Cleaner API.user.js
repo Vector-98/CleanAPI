@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API V0001100 [C]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.1.2
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -15,6 +15,7 @@
 // ==/UserScript==
 var $ = window.jQuery;
 // test update 1 
+//test update 2
 var techName = "";
 
 (function() {
