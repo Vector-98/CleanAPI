@@ -99,7 +99,7 @@ var techName = "";
 		for (i = 25; i > 0; i--) {
 			if(!$("#snumber-" + i).val() == ""){
 				var label = "Line" + i;
-				var btn = $("#full-container").prepend('<button type="button" class="" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px" ></button>')
+				var btn = $("#full-container").prepend('<button type="button" class="" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px;" ></button>')
 				document.getElementById("insert").innerHTML = label;
 				$("#insert").attr("id", "btn" + i);
 			}
@@ -127,7 +127,7 @@ var techName = "";
 		//Start adding buttons, lots of buttons.
 		$("#full-container").prepend('<span> <div id="EXP"> <button type="button" class="" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div> </span>') //Copy button
 		$("#EXP").append('<button type="button" class="" id="showAll" style="background-color: white; border-radius: 8px" >Show All</button>');
-		$("#EXP").append('<button type="button" class="" id="hideAll" style="background-color: white; border-radius: 8px" >Hide All</button>');
+		$("#EXP").append('<button type="button" class="" id="hideAll" style="background-color: white; border-radius: 8px;margin-left: 4px;" >Hide All</button>');
 
 		$("#showAll").click(function() {
 			if(stateOfButtons[1]){
