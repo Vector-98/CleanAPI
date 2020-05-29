@@ -99,7 +99,7 @@ var techName = "";
 		for (i = 25; i > 0; i--) {
 			if(!$("#snumber-" + i).val() == ""){
 				var label = "Line" + i;
-				var btn = $("#full-container").prepend('<button type="button" class="" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px;" ></button>')
+				var btn = $("#full-container").prepend('<button type="button" class="" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
 				document.getElementById("insert").innerHTML = label;
 				$("#insert").attr("id", "btn" + i);
 			}
