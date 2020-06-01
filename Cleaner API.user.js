@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API V0001101 [D]
+// @name         Cleaner API V0001110 [E]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.3
+// @version      1.1.4
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -14,7 +14,6 @@
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-// test update 2
 var techName = "";
 
 (function() {
@@ -23,6 +22,7 @@ var techName = "";
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
+	$("h1").hide() // hiding trash coding we pay people for this
 
 	waitForKeyElements("#full-container", function () {
 
