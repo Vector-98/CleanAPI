@@ -22,7 +22,6 @@ var techName = "";
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
-	$("h1").hide() // hiding trash coding we pay people for this
 
 	waitForKeyElements("#full-container", function () {
 
@@ -817,6 +816,43 @@ var techName = "";
 
 
 		});//end of copy function
+
+		waitForKeyElements("h1", function () {
+			$("h1").hide()
+		}); // remove bottom of page header
+
+		// comment these out line by line if issues come up also be sure to double check that all saves
+		// this is all disable by default Jic
+		/*$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+			setTimeout(function(){
+				$('.res').attr("disabled", false);
+				console.log("res test ")
+			}, timeout || 100);
+		}); */
+		/*$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
+			setTimeout(function(){
+				$(".opers").attr("disabled", false);
+				console.log("op test ")
+			}, timeout || 100);
+		}); */
+		/*$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
+			setTimeout(function(){
+				$(".diagnosed").attr("disabled", false);
+				console.log("diag test ")
+			}, timeout || 100);
+		}); */
+		/*$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
+			setTimeout(function(){
+				$(".repair-completed").attr("disabled", false);
+				console.log("op test ")
+			}, timeout || 100);
+		}); */
+		/*$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
+			setTimeout(function(){
+				$(".opers-checked").attr("disabled", false);
+				console.log(".opers-checked test ")
+			}, timeout || 100);
+		}); */
 
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
