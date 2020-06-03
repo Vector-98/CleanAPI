@@ -822,36 +822,35 @@ var techName = "";
 		}); // remove bottom of page header
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-		// this is all disable by default Jic
 		/*$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
-				console.log("res test ")
-			}, timeout || 100);
-		}); */
+				console.log("Res Box Disable Blocked")
+			}, timeout || 50);
+		});
 		/*$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
-				console.log("op test ")
-			}, timeout || 100);
-		}); */
+				console.log("Op Box Disable Blocked")
+			}, timeout || 50);
+		});
 		/*$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
-				console.log("diag test ")
-			}, timeout || 100);
-		}); */
+				console.log("Diag Box Disable Blocked")
+			}, timeout || 50);
+		});
 		/*$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
-				console.log("op test ")
-			}, timeout || 100);
-		}); */
+				console.log("Done Box Disable Blocked")
+			}, timeout || 50);
+		});
 		/*$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
-				console.log(".opers-checked test ")
-			}, timeout || 100);
+				console.log("opers-checked Box Disable Blocked")
+			}, timeout || 50);
 		}); */
 
 		//Code I totally wrote and didn't copy paste from stack overflow
