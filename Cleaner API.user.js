@@ -83,7 +83,7 @@ var techName = "";
 			}
 		}
 
-		$("#full-container").prepend('<div id="EXP"> <button type="button" class="" id="copy" style="background-color: white" >Export</button> </div>') //Add export button
+		$("#full-container").prepend('<div id="EXP"> <button type="button" class="" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 
 
 		$('#copy').click(function(){// this is called when export button is clicked
