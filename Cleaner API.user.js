@@ -480,10 +480,16 @@ var techName = "";
 				console.log("Done Box Disable Blocked")
 			}, timeout || 10);
 		});
-		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
+		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid repair check box
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
+			}, timeout || 10);
+		});
+		$(document).on( "blur", ".res select", function(timeout) { // disable the disable on Repair Action Or Specific Action
+			setTimeout(function(){
+				$(".res select").attr("disabled", false);
+				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 10);
 		});
 
