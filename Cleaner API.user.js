@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API V0001110 [E]
+// @name         Cleaner API V0001111 [F]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.5
+// @version      1.1.6
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -25,6 +25,274 @@ var techName = "";
 	$("#masthead").hide()
 
 	waitForKeyElements("#full-container", function () {
+		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+
+
+		//Begin adding show/hide for each line
+		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
+		var numberOfButtons = 0;
+
+		function toggle(value){//class to flip value
+			if (stateOfButtons[value]){
+				stateOfButtons[value] = false;
+			}else{
+				stateOfButtons[value] = true;
+
+			}
+		}
+
+		for (var i = 25; i > 0; i--) {//Create button for each line
+			if(!$("#snumber-" + i).val() == ""){
+				var label = "Line" + i;
+				var btn = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
+				document.getElementById("insert").innerHTML = label;
+				$("#insert").attr("id", "btn" + i);
+				stateOfButtons.push(false);
+				numberOfButtons++;
+			}
+		}
+
+		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
+			return this.each(function(){
+				var clicks = 0, self = this;
+				jQuery(this).click(function(event){
+					clicks++;
+					if (clicks == 1) {
+						setTimeout(function(){
+							if(clicks == 1) {
+								single_click_callback.call(self, event);
+							} else {
+								double_click_callback.call(self, event);
+							}
+							clicks = 0;
+						}, timeout || 200);
+					}
+				});
+			});
+		}
+
+		function hideAll(){
+			for(var i = 1; i < 25; i++){
+				if(!stateOfButtons[i]){
+					singleClick(i);
+					toggle[i];
+				}
+			}
+		}//end of hideAll function
+
+		function showAll(){
+			for(var i = 1; i < 25; i++){
+				if(stateOfButtons[i]){
+					singleClick(i);
+					toggle[i];
+				}
+			}
+		}
+
+		function singleClick(buttonNumber){
+			var buttonName = "#btn" + buttonNumber;
+			var buttonNameOn = "#btn" + buttonNumber + ".on";
+			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
+			var upperLine = buttonNumber * 2;
+			$(buttonName).toggleClass("on")
+			$(buttonNameOn).css("background-color","#28a745");
+			$(buttonNameNotOn).css("background-color","white");
+			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
+			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
+			toggle(buttonNumber);
+		}
+
+		function doubleClick(buttonNumber){
+			var count = 0;
+			for(var i = 1; i < 25; i++){
+				if(stateOfButtons[i]){
+					count++;
+				}
+			}
+			if(count > 1){
+				if(!stateOfButtons[buttonNumber]){
+					showAll();
+				}
+			}else{
+				hideAll();
+				singleClick(buttonNumber);
+			}
+
+			if(numberOfButtons == count){
+				showAll();//TESTING
+			}
+
+			if(stateOfButtons[buttonNumber]){
+				hideAll();
+				singleClick(buttonNumber);
+			}
+		}
+		$("#btn1").single_double_click(function() {
+			singleClick(1);
+		}, function (){
+			doubleClick(1);
+		});
+		$("#btn2").single_double_click(function() {
+			singleClick(2);
+		}, function (){
+			doubleClick(2);
+		});
+		$("#btn3").single_double_click(function() {
+			singleClick(3);
+		}, function (){
+			doubleClick(3);
+		});
+		$("#btn4").single_double_click(function() {
+			singleClick(4);
+		}, function (){
+			doubleClick(4);
+		});
+		$("#btn5").single_double_click(function() {
+			singleClick(5);
+		}, function (){
+			doubleClick(5);
+		});
+		$("#btn6").single_double_click(function() {
+			singleClick(6);
+		}, function (){
+			doubleClick(6);
+		});
+		$("#btn7").single_double_click(function() {
+			singleClick(7);
+		}, function (){
+			doubleClick(7);
+		});
+		$("#btn8").single_double_click(function() {
+			singleClick(8);
+		}, function (){
+			doubleClick(8);
+		});
+		$("#btn9").single_double_click(function() {
+			singleClick(9);
+		}, function (){
+			doubleClick(9);
+		});
+		$("#btn10").single_double_click(function() {
+			singleClick(10);
+		}, function (){
+			doubleClick(10);
+		});
+		$("#btn11").single_double_click(function() {
+			singleClick(11);
+		}, function (){
+			doubleClick(11);
+		});
+		$("#btn12").single_double_click(function() {
+			singleClick(12);
+		}, function (){
+			doubleClick(12);
+		});
+		$("#btn13").single_double_click(function() {
+			singleClick(13);
+		}, function (){
+			doubleClick(13);
+		});
+		$("#btn14").single_double_click(function() {
+			singleClick(14);
+		}, function (){
+			doubleClick(14);
+		});
+		$("#btn15").single_double_click(function() {
+			singleClick(15);
+		}, function (){
+			doubleClick(15);
+		});
+		$("#btn16").single_double_click(function() {
+			singleClick(16);
+		}, function (){
+			doubleClick(16);
+		});
+		$("#btn17").single_double_click(function() {
+			singleClick(17);
+		}, function (){
+			doubleClick(17);
+		});
+		$("#btn18").single_double_click(function() {
+			singleClick(18);
+		}, function (){
+			doubleClick(18);
+		});
+		$("#btn19").single_double_click(function() {
+			singleClick(19);
+		}, function (){
+			doubleClick(19);
+		});
+		$("#btn20").single_double_click(function() {
+			singleClick(20);
+		}, function (){
+			doubleClick(20);
+		});
+		$("#btn21").single_double_click(function() {
+			singleClick(21);
+		}, function (){
+			doubleClick(21);
+		});
+		$("#btn22").single_double_click(function() {
+			singleClick(22);
+		}, function (){
+			doubleClick(22);
+		});
+		$("#btn23").single_double_click(function() {
+			singleClick(23);
+		}, function (){
+			doubleClick(23);
+		});
+		$("#btn24").single_double_click(function() {
+			singleClick(24);
+		}, function (){
+			doubleClick(24);
+		});
+
+		waitForKeyElements("h1", function () {
+			$("h1").hide()
+		}); // remove bottom of page header
+
+		// comment these out line by line if issues come up also be sure to double check that all saves
+		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+			setTimeout(function(){
+				$('.res').attr("disabled", false);
+				console.log("Res Box Disable Blocked")
+			}, timeout || 100);
+		});
+		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
+			setTimeout(function(){
+				$(".opers").attr("disabled", false);
+				console.log("Op Box Disable Blocked")
+			}, timeout || 100);
+		});
+		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
+			setTimeout(function(){
+				$(".diagnosed").attr("disabled", false);
+				console.log("Diag Box Disable Blocked")
+			}, timeout || 100);
+		});
+		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
+			setTimeout(function(){
+				$(".repair-completed").attr("disabled", false);
+				console.log("Done Box Disable Blocked")
+			}, timeout || 100);
+		});
+		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
+			setTimeout(function(){
+				$(".opers-checked").attr("disabled", false);
+				console.log("opers-checked Box Disable Blocked")
+			}, timeout || 100);
+		});
+		$(document).on( "blur", ".res select", function(timeout) { // disable the disable on paid repair
+			setTimeout(function(){
+				$(".res select").attr("disabled", false);
+				console.log("Repair Action Or Specific Action Box Disable Blocked")
+			}, timeout || 100);
+		});
+
+
+		//_______________________________________________________________________________________________________________________________________________________________________________________
+		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 
 		function fixWarranty(warranty){
 			switch(warranty) {
@@ -83,9 +351,6 @@ var techName = "";
 			}
 		}
 
-		$("#full-container").prepend('<div id="EXP"> <button type="button" class="" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
-
-
 		$('#copy').click(function(){// this is called when export button is clicked
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
@@ -138,7 +403,6 @@ var techName = "";
 						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
-
 
 				}
 			}
@@ -199,300 +463,7 @@ var techName = "";
 			}
 		}// end of exportToCsv function
 
+		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
-		//_______________________________________________________________________________________________________________________________________________________________________________________
-		//_______________________________________________________________________________________________________________________________________________________________________________________
-		//_______________________________________________________________________________________________________________________________________________________________________________________
-
-		//Begin adding show/hide for each line
-		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
-		var numberOfButtons = 0;
-
-		function toggle(value){//class to flip value
-			if (stateOfButtons[value]){
-				stateOfButtons[value] = false;
-			}else{
-				stateOfButtons[value] = true;
-
-			}
-		}
-
-		for (var i = 25; i > 0; i--) {//Create button for each line
-			if(!$("#snumber-" + i).val() == ""){
-				var label = "Line" + i;
-				var btn = $("#full-container").prepend('<button type="button" class="" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px" ></button>')
-				document.getElementById("insert").innerHTML = label;
-				$("#insert").attr("id", "btn" + i);
-				stateOfButtons.push(false);
-				numberOfButtons++;
-			}
-		}
-
-		jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
-			return this.each(function(){
-				var clicks = 0, self = this;
-				jQuery(this).click(function(event){
-					clicks++;
-					if (clicks == 1) {
-						setTimeout(function(){
-							if(clicks == 1) {
-								single_click_callback.call(self, event);
-							} else {
-								double_click_callback.call(self, event);
-							}
-							clicks = 0;
-						}, timeout || 200);
-					}
-				});
-			});
-		}
-
-		function hideAll(){
-			for(var i = 1; i < 25; i++){
-				if(!stateOfButtons[i]){
-					singleClick(i);
-					toggle[i];
-				}
-			}
-		}//end of hideAll function
-
-		function showAll(){
-			for(var i = 1; i < 25; i++){
-				if(stateOfButtons[i]){
-					singleClick(i);
-					toggle[i];
-				}
-			}
-		}
-
-		function singleClick(buttonNumber){
-			var buttonName = "#btn" + buttonNumber;
-			var buttonNameOn = "#btn" + buttonNumber + ".on";
-			var buttonNameNotOn = "#btn" + buttonNumber + "[class!='on']";
-			var upperLine = buttonNumber * 2;
-			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");
-			$(buttonNameNotOn).css("background-color","white");
-			$("#full-container > div:eq("+upperLine+")").toggle()
-			$("#full-container > div:eq("+(upperLine + 1)+")").toggle()
-			toggle(buttonNumber);
-		}
-
-		function doubleClick(buttonNumber){
-			var count = 0;
-			for(var i = 1; i < 25; i++){
-				if(stateOfButtons[i]){
-					count++;
-				}
-			}
-			if(count > 1){
-				if(!stateOfButtons[buttonNumber]){
-					showAll();
-				}
-			}else{
-				hideAll();
-				singleClick(buttonNumber);
-			}
-
-			if(numberOfButtons == count){
-				showAll();//TESTING
-			}
-
-			if(stateOfButtons[buttonNumber]){
-				hideAll();
-				singleClick(buttonNumber);
-
-			}
-		}
-
-
-
-		$("#btn1").single_double_click(function() {
-			singleClick(1);
-		}, function (){
-			doubleClick(1);
-		});
-
-		$("#btn2").single_double_click(function() {
-			singleClick(2);
-		}, function (){
-			doubleClick(2);
-		});
-
-		$("#btn3").single_double_click(function() {
-			singleClick(3);
-		}, function (){
-			doubleClick(3);
-		});
-
-		$("#btn4").single_double_click(function() {
-			singleClick(4);
-		}, function (){
-			doubleClick(4);
-		});
-
-		$("#btn5").single_double_click(function() {
-			singleClick(5);
-		}, function (){
-			doubleClick(5);
-		});
-
-		$("#btn6").single_double_click(function() {
-			singleClick(6);
-		}, function (){
-			doubleClick(6);
-		});
-
-		$("#btn7").single_double_click(function() {
-			singleClick(7);
-		}, function (){
-			doubleClick(7);
-		});
-
-		$("#btn8").single_double_click(function() {
-			singleClick(8);
-		}, function (){
-			doubleClick(8);
-		});
-
-		$("#btn9").single_double_click(function() {
-			singleClick(9);
-		}, function (){
-			doubleClick(9);
-		});
-
-		$("#btn10").single_double_click(function() {
-			singleClick(10);
-		}, function (){
-			doubleClick(10);
-		});
-
-		$("#btn11").single_double_click(function() {
-			singleClick(11);
-		}, function (){
-			doubleClick(11);
-		});
-
-		$("#btn12").single_double_click(function() {
-			singleClick(12);
-		}, function (){
-			doubleClick(12);
-		});
-
-		$("#btn13").single_double_click(function() {
-			singleClick(13);
-		}, function (){
-			doubleClick(13);
-		});
-
-		$("#btn14").single_double_click(function() {
-			singleClick(14);
-		}, function (){
-			doubleClick(14);
-		});
-
-		$("#btn15").single_double_click(function() {
-			singleClick(15);
-		}, function (){
-			doubleClick(15);
-		});
-
-		$("#btn16").single_double_click(function() {
-			singleClick(16);
-		}, function (){
-			doubleClick(16);
-		});
-
-		$("#btn17").single_double_click(function() {
-			singleClick(17);
-		}, function (){
-			doubleClick(17);
-		});
-
-		$("#btn18").single_double_click(function() {
-			singleClick(18);
-		}, function (){
-			doubleClick(18);
-		});
-
-		$("#btn19").single_double_click(function() {
-			singleClick(19);
-		}, function (){
-			doubleClick(19);
-		});
-
-		$("#btn20").single_double_click(function() {
-			singleClick(20);
-		}, function (){
-			doubleClick(20);
-		});
-
-		$("#btn21").single_double_click(function() {
-			singleClick(21);
-		}, function (){
-			doubleClick(21);
-		});
-
-		$("#btn22").single_double_click(function() {
-			singleClick(22);
-		}, function (){
-			doubleClick(22);
-		});
-
-		$("#btn23").single_double_click(function() {
-			singleClick(23);
-		}, function (){
-			doubleClick(23);
-		});
-
-		$("#btn24").single_double_click(function() {
-			singleClick(24);
-		}, function (){
-			doubleClick(24);
-		});
-
-		waitForKeyElements("h1", function () {
-			$("h1").hide()
-		}); // remove bottom of page header
-
-		// comment these out line by line if issues come up also be sure to double check that all saves
-		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
-			setTimeout(function(){
-				$('.res').attr("disabled", false);
-				console.log("Res Box Disable Blocked")
-			}, timeout || 10);
-		});
-		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
-			setTimeout(function(){
-				$(".opers").attr("disabled", false);
-				console.log("Op Box Disable Blocked")
-			}, timeout || 10);
-		});
-		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
-			setTimeout(function(){
-				$(".diagnosed").attr("disabled", false);
-				console.log("Diag Box Disable Blocked")
-			}, timeout || 10);
-		});
-		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
-			setTimeout(function(){
-				$(".repair-completed").attr("disabled", false);
-				console.log("Done Box Disable Blocked")
-			}, timeout || 10);
-		});
-		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid repair check box
-			setTimeout(function(){
-				$(".opers-checked").attr("disabled", false);
-				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 10);
-		});
-		$(document).on( "blur", ".res select", function(timeout) { // disable the disable on Repair Action Or Specific Action
-			setTimeout(function(){
-				$(".res select").attr("disabled", false);
-				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 10);
-		});
-
-
 	});
 })();
