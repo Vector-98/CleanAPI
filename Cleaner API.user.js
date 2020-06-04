@@ -25,6 +25,7 @@ var techName = "";
 	$("#masthead").hide()
 
 	waitForKeyElements("#full-container", function () {
+		console.log('Page Fully Loaded')
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
 
 
