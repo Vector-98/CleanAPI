@@ -125,8 +125,10 @@ var techName = "";
 			if(stateOfButtons[buttonNumber]){
 				hideAll();
 				singleClick(buttonNumber);
+
 			}
 		}
+
 		$("#btn1").single_double_click(function() {
 			singleClick(1);
 		}, function (){
@@ -257,37 +259,37 @@ var techName = "";
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
-		$(document).on( "blur", ".res select", function(timeout) { // disable the disable on paid repair
+		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
-				$(".res select").attr("disabled", false);
+				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 100);
+			}, timeout || 10);
 		});
 
 
@@ -404,6 +406,7 @@ var techName = "";
 
 					}
 
+
 				}
 			}
 			var empty = [];
@@ -465,5 +468,8 @@ var techName = "";
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
+
+
+
 	});
 })();
