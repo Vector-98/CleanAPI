@@ -14,7 +14,6 @@
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-
 var techName = "";
 
 (function() {
@@ -27,7 +26,6 @@ var techName = "";
 	waitForKeyElements("#full-container", function () {
 		console.log('Page Fully Loaded')
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
-
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
@@ -93,14 +91,25 @@ var techName = "";
 		function singleClick(buttonNumber){
 			var buttonName = "#btn" + buttonNumber;
 			var buttonNameOn = "#btn" + buttonNumber + ".on";
-			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
+			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on'] glob is more consistent
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");
+			$(buttonNameOn).css("background-color","#28a745"); //#28a745 default green // setRandomColor() removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
 			toggle(buttonNumber);
+			/*function getRandomColor() {
+				var letters = '789ABCD';// 0123456EF cut letters for more light colors
+				var color = '#';
+				for (var i = 0; i < 6; i++) {
+					color += letters[Math.floor(Math.random() * 6)];//16
+				}
+				return color;
+			}
+			function setRandomColor() {
+				$(buttonName).css("background-color", getRandomColor());
+			}*/
 		}
 
 		function doubleClick(buttonNumber){
@@ -292,7 +301,6 @@ var techName = "";
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 10);
 		});
-
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
