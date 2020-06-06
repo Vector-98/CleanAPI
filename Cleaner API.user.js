@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API V0001111 [F]
+// @name         Cleaner API V00010001 [10]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.6
+// @version      1.1.7
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -25,6 +25,13 @@ var techName = "";
 
 	waitForKeyElements("#full-container", function () {
 		console.log('Page Fully Loaded')
+		if($("#sro-number").val().includes(420)){
+			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
+
+		}else if($("#sro-number").val().includes(69)){
+			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
+
+		}		
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
 
 		//Begin adding show/hide for each line
