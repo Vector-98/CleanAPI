@@ -14,7 +14,7 @@
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-var techName = "";
+var techName = " ";
 
 (function() {
 	'use strict';
