@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Cleaner API V00010001 [10]
+// @name         Cleaner API
 // @namespace    http://tampermonkey.net/
 // @version      1.1.7
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
@@ -9,12 +9,14 @@
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
+// @require		 https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js
 // @grant        GM_addStyle
+// @grant        GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-var techName = "";
+var techName = "Vector";
 
 (function() {
 	'use strict';
@@ -31,8 +33,14 @@ var techName = "";
 		}else if($("#sro-number").val().includes(69)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
-		}		
+		}
+		if ($("span.warrantyToStyle").text().includes("PAID")){
+			$(".warrantyToStyle").css({"color": "red"})
+		} // sorta bugged changes all the fields not just the paid ones could fix it but to bad
+
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+		$("[id^=snumber-]").attr("tabindex","-1")
+		$("#customer").css({"width": "250px"})
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
@@ -101,12 +109,12 @@ var techName = "";
 			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on'] glob is more consistent
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745"); //#28a745 default green // setRandomColor() removed for random colors
+			$(buttonNameOn).css("background-color",setRandomColor()); //#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
 			toggle(buttonNumber);
-			/*function getRandomColor() {
+			function getRandomColor() {
 				var letters = '789ABCD';// 0123456EF cut letters for more light colors
 				var color = '#';
 				for (var i = 0; i < 6; i++) {
@@ -116,7 +124,7 @@ var techName = "";
 			}
 			function setRandomColor() {
 				$(buttonName).css("background-color", getRandomColor());
-			}*/
+			}
 		}
 
 		function doubleClick(buttonNumber){
@@ -270,7 +278,12 @@ var techName = "";
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
 		}); // remove bottom of page header
-
+		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+			$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+		}); // same as below
+		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
+			$("body > div.ui-widget-overlay.ui-front").remove()
+		});// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
