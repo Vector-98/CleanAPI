@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Cleaner API V00010001 [10]
+// @name         Cleaner API V0001111 [F]
 // @namespace    http://tampermonkey.net/
 // @version      1.1.7
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
@@ -10,11 +10,78 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
+// @grant		 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-var techName = " ";
+var preferencesEnabled = false;
+
+if(getCookie("techName") == "null" || getCookie("techName") == ""){
+	setTechName("");
+}
+
+if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
+	setAutoHideDoneLines("no");
+}
+
+if(getCookie("snPopup") == "null" || getCookie("snPopup") == ""){
+	setsnPopup("yes");
+}
+
+var autoHideDoneLines = getCookie("autoHideDoneLines");
+var techName;
+
+$("#main").prepend('<button type="button" class="glob" id="preferences" style= "background-color: white;position: absolute;top: 0px;right: 0px;margin: 10px;" >Preferences</button>');
+
+$('#preferences').click(function(){
+
+	if(preferencesEnabled){
+		var techName = prompt("Tech name:", getCookie("techName"));
+		setTechName(techName);
+
+		var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
+		setAutoHideDoneLines(autoHideRTS);
+
+		var snPopup = prompt("Enable SN change popup? (yes or no):", getCookie("snPopup"));
+		setsnPopup(snPopup);
+	}
+
+})
+
+
+function setAutoHideDoneLines(autoHideRTS){
+	var cookieName = "autoHideDoneLines=" + autoHideRTS;
+	document.cookie = cookieName;
+	if(autoHideRTS == "yes"){
+		autoHideDoneLines = true;
+	}else{
+		autoHideDoneLines = false;
+	}
+}
+
+function setsnPopup(popup){
+	var cookieName = "snPopup=" + popup;
+	document.cookie = cookieName;
+}
+
+
+
+function setTechName(techName){
+	var cookieName = "techName=" + techName;
+	document.cookie = cookieName;
+}
+
+function getCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
 
 (function() {
 	'use strict';
@@ -24,19 +91,75 @@ var techName = " ";
 	$("#masthead").hide()
 
 	waitForKeyElements("#full-container", function () {
-		console.log('Page Fully Loaded')
+		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+
+		preferencesEnabled = true;
+
+
+
+
+
 		if($("#sro-number").val().includes(420)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
 		}else if($("#sro-number").val().includes(69)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
-		}		
-		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+		}
+
+		$("[id^=repair-completed]").change(function() {//check if repair complete button was pressed then update what lines are hidden or shown
+			if(autoHideDoneLines){
+				showAll();
+				for(var k = 1; k < 25; k++){
+					var repairBoxName = "#repair-completed-" + k;
+					if($(repairBoxName).is(":checked")){
+						singleClick(k);
+					}
+				}
+			}
+
+		});
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
+
+		//$("#full-container").append('<input placeholder="Tech Name:"; type="text" class="glob" id="addAllTechName" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>');
+		//$("#full-container").append('<input placeholder="Checked By:"; type="text" class="glob" id="addAllCheckedBy" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>')
+		//$("#full-container").append('<input placeholder="Diagnosed By:"; type="text" class="glob" id="addAllDiagnosedBy" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>')
+
+		//$("#full-container").append('<div id="submitAll"> <button type="button" class="glob" id="submitAll" style="background-color: white; border-radius: 8px" >Update All Lines</button> </div>')
+
+		$('#submitAll').click(function(){//This is called  when the bottom submit button is pressed
+			var techName = document.getElementById("addAllTechName").value;
+			var checkedBy = document.getElementById("addAllCheckedBy").value;
+			var diagnosedBy = document.getElementById("addAllDiagnosedBy").value;
+
+			for(var i = 0; i > 24; i++){
+				if(techName != null){
+					//set all tech names
+
+					//$("#tech-name-1") =
+				}
+				if(checkedBy != null){
+					//set all checked by
+				}
+				if(diagnosedBy){
+					//set all diagnosed by
+				}
+			}
+
+
+		})
+
+		var x = document.createElement("INPUT");
+		x.setAttribute("type", "text");
+
+		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
+			$(".warrantyToStyle").css({"color": "red"})
+		}
+
+
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -47,12 +170,12 @@ var techName = " ";
 			}
 		}
 
-		for (var i = 25; i > 0; i--) {//Create button for each line
-			if(!$("#snumber-" + i).val() == ""){
-				var label = "Line" + i;
+		for (var n = 25; n > 0; n--) {//Create button for each line
+			if(!$("#snumber-" + n).val() == ""){
+				var label = "Line" + n;
 				var btn = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
 				document.getElementById("insert").innerHTML = label;
-				$("#insert").attr("id", "btn" + i);
+				$("#insert").attr("id", "btn" + n);
 				stateOfButtons.push(false);
 				numberOfButtons++;
 			}
@@ -98,25 +221,15 @@ var techName = " ";
 		function singleClick(buttonNumber){
 			var buttonName = "#btn" + buttonNumber;
 			var buttonNameOn = "#btn" + buttonNumber + ".on";
-			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on'] glob is more consistent
+			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745"); //#28a745 default green // setRandomColor() removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
 			toggle(buttonNumber);
-			/*function getRandomColor() {
-				var letters = '789ABCD';// 0123456EF cut letters for more light colors
-				var color = '#';
-				for (var i = 0; i < 6; i++) {
-					color += letters[Math.floor(Math.random() * 6)];//16
-				}
-				return color;
-			}
-			function setRandomColor() {
-				$(buttonName).css("background-color", getRandomColor());
-			}*/
+
 		}
 
 		function doubleClick(buttonNumber){
@@ -142,10 +255,8 @@ var techName = " ";
 			if(stateOfButtons[buttonNumber]){
 				hideAll();
 				singleClick(buttonNumber);
-
 			}
 		}
-
 		$("#btn1").single_double_click(function() {
 			singleClick(1);
 		}, function (){
@@ -271,43 +382,55 @@ var techName = " ";
 			$("h1").hide()
 		}); // remove bottom of page header
 
+		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+			if(getCookie("snPopup") == "no"){
+				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+			}
+		}); // same as below
+		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
+			if(getCookie("snPopup") == "no"){
+				$("body > div.ui-widget-overlay.ui-front").remove()
+			}
+		});// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 10);
+			}, timeout || 100);
 		});
+
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -369,7 +492,20 @@ var techName = " ";
 			}
 		}
 
+		if(autoHideDoneLines == "yes"){
+			showAll();
+			for(var k = 1; k < 25; k++){
+				var repairBoxName = "#repair-completed-" + k;
+				if($(repairBoxName).is(":checked")){
+					singleClick(k);
+				}
+			}
+		}
+
+
 		$('#copy').click(function(){// this is called when export button is clicked
+			techName = getCookie("techName");
+
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
 			var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -422,12 +558,16 @@ var techName = " ";
 
 					}
 
-
 				}
 			}
 			var empty = [];
-			lenLines.push(empty);
-			hpLines.push(empty);
+
+			if(!lenLines.length == 0){
+				lenLines.push(empty);
+			}
+			if(!hpLines.length == 0){
+				hpLines.push(empty);
+			}
 			lines = lines.concat(lenLines);
 			lines = lines.concat(hpLines);
 			lines = lines.concat(acerLines);
@@ -436,7 +576,24 @@ var techName = " ";
 			exportToCsv(($("#sro-number").val() + ".csv"), lines);
 
 
-		});//end of copy function
+
+
+		});//end of export function
+
+		//autoHideLinesOnStartup();
+
+		function autoHideLinesOnStartup(){
+			if(autoHideDoneLines){
+				showAll();
+				for(var k = 1; k < 25; k++){
+					var repairBoxName = "#repair-completed-" + k;
+					if($(repairBoxName).is(":checked")){
+						singleClick(k);
+					}
+				}
+			}
+
+		}
 
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
@@ -478,14 +635,33 @@ var techName = " ";
 					document.body.appendChild(link);
 					link.click();
 					document.body.removeChild(link);
+					//Copy to clip board. This works but it is not a good idea_____________________________________________________
+					/* Get the text field */
+					//var text = csvFile;
+					//var textArea = document.createElement("textarea");
+					//textArea.value = text;
+
+					//textArea.style.top = "0";
+					//textArea.style.left = "0";
+					//textArea.style.position = "fixed";
+
+					//document.body.appendChild(textArea);
+					//textArea.focus();
+					//textArea.select()
+
+					/* Select the text field */
+					//textArea.select();
+					/* Copy the text inside the text field */
+					//document.execCommand("copy");
+
+					//TESTING_______________________________________________________________________________________________________
+
+
 				}
 			}
 		}// end of exportToCsv function
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
-
-
-
 	});
 })();
