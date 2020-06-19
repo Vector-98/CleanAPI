@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Cleaner API
+// @name         Cleaner API V00010001 [10]
 // @namespace    http://tampermonkey.net/
 // @version      1.1.7
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
@@ -45,6 +45,9 @@ var techName = "Vector";
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
+		var stateOfSNButtons = [];
+		var numberOfSNButtons = 0;
+		var RunSave = false;
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -55,7 +58,7 @@ var techName = "Vector";
 			}
 		}
 
-		for (var i = 25; i > 0; i--) {//Create button for each line
+		for (var i = 25; i > 0; i--) {
 			if(!$("#snumber-" + i).val() == ""){
 				var label = "Line" + i;
 				var btn = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
@@ -64,6 +67,41 @@ var techName = "Vector";
 				stateOfButtons.push(false);
 				numberOfButtons++;
 			}
+		}//Create button for each line
+		for (var sn = 25; sn > 0; sn--) {
+			if(!$("#snumber-" + sn).val() == ""){
+				var SNlabel = "Enable Save" + sn;
+				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;"></button>').insertAfter("#snumber-" + sn)
+				document.getElementById("insert1").innerHTML = SNlabel;
+				$("#insert1").attr("id", "SN-" + sn);
+				numberOfSNButtons++;
+			}
+		}//Create Save button for each line
+
+		$("[id^=SN-]").click(function() {
+			var RunSave = true
+			console.log("Button Clicked " + RunSave)
+			//console.log(RunSave)
+
+		});
+
+		// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+		if (RunSave) {
+			console.log(RunSave)
+				setTimeout(function() {
+					var RunSave = false
+					console.log(RunSave)
+				},2000);
+		} else {
+			waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+		}); // same as below
+			waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
+				$("body > div.ui-widget-overlay.ui-front").remove()
+		});
+			$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+			$("body > div.ui-widget-overlay.ui-front").remove()
+			console.log(RunSave)
 		}
 
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
@@ -278,12 +316,7 @@ var techName = "Vector";
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
 		}); // remove bottom of page header
-		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-			$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-		}); // same as below
-		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
-			$("body > div.ui-widget-overlay.ui-front").remove()
-		});// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
@@ -502,3 +535,4 @@ var techName = "Vector";
 
 	});
 })();
+
