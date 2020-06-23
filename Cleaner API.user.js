@@ -9,7 +9,7 @@
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
-// @require		 https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js
+// @require	 https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js
 // @grant        GM_addStyle
 // @grant        GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
@@ -17,6 +17,7 @@
 // ==/UserScript==
 var $ = window.jQuery;
 var techName = "Vector";
+var APItechName = "Tony"; // only needed if API and Sheets are not the same
 
 (function() {
 	'use strict';
@@ -24,9 +25,40 @@ var techName = "Vector";
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
+	$("#get-item").focusout(function() {
+		AutoSro();
+	});// click on get item 100% chance of working
+	$("#get-item").submit(function() {
+		AutoSro();
+	});// needs to dbl hit Enter to load the sro
+	function AutoSro() {
+		var SroLength = $("#sro-number").val().length
+		var SroNum = $("#sro-number").val()
+		if(SroLength == 2) {
+			var Pre2 = "SRO00000"
+			$("#sro-number").val(Pre2+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 3) {
+			var Pre3 = "SRO0000"
+			$("#sro-number").val(Pre3+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 4) {
+			var Pre4 = "SRO000"
+			$("#sro-number").val(Pre4+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 5) {
+			var Pre5 = "SRO00"
+			$("#sro-number").val(Pre5+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 6) {
+			var Pre6 = "SRO0"
+			$("#sro-number").val(Pre6+$("#sro-number").val())
+		}//end of IF
+	};// auto fill sro number based on input size
+	$("#sro-number").attr("placeholder","SRO Numbers Only")// Any text other then the numbers will kinda break the function probs not going to fix unless i really need to
 
 	waitForKeyElements("#full-container", function () {
-		console.log('Page Fully Loaded')
+		console.log('Page Fully Loaded Script Started')
 		if($("#sro-number").val().includes(420)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
@@ -45,18 +77,19 @@ var techName = "Vector";
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
-		var stateOfSNButtons = [];
 		var numberOfSNButtons = 0;
 		var RunSave = false;
+		var numberOfDIButtons = 0;
+		var numberOfTNButtons = 0;
 
-		function toggle(value){//class to flip value
+		function toggle(value){
 			if (stateOfButtons[value]){
 				stateOfButtons[value] = false;
 			}else{
 				stateOfButtons[value] = true;
 
 			}
-		}
+		}//class to flip value
 
 		for (var i = 25; i > 0; i--) {
 			if(!$("#snumber-" + i).val() == ""){
@@ -70,39 +103,70 @@ var techName = "Vector";
 		}//Create button for each line
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
-				var SNlabel = "Enable Save" + sn;
+				var SNlabel = "Enable Save";
 				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;"></button>').insertAfter("#snumber-" + sn)
 				document.getElementById("insert1").innerHTML = SNlabel;
 				$("#insert1").attr("id", "SN-" + sn);
 				numberOfSNButtons++;
 			}
 		}//Create Save button for each line
+		for (var di = 25; di > 0; di--) {
+			if($("#diagnosed-by-" + di).prop("type") == "text"){
+				var DIlabel = "Fill Diag Name";
+				var DIbtn = $('<button type="button" class="diagbtn" id="DIinsert" onload="document.innerHTML(DIlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#diagnosed-by-" + di)
+				document.getElementById("DIinsert").innerHTML = DIlabel;
+				$("#DIinsert").attr("id", "DI-" + di);
+				numberOfDIButtons++;
+				console.log("diag name fill made")
+			}
+		}//Create Diag button for each line
+		for (var tn = 25; tn > 0; tn--) {
+			if($("#tech-name-" + tn).prop("type") == "text"){
+				var TNlabel = "Fill Tech Name";
+				var TNbtn = $('<button type="button" class="techbtn" id="TNinsert" onload="document.innerHTML(TNlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#tech-name-" + tn)
+				document.getElementById("TNinsert").innerHTML = TNlabel;
+				$("#TNinsert").attr("id", "TN-" + tn);
+				numberOfTNButtons++;
+				console.log("tech name fill made")
+			}
+		}//Create Tech button for each line
 
 		$("[id^=SN-]").click(function() {
-			var RunSave = true
-			console.log("Button Clicked " + RunSave)
-			//console.log(RunSave)
+			RunSave = true;
+		});//save btn function
+		$("[id^=DI-]").click(function() {
+			$(this).next("input").attr("value", APItechName) // canges html value
+			$(this).next("input").val(APItechName) // updates the text in box
+			$(this).next("input").blur()// should make sure it saves
 
-		});
+		});//name insert function for Diag Name
+		$("[id^=TN-]").click(function() {
+			$(this).next("input").attr("value", APItechName) // canges html value
+			$(this).next("input").val(APItechName) // updates the text in box
+			$(this).next("input").blur()// should make sure it saves
+		});//name insert function for Tech Name
 
-		// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-		if (RunSave) {
-			console.log(RunSave)
-				setTimeout(function() {
-					var RunSave = false
-					console.log(RunSave)
-				},2000);
-		} else {
-			waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+
+		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+			if (RunSave) {
+				setTimeout(function () {
+				}, 20000);
+				RunSave = false
+
+			}else{
 				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-		}); // same as below
-			waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
+			}
+		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
+			if (RunSave) {
+				setTimeout(function () {
+				}, 20000);
+				RunSave = false
+
+			}else{
 				$("body > div.ui-widget-overlay.ui-front").remove()
-		});
-			$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-			$("body > div.ui-widget-overlay.ui-front").remove()
-			console.log(RunSave)
-		}
+			}
+		});//Removes the grey background of the popup
 
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
@@ -131,7 +195,6 @@ var techName = "Vector";
 				}
 			}
 		}//end of hideAll function
-
 		function showAll(){
 			for(var i = 1; i < 25; i++){
 				if(stateOfButtons[i]){
@@ -164,7 +227,6 @@ var techName = "Vector";
 				$(buttonName).css("background-color", getRandomColor());
 			}
 		}
-
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -323,37 +385,37 @@ var techName = "Vector";
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});	//
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});	//
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});	//
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});		//
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});	//
 		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 10);
-		});
+		});	//
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -484,7 +546,7 @@ var techName = "Vector";
 
 		});//end of copy function
 
-		//Code I totally wrote and didn't copy paste from stack overflow
+		//Code I totally wrote and didn't copy paste from stack overflow-D
 		function exportToCsv(filename, rows) {
 			var processRow = function (row) {
 				var finalVal = '';
