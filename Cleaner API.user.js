@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API V00010001 [10]
+// @name         Cleaner API V0001120 [F]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.7
+// @version      1.1.20
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -9,31 +9,33 @@
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
-// @require	 https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js
 // @grant        GM_addStyle
-// @grant        GM_cookie
+// @grant	 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
-var techName = "Vector";
-var APItechName = "Tony"; // only needed if API and Sheets are not the same
+var preferencesEnabled = false;
+var techName;
 
 (function() {
 	'use strict';
+	var autoHideDoneLines = getCookie("autoHideDoneLines");
 
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
+
 	$("#get-item").focusout(function() {
 		AutoSro();
-	});// click on get item 100% chance of working
+	});
 	$("#get-item").submit(function() {
 		AutoSro();
-	});// needs to dbl hit Enter to load the sro
+	});
 	function AutoSro() {
 		var SroLength = $("#sro-number").val().length
 		var SroNum = $("#sro-number").val()
+
 		if(SroLength == 2) {
 			var Pre2 = "SRO00000"
 			$("#sro-number").val(Pre2+$("#sro-number").val())
@@ -54,11 +56,58 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			var Pre6 = "SRO0"
 			$("#sro-number").val(Pre6+$("#sro-number").val())
 		}//end of IF
-	};// auto fill sro number based on input size
-	$("#sro-number").attr("placeholder","SRO Numbers Only")// Any text other then the numbers will kinda break the function probs not going to fix unless i really need to
+	};
+
+	if(getCookie("techName") == "null" || getCookie("techName") == ""){
+		setTechName("");
+	}
+	if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
+		setAutoHideDoneLines("no");
+	}
+
+	$("#main").prepend('<button type="button" class="glob" id="preferences" style= "background-color: white;position: absolute;top: 0px;right: 0px;margin: 10px;" >Preferences</button>');
+	$('#preferences').click(function(){
+		if(preferencesEnabled){
+			var techName = prompt("Tech name:", getCookie("techName"));
+			setTechName(techName);
+
+			var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
+			setAutoHideDoneLines(autoHideRTS);
+
+		}
+
+	})
+
+	function setAutoHideDoneLines(autoHideRTS){
+		var cookieName = "autoHideDoneLines=" + autoHideRTS;
+		document.cookie = cookieName;
+		if(autoHideRTS == "yes"){
+			autoHideDoneLines = true;
+		}else{
+			autoHideDoneLines = false;
+		}
+	}
+	function setTechName(techName){
+		var cookieName = "techName=" + techName;
+		document.cookie = cookieName;
+
+	}
+	function getCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
 
 	waitForKeyElements("#full-container", function () {
-		console.log('Page Fully Loaded Script Started')
+		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+
+		preferencesEnabled = true;
+
 		if($("#sro-number").val().includes(420)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
@@ -66,13 +115,6 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
 		}
-		if ($("span.warrantyToStyle").text().includes("PAID")){
-			$(".warrantyToStyle").css({"color": "red"})
-		} // sorta bugged changes all the fields not just the paid ones could fix it but to bad
-
-		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
-		$("[id^=snumber-]").attr("tabindex","-1")
-		$("#customer").css({"width": "250px"})
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
@@ -82,21 +124,49 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 		var numberOfDIButtons = 0;
 		var numberOfTNButtons = 0;
 
-		function toggle(value){
+		$('#submitAll').click(function(){//This is called  when the bottom submit button is pressed
+			var techName = document.getElementById("addAllTechName").value;
+			var checkedBy = document.getElementById("addAllCheckedBy").value;
+			var diagnosedBy = document.getElementById("addAllDiagnosedBy").value;
+
+			for(var i = 0; i > 24; i++){
+				if(techName != null){
+					//set all tech names
+
+					//$("#tech-name-1") =
+				}
+				if(checkedBy != null){
+					//set all checked by
+				}
+				if(diagnosedBy){
+					//set all diagnosed by
+				}
+			}
+
+		})
+
+		var x = document.createElement("INPUT");//wtf is this
+		x.setAttribute("type", "text");//what are you for
+
+		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
+			$(".warrantyToStyle").css({"color": "red"})
+		}
+
+		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
 				stateOfButtons[value] = false;
 			}else{
 				stateOfButtons[value] = true;
 
 			}
-		}//class to flip value
+		}
 
-		for (var i = 25; i > 0; i--) {
-			if(!$("#snumber-" + i).val() == ""){
-				var label = "Line" + i;
+		for (var n = 25; n > 0; n--) {//Create button for each line
+			if(!$("#snumber-" + n).val() == ""){
+				var label = "Line" + n;
 				var btn = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
 				document.getElementById("insert").innerHTML = label;
-				$("#insert").attr("id", "btn" + i);
+				$("#insert").attr("id", "btn" + n);
 				stateOfButtons.push(false);
 				numberOfButtons++;
 			}
@@ -135,38 +205,18 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			RunSave = true;
 		});//save btn function
 		$("[id^=DI-]").click(function() {
-			$(this).next("input").attr("value", APItechName) // canges html value
-			$(this).next("input").val(APItechName) // updates the text in box
+			$(this).next("input").focus();
+			$(this).next("input").attr("value", getCookie("techName")) // canges html value
+			$(this).next("input").val(getCookie("techName")) // updates the text in box
 			$(this).next("input").blur()// should make sure it saves
 
 		});//name insert function for Diag Name
 		$("[id^=TN-]").click(function() {
-			$(this).next("input").attr("value", APItechName) // canges html value
-			$(this).next("input").val(APItechName) // updates the text in box
+			$(this).next("input").focus();
+			$(this).next("input").attr("value", getCookie("techName")) // canges html value
+			$(this).next("input").val(getCookie("techName")) // updates the text in box
 			$(this).next("input").blur()// should make sure it saves
 		});//name insert function for Tech Name
-
-
-		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-			if (RunSave) {
-				setTimeout(function () {
-				}, 20000);
-				RunSave = false
-
-			}else{
-				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-			}
-		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
-			if (RunSave) {
-				setTimeout(function () {
-				}, 20000);
-				RunSave = false
-
-			}else{
-				$("body > div.ui-widget-overlay.ui-front").remove()
-			}
-		});//Removes the grey background of the popup
 
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
@@ -195,6 +245,7 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 				}
 			}
 		}//end of hideAll function
+
 		function showAll(){
 			for(var i = 1; i < 25; i++){
 				if(stateOfButtons[i]){
@@ -207,10 +258,10 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 		function singleClick(buttonNumber){
 			var buttonName = "#btn" + buttonNumber;
 			var buttonNameOn = "#btn" + buttonNumber + ".on";
-			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on'] glob is more consistent
+			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",setRandomColor()); //#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",setRandomColor);	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -226,7 +277,9 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			function setRandomColor() {
 				$(buttonName).css("background-color", getRandomColor());
 			}
+
 		}
+
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -250,7 +303,6 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			if(stateOfButtons[buttonNumber]){
 				hideAll();
 				singleClick(buttonNumber);
-
 			}
 		}
 
@@ -379,43 +431,56 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			$("h1").hide()
 		}); // remove bottom of page header
 
+		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+			if (RunSave) {
+				setTimeout(function () {
+					RunSave = false
+					console.log(RunSave)
+				}, 20000);
+
+			}else{
+				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+				$("body > div.ui-widget-overlay.ui-front").remove()
+			}
+		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
-			}, timeout || 10);
-		});	//
+			}, timeout || 100);
+		});
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
-			}, timeout || 10);
-		});	//
+			}, timeout || 100);
+		});
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
-			}, timeout || 10);
-		});	//
+			}, timeout || 100);
+		});
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
-			}, timeout || 10);
-		});		//
+			}, timeout || 100);
+		});
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 10);
-		});	//
+			}, timeout || 100);
+		});
 		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 10);
-		});	//
+			}, timeout || 100);
+		});
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -450,6 +515,8 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 					return "MFR-Base";
 				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
 					return "MFR-Full";
+				case "LEN BASE + LEN ADP + LEN EXTBASE":
+					return "MFR-Full";
 				case "LEN EXT BASE ONLY":
 					return "MFR-Base";
 				case "LEN BASE + LEN ADP":
@@ -477,7 +544,19 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			}
 		}
 
+		if(autoHideDoneLines == "yes"){
+			showAll();
+			for(var k = 1; k < 25; k++){
+				var repairBoxName = "#repair-completed-" + k;
+				if($(repairBoxName).is(":checked")){
+					singleClick(k);
+				}
+			}
+		}
+
 		$('#copy').click(function(){// this is called when export button is clicked
+			techName = getCookie("techName");
+
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
 			var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -491,7 +570,7 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			var dellLines = [];
 
 			var lines = [];//array to store arrays of line information.
-			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
+			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
 
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
@@ -530,12 +609,16 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 
 					}
 
-
 				}
 			}
 			var empty = [];
-			lenLines.push(empty);
-			hpLines.push(empty);
+
+			if(!lenLines.length == 0){
+				lenLines.push(empty);
+			}
+			if(!hpLines.length == 0){
+				hpLines.push(empty);
+			}
 			lines = lines.concat(lenLines);
 			lines = lines.concat(hpLines);
 			lines = lines.concat(acerLines);
@@ -544,9 +627,34 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 			exportToCsv(($("#sro-number").val() + ".csv"), lines);
 
 
-		});//end of copy function
 
-		//Code I totally wrote and didn't copy paste from stack overflow-D
+
+		});//end of export function
+
+		function autoHideLinesOnStartup(){
+			if(autoHideDoneLines){
+				showAll();
+				for(var k = 1; k < 25; k++){
+					var repairBoxName = "#repair-completed-" + k;
+					if($(repairBoxName).is(":checked")){
+						singleClick(k);
+					}
+				}
+			}
+
+		}
+
+		$("[id^=repair-completed]").change(function() {//check if repair complete button was pressed then update what lines are hidden or shown
+			var line = this.id;
+			line = line.replace("repair-completed-", "");
+			if(autoHideDoneLines){
+				if(document.getElementById(this.id).checked){
+					singleClick(line);
+				}
+			}
+
+		});
+		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
 			var processRow = function (row) {
 				var finalVal = '';
@@ -566,12 +674,10 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 				}
 				return finalVal + '\n';
 			};
-
 			var csvFile = '';
 			for (var i = 0; i < rows.length; i++) {
 				csvFile += processRow(rows[i]);
 			}
-
 			var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
 			if (navigator.msSaveBlob) { // IE 10+
 				navigator.msSaveBlob(blob, filename);
@@ -592,9 +698,5 @@ var APItechName = "Tony"; // only needed if API and Sheets are not the same
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
-
-
-
 	});
 })();
-
