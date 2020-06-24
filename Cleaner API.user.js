@@ -227,13 +227,14 @@ function getCookie(name) {
 			RunSave = true;
 		});//save btn function
 		$("[id^=DI-]").click(function() {
-
+			$(this).next("input").focus();
 			$(this).next("input").attr("value", getCookie("techName")) // canges html value
 			$(this).next("input").val(getCookie("techName")) // updates the text in box
 			$(this).next("input").blur()// should make sure it saves
 
 		});//name insert function for Diag Name
 		$("[id^=TN-]").click(function() {
+			$(this).next("input").focus();
 			$(this).next("input").attr("value", getCookie("techName")) // canges html value
 			$(this).next("input").val(getCookie("techName")) // updates the text in box
 			$(this).next("input").blur()// should make sure it saves
