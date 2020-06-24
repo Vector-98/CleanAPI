@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API V0001111 [F]
+// @name         Cleaner API V0001120 [F]
 // @namespace    http://tampermonkey.net/
-// @version      1.1.7
+// @version      1.1.20
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -17,16 +17,45 @@
 var $ = window.jQuery;
 var preferencesEnabled = false;
 
+
+$("#get-item").focusout(function() {
+	AutoSro();
+});
+$("#get-item").submit(function() {
+	AutoSro();
+});
+function AutoSro() {
+	var SroLength = $("#sro-number").val().length
+	var SroNum = $("#sro-number").val()
+
+	if(SroLength == 2) {
+		var Pre2 = "SRO00000"
+		$("#sro-number").val(Pre2+$("#sro-number").val())
+	}//end of IF
+	if(SroLength == 3) {
+		var Pre3 = "SRO0000"
+		$("#sro-number").val(Pre3+$("#sro-number").val())
+	}//end of IF
+	if(SroLength == 4) {
+		var Pre4 = "SRO000"
+		$("#sro-number").val(Pre4+$("#sro-number").val())
+	}//end of IF
+	if(SroLength == 5) {
+		var Pre5 = "SRO00"
+		$("#sro-number").val(Pre5+$("#sro-number").val())
+	}//end of IF
+	if(SroLength == 6) {
+		var Pre6 = "SRO0"
+		$("#sro-number").val(Pre6+$("#sro-number").val())
+	}//end of IF
+};
+
 if(getCookie("techName") == "null" || getCookie("techName") == ""){
 	setTechName("");
 }
 
 if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
 	setAutoHideDoneLines("no");
-}
-
-if(getCookie("snPopup") == "null" || getCookie("snPopup") == ""){
-	setsnPopup("yes");
 }
 
 var autoHideDoneLines = getCookie("autoHideDoneLines");
@@ -43,11 +72,11 @@ $('#preferences').click(function(){
 		var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
 		setAutoHideDoneLines(autoHideRTS);
 
-		var snPopup = prompt("Enable SN change popup? (yes or no):", getCookie("snPopup"));
-		setsnPopup(snPopup);
 	}
 
 })
+
+
 
 
 function setAutoHideDoneLines(autoHideRTS){
@@ -60,16 +89,12 @@ function setAutoHideDoneLines(autoHideRTS){
 	}
 }
 
-function setsnPopup(popup){
-	var cookieName = "snPopup=" + popup;
-	document.cookie = cookieName;
-}
-
 
 
 function setTechName(techName){
 	var cookieName = "techName=" + techName;
 	document.cookie = cookieName;
+
 }
 
 function getCookie(name) {
@@ -107,22 +132,15 @@ function getCookie(name) {
 
 		}
 
-		$("[id^=repair-completed]").change(function() {//check if repair complete button was pressed then update what lines are hidden or shown
-			if(autoHideDoneLines){
-				showAll();
-				for(var k = 1; k < 25; k++){
-					var repairBoxName = "#repair-completed-" + k;
-					if($(repairBoxName).is(":checked")){
-						singleClick(k);
-					}
-				}
-			}
 
-		});
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
+		var numberOfSNButtons = 0;
+		var RunSave = false;
+		var numberOfDIButtons = 0;
+		var numberOfTNButtons = 0;
 
 		//$("#full-container").append('<input placeholder="Tech Name:"; type="text" class="glob" id="addAllTechName" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>');
 		//$("#full-container").append('<input placeholder="Checked By:"; type="text" class="glob" id="addAllCheckedBy" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>')
@@ -180,6 +198,52 @@ function getCookie(name) {
 				numberOfButtons++;
 			}
 		}
+		//Create button for each line
+		for (var sn = 25; sn > 0; sn--) {
+			if(!$("#snumber-" + sn).val() == ""){
+				var SNlabel = "Enable Save";
+				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;"></button>').insertAfter("#snumber-" + sn)
+				document.getElementById("insert1").innerHTML = SNlabel;
+				$("#insert1").attr("id", "SN-" + sn);
+				numberOfSNButtons++;
+			}
+		}//Create Save button for each line
+		for (var di = 25; di > 0; di--) {
+			if($("#diagnosed-by-" + di).prop("type") == "text"){
+				var DIlabel = "Fill Diag Name";
+				var DIbtn = $('<button type="button" class="diagbtn" id="DIinsert" onload="document.innerHTML(DIlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#diagnosed-by-" + di)
+				document.getElementById("DIinsert").innerHTML = DIlabel;
+				$("#DIinsert").attr("id", "DI-" + di);
+				numberOfDIButtons++;
+				console.log("diag name fill made")
+			}
+		}//Create Diag button for each line
+		for (var tn = 25; tn > 0; tn--) {
+			if($("#tech-name-" + tn).prop("type") == "text"){
+				var TNlabel = "Fill Tech Name";
+				var TNbtn = $('<button type="button" class="techbtn" id="TNinsert" onload="document.innerHTML(TNlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#tech-name-" + tn)
+				document.getElementById("TNinsert").innerHTML = TNlabel;
+				$("#TNinsert").attr("id", "TN-" + tn);
+				numberOfTNButtons++;
+				console.log("tech name fill made")
+			}
+		}//Create Tech button for each line
+
+		$("[id^=SN-]").click(function() {
+			RunSave = true;
+		});//save btn function
+		$("[id^=DI-]").click(function() {
+
+			$(this).next("input").attr("value", getCookie("techName")) // canges html value
+			$(this).next("input").val(getCookie("techName")) // updates the text in box
+			$(this).next("input").blur()// should make sure it saves
+
+		});//name insert function for Diag Name
+		$("[id^=TN-]").click(function() {
+			$(this).next("input").attr("value", getCookie("techName")) // canges html value
+			$(this).next("input").val(getCookie("techName")) // updates the text in box
+			$(this).next("input").blur()// should make sure it saves
+		});//name insert function for Tech Name
 
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
@@ -383,15 +447,25 @@ function getCookie(name) {
 		}); // remove bottom of page header
 
 		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-			if(getCookie("snPopup") == "no"){
+			if (RunSave) {
+				setTimeout(function () {
+				}, 20000);
+				RunSave = false
+
+			}else{
 				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
 			}
-		}); // same as below
+		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
-			if(getCookie("snPopup") == "no"){
+			if (RunSave) {
+				setTimeout(function () {
+				}, 20000);
+				RunSave = false
+
+			}else{
 				$("body > div.ui-widget-overlay.ui-front").remove()
 			}
-		});// hides the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+		});//Removes the grey background of the popup
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -465,6 +539,8 @@ function getCookie(name) {
 					return "MFR-Base";
 				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
 					return "MFR-Full";
+				case "LEN BASE + LEN ADP + LEN EXTBASE":
+					return "MFR-Full";
 				case "LEN EXT BASE ONLY":
 					return "MFR-Base";
 				case "LEN BASE + LEN ADP":
@@ -525,7 +601,9 @@ function getCookie(name) {
 
 			for (var i = 1; i < 25; i++) {
 				if(!$("#snumber-" + i).val() == ""){
-					var model = modelsArray[i-1].nextSibling.textContent;
+					alert(modelsArray[i-1].nextSibling.textContent);
+					var model = modelsArray[i-1].nextSibling.textContent;//this line is causing an error
+
 					var modelTrim;
 
 					var warranty = warrArray[i-1].textContent;
@@ -580,8 +658,6 @@ function getCookie(name) {
 
 		});//end of export function
 
-		//autoHideLinesOnStartup();
-
 		function autoHideLinesOnStartup(){
 			if(autoHideDoneLines){
 				showAll();
@@ -594,6 +670,17 @@ function getCookie(name) {
 			}
 
 		}
+
+		$("[id^=repair-completed]").change(function() {//check if repair complete button was pressed then update what lines are hidden or shown
+			var line = this.id;
+			line = line.replace("repair-completed-", "");
+			if(autoHideDoneLines){
+				if(document.getElementById(this.id).checked){
+					singleClick(line);
+				}
+			}
+
+		});
 
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
