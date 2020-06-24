@@ -120,10 +120,6 @@ function getCookie(name) {
 
 		preferencesEnabled = true;
 
-
-
-
-
 		if($("#sro-number").val().includes(420)){
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
@@ -131,8 +127,6 @@ function getCookie(name) {
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
 		}
-
-
 
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
@@ -595,15 +589,13 @@ function getCookie(name) {
 			var dellLines = [];
 
 			var lines = [];//array to store arrays of line information.
-			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
+			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
 
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for (var i = 1; i < 25; i++) {
 				if(!$("#snumber-" + i).val() == ""){
-					alert(modelsArray[i-1].nextSibling.textContent);
-					var model = modelsArray[i-1].nextSibling.textContent;//this line is causing an error
-
+					var model = modelsArray[i-1].nextSibling.textContent;
 					var modelTrim;
 
 					var warranty = warrArray[i-1].textContent;
