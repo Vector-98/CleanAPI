@@ -10,110 +10,107 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
-// @grant		 GM_cookie
+// @grant	 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
 var preferencesEnabled = false;
-
-
-$("#get-item").focusout(function() {
-	AutoSro();
-});
-$("#get-item").submit(function() {
-	AutoSro();
-});
-function AutoSro() {
-	var SroLength = $("#sro-number").val().length
-	var SroNum = $("#sro-number").val()
-
-	if(SroLength == 2) {
-		var Pre2 = "SRO00000"
-		$("#sro-number").val(Pre2+$("#sro-number").val())
-	}//end of IF
-	if(SroLength == 3) {
-		var Pre3 = "SRO0000"
-		$("#sro-number").val(Pre3+$("#sro-number").val())
-	}//end of IF
-	if(SroLength == 4) {
-		var Pre4 = "SRO000"
-		$("#sro-number").val(Pre4+$("#sro-number").val())
-	}//end of IF
-	if(SroLength == 5) {
-		var Pre5 = "SRO00"
-		$("#sro-number").val(Pre5+$("#sro-number").val())
-	}//end of IF
-	if(SroLength == 6) {
-		var Pre6 = "SRO0"
-		$("#sro-number").val(Pre6+$("#sro-number").val())
-	}//end of IF
-};
-
-if(getCookie("techName") == "null" || getCookie("techName") == ""){
-	setTechName("");
-}
-
-if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
-	setAutoHideDoneLines("no");
-}
-
-var autoHideDoneLines = getCookie("autoHideDoneLines");
 var techName;
-
-$("#main").prepend('<button type="button" class="glob" id="preferences" style= "background-color: white;position: absolute;top: 0px;right: 0px;margin: 10px;" >Preferences</button>');
-
-$('#preferences').click(function(){
-
-	if(preferencesEnabled){
-		var techName = prompt("Tech name:", getCookie("techName"));
-		setTechName(techName);
-
-		var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
-		setAutoHideDoneLines(autoHideRTS);
-
-	}
-
-})
-
-
-
-
-function setAutoHideDoneLines(autoHideRTS){
-	var cookieName = "autoHideDoneLines=" + autoHideRTS;
-	document.cookie = cookieName;
-	if(autoHideRTS == "yes"){
-		autoHideDoneLines = true;
-	}else{
-		autoHideDoneLines = false;
-	}
-}
-
-
-
-function setTechName(techName){
-	var cookieName = "techName=" + techName;
-	document.cookie = cookieName;
-
-}
-
-function getCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
-}
 
 (function() {
 	'use strict';
+	var autoHideDoneLines = getCookie("autoHideDoneLines");
+
+	/*$('*').css({
+		"background-color":"#234",
+		"color":"#cba"
+	})
+	$(':input').css({
+		"background-color":"#666",
+		"color":"#cba"
+	})*/
 
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
+
+	$("#get-item").focusout(function() {
+		AutoSro();
+	});
+	$("#get-item").submit(function() {
+		AutoSro();
+	});
+	function AutoSro() {
+		var SroLength = $("#sro-number").val().length
+		var SroNum = $("#sro-number").val()
+
+		if(SroLength == 2) {
+			var Pre2 = "SRO00000"
+			$("#sro-number").val(Pre2+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 3) {
+			var Pre3 = "SRO0000"
+			$("#sro-number").val(Pre3+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 4) {
+			var Pre4 = "SRO000"
+			$("#sro-number").val(Pre4+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 5) {
+			var Pre5 = "SRO00"
+			$("#sro-number").val(Pre5+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 6) {
+			var Pre6 = "SRO0"
+			$("#sro-number").val(Pre6+$("#sro-number").val())
+		}//end of IF
+	};
+
+	if(getCookie("techName") == "null" || getCookie("techName") == ""){
+		setTechName("");
+	}
+	if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
+		setAutoHideDoneLines("no");
+	}
+
+	$("#main").prepend('<button type="button" class="glob" id="preferences" style= "background-color: white;position: absolute;top: 0px;right: 0px;margin: 10px;" >Preferences</button>');
+	$('#preferences').click(function(){
+		if(preferencesEnabled){
+			var techName = prompt("Tech name:", getCookie("techName"));
+			setTechName(techName);
+
+			var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
+			setAutoHideDoneLines(autoHideRTS);
+
+		}
+
+	})
+
+	function setAutoHideDoneLines(autoHideRTS){
+		var cookieName = "autoHideDoneLines=" + autoHideRTS;
+		document.cookie = cookieName;
+		if(autoHideRTS == "yes"){
+			autoHideDoneLines = true;
+		}else{
+			autoHideDoneLines = false;
+		}
+	}
+	function setTechName(techName){
+		var cookieName = "techName=" + techName;
+		document.cookie = cookieName;
+
+	}
+	function getCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
 
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
@@ -136,12 +133,6 @@ function getCookie(name) {
 		var numberOfDIButtons = 0;
 		var numberOfTNButtons = 0;
 
-		//$("#full-container").append('<input placeholder="Tech Name:"; type="text" class="glob" id="addAllTechName" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>');
-		//$("#full-container").append('<input placeholder="Checked By:"; type="text" class="glob" id="addAllCheckedBy" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>')
-		//$("#full-container").append('<input placeholder="Diagnosed By:"; type="text" class="glob" id="addAllDiagnosedBy" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></input>')
-
-		//$("#full-container").append('<div id="submitAll"> <button type="button" class="glob" id="submitAll" style="background-color: white; border-radius: 8px" >Update All Lines</button> </div>')
-
 		$('#submitAll').click(function(){//This is called  when the bottom submit button is pressed
 			var techName = document.getElementById("addAllTechName").value;
 			var checkedBy = document.getElementById("addAllCheckedBy").value;
@@ -161,17 +152,11 @@ function getCookie(name) {
 				}
 			}
 
-
 		})
-
-		var x = document.createElement("INPUT");
-		x.setAttribute("type", "text");
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
 		}
-
-
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -191,8 +176,7 @@ function getCookie(name) {
 				stateOfButtons.push(false);
 				numberOfButtons++;
 			}
-		}
-		//Create button for each line
+		}//Create button for each line
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Save";
@@ -240,6 +224,7 @@ function getCookie(name) {
 			$(this).next("input").blur()// should make sure it saves
 		});//name insert function for Tech Name
 
+
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
 				var clicks = 0, self = this;
@@ -267,7 +252,6 @@ function getCookie(name) {
 				}
 			}
 		}//end of hideAll function
-
 		function showAll(){
 			for(var i = 1; i < 25; i++){
 				if(stateOfButtons[i]){
@@ -283,14 +267,24 @@ function getCookie(name) {
 			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");
+			$(buttonNameOn).css("background-color",setRandomColor);	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
 			toggle(buttonNumber);
+			function getRandomColor() {
+				var letters = '789ABCD';// 0123456EF cut letters for more light colors
+				var color = '#';
+				for (var i = 0; i < 6; i++) {
+					color += letters[Math.floor(Math.random() * 6)];//16
+				}
+				return color;
+			}
+			function setRandomColor() {
+				$(buttonName).css("background-color", getRandomColor());
+			}
 
 		}
-
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -316,6 +310,7 @@ function getCookie(name) {
 				singleClick(buttonNumber);
 			}
 		}
+
 		$("#btn1").single_double_click(function() {
 			singleClick(1);
 		}, function (){
@@ -440,27 +435,18 @@ function getCookie(name) {
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
 		}); // remove bottom of page header
-
 		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
 			if (RunSave) {
 				setTimeout(function () {
+					RunSave = false
+					console.log(RunSave)
 				}, 20000);
-				RunSave = false
 
 			}else{
 				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-			}
-		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-		waitForKeyElements("body > div.ui-widget-overlay.ui-front", function () {
-			if (RunSave) {
-				setTimeout(function () {
-				}, 20000);
-				RunSave = false
-
-			}else{
 				$("body > div.ui-widget-overlay.ui-front").remove()
 			}
-		});//Removes the grey background of the popup
+		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -499,7 +485,6 @@ function getCookie(name) {
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 100);
 		});
-
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -572,7 +557,6 @@ function getCookie(name) {
 				}
 			}
 		}
-
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
@@ -674,7 +658,6 @@ function getCookie(name) {
 			}
 
 		});
-
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
 			var processRow = function (row) {
@@ -695,12 +678,10 @@ function getCookie(name) {
 				}
 				return finalVal + '\n';
 			};
-
 			var csvFile = '';
 			for (var i = 0; i < rows.length; i++) {
 				csvFile += processRow(rows[i]);
 			}
-
 			var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
 			if (navigator.msSaveBlob) { // IE 10+
 				navigator.msSaveBlob(blob, filename);
@@ -715,33 +696,35 @@ function getCookie(name) {
 					document.body.appendChild(link);
 					link.click();
 					document.body.removeChild(link);
-					//Copy to clip board. This works but it is not a good idea_____________________________________________________
-					/* Get the text field */
-					//var text = csvFile;
-					//var textArea = document.createElement("textarea");
-					//textArea.value = text;
-
-					//textArea.style.top = "0";
-					//textArea.style.left = "0";
-					//textArea.style.position = "fixed";
-
-					//document.body.appendChild(textArea);
-					//textArea.focus();
-					//textArea.select()
-
-					/* Select the text field */
-					//textArea.select();
-					/* Copy the text inside the text field */
-					//document.execCommand("copy");
-
-					//TESTING_______________________________________________________________________________________________________
-
-
 				}
 			}
 		}// end of exportToCsv function
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
+		// start of css stuff
+		/* Common theme */
+		//$("input:not([style*='background-color:']):active,input:not([style*='background-color:']):focus,textarea:not([style*='background-color:']):active,textarea:not([style*='background-color:']):focus,button:not([style*='background-color:']):active,button:not([style*='background-color:']):focus,[role='button']:focus").css({'background-color': 'rgb(29, 56, 83) !important;'})
+
+		/*$('*').css({
+			"background-color":"#234",
+			"color":"#cba"
+		})
+		$(':input').css({
+			"background-color":"#666",
+			"color":"#cba"
+		})
+		$(':checkbox').css({
+			"background-color":"#666",
+			"color":"#cba"
+		})
+		$(':button').css({
+			"background-color":"#666",
+			"color":"#cba"
+		})
+		$(':radio').css({
+			"background-color":"#666",
+			"color":"#cba"
+		})*/
 	});
 })();
