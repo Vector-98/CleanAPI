@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Cleaner API 
+// @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.0
+// @version      1.2.5
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -10,7 +10,7 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
-// @grant	 GM_cookie
+// @grant		 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
@@ -21,15 +21,6 @@ var techName;
 (function() {
 	'use strict';
 	var autoHideDoneLines = getCookie("autoHideDoneLines");
-
-	/*$('*').css({
-		"background-color":"#234",
-		"color":"#cba"
-	})
-	$(':input').css({
-		"background-color":"#666",
-		"color":"#cba"
-	})*/
 
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
@@ -114,7 +105,6 @@ var techName;
 
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
-
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
@@ -132,27 +122,6 @@ var techName;
 		var RunSave = false;
 		var numberOfDIButtons = 0;
 		var numberOfTNButtons = 0;
-
-		$('#submitAll').click(function(){//This is called  when the bottom submit button is pressed
-			var techName = document.getElementById("addAllTechName").value;
-			var checkedBy = document.getElementById("addAllCheckedBy").value;
-			var diagnosedBy = document.getElementById("addAllDiagnosedBy").value;
-
-			for(var i = 0; i > 24; i++){
-				if(techName != null){
-					//set all tech names
-
-					//$("#tech-name-1") =
-				}
-				if(checkedBy != null){
-					//set all checked by
-				}
-				if(diagnosedBy){
-					//set all diagnosed by
-				}
-			}
-
-		})
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
@@ -209,6 +178,13 @@ var techName;
 
 		$("[id^=SN-]").click(function() {
 			RunSave = true;
+			$("[id^=SN-]").text("Save Enabled")
+			$("[id^=SN-]").css({"background-color":"28a745"})
+			setTimeout(function () {
+				$("[id^=SN-]").text("Enable Save")
+				$("[id^=SN-]").css({"background-color": "white"})
+				console.log(RunSave)
+			}, 19500);
 		});//save btn function
 		$("[id^=DI-]").click(function() {
 			$(this).next("input").focus();
@@ -441,7 +417,6 @@ var techName;
 					RunSave = false
 					console.log(RunSave)
 				}, 20000);
-
 			}else{
 				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
 				$("body > div.ui-widget-overlay.ui-front").remove()
@@ -648,7 +623,7 @@ var techName;
 
 		}
 
-		$("[id^=repair-completed]").change(function() {//check if repair complete button was pressed then update what lines are hidden or shown
+		$("[id^=repair-completed]").change(function() {
 			var line = this.id;
 			line = line.replace("repair-completed-", "");
 			if(autoHideDoneLines){
@@ -657,7 +632,7 @@ var techName;
 				}
 			}
 
-		});
+		});//check if repair complete button was pressed then update what lines are hidden or shown
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
 			var processRow = function (row) {
@@ -702,29 +677,5 @@ var techName;
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
-		// start of css stuff
-		/* Common theme */
-		//$("input:not([style*='background-color:']):active,input:not([style*='background-color:']):focus,textarea:not([style*='background-color:']):active,textarea:not([style*='background-color:']):focus,button:not([style*='background-color:']):active,button:not([style*='background-color:']):focus,[role='button']:focus").css({'background-color': 'rgb(29, 56, 83) !important;'})
-
-		/*$('*').css({
-			"background-color":"#234",
-			"color":"#cba"
-		})
-		$(':input').css({
-			"background-color":"#666",
-			"color":"#cba"
-		})
-		$(':checkbox').css({
-			"background-color":"#666",
-			"color":"#cba"
-		})
-		$(':button').css({
-			"background-color":"#666",
-			"color":"#cba"
-		})
-		$(':radio').css({
-			"background-color":"#666",
-			"color":"#cba"
-		})*/
 	});
 })();
