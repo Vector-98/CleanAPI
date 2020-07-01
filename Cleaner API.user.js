@@ -78,7 +78,7 @@ var techName;
 
 	})
 
-	function setAutoHideDoneLines(autoHideRTS){
+	/*function setAutaoHideDoneLines(autoHideRTS){
 		var cookieName = "autoHideDoneLines=" + autoHideRTS;
 		document.cookie = cookieName;
 		if(autoHideRTS == "yes"){
@@ -86,7 +86,7 @@ var techName;
 		}else{
 			autoHideDoneLines = false;
 		}
-	}
+	}*/
 	function setTechName(techName){
 		var cookieName = "techName=" + techName;
 		document.cookie = cookieName;
@@ -122,6 +122,8 @@ var techName;
 		var RunSave = false;
 		var numberOfDIButtons = 0;
 		var numberOfTNButtons = 0;
+		var createdButtons = 0;
+		var TotalButtIndex = createdButtons * 2;
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
@@ -139,11 +141,14 @@ var techName;
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line" + n;
-				var btn = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
+				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
 				document.getElementById("insert").innerHTML = label;
-				$("#insert").attr("id", "btn" + n);
+				$("#insert").attr("id", "butt-" + n);
 				stateOfButtons.push(false);
 				numberOfButtons++;
+				createdButtons++;
+				//console.log(createdButtons)
+				//console.log(TotalButtIndex)
 			}
 		}//Create button for each line
 		for (var sn = 25; sn > 0; sn--) {
@@ -200,7 +205,6 @@ var techName;
 			$(this).next("input").blur()// should make sure it saves
 		});//name insert function for Tech Name
 
-
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
 				var clicks = 0, self = this;
@@ -238,9 +242,9 @@ var techName;
 		}
 
 		function singleClick(buttonNumber){
-			var buttonName = "#btn" + buttonNumber;
-			var buttonNameOn = "#btn" + buttonNumber + ".on";
-			var buttonNameNotOn = "#btn" + buttonNumber + "[class='glob']"; //[class!='on']
+			var buttonName = "#butt-" + buttonNumber;
+			var buttonNameOn = "#butt-" + buttonNumber + ".on";
+			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
 			$(buttonNameOn).css("background-color",setRandomColor);	//#28a745 // removed for random colors
@@ -259,8 +263,8 @@ var techName;
 			function setRandomColor() {
 				$(buttonName).css("background-color", getRandomColor());
 			}
-
 		}
+
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -287,126 +291,18 @@ var techName;
 			}
 		}
 
-		$("#btn1").single_double_click(function() {
-			singleClick(1);
+		var rawbutt = $("[id^=butt-]").click(function() {
+			rawbutt = this.id;
+		});	//  create var for btn selectors
+		var linebtn = $("[id^=butt-]").click(function() {
+			linebtn = this.id;
+			linebtn = linebtn.replace("butt-", "");
+		});	//	create var raw number for btn selectors
+		$(rawbutt).single_double_click(function() {
+			singleClick(linebtn);
 		}, function (){
-			doubleClick(1);
-		});
-		$("#btn2").single_double_click(function() {
-			singleClick(2);
-		}, function (){
-			doubleClick(2);
-		});
-		$("#btn3").single_double_click(function() {
-			singleClick(3);
-		}, function (){
-			doubleClick(3);
-		});
-		$("#btn4").single_double_click(function() {
-			singleClick(4);
-		}, function (){
-			doubleClick(4);
-		});
-		$("#btn5").single_double_click(function() {
-			singleClick(5);
-		}, function (){
-			doubleClick(5);
-		});
-		$("#btn6").single_double_click(function() {
-			singleClick(6);
-		}, function (){
-			doubleClick(6);
-		});
-		$("#btn7").single_double_click(function() {
-			singleClick(7);
-		}, function (){
-			doubleClick(7);
-		});
-		$("#btn8").single_double_click(function() {
-			singleClick(8);
-		}, function (){
-			doubleClick(8);
-		});
-		$("#btn9").single_double_click(function() {
-			singleClick(9);
-		}, function (){
-			doubleClick(9);
-		});
-		$("#btn10").single_double_click(function() {
-			singleClick(10);
-		}, function (){
-			doubleClick(10);
-		});
-		$("#btn11").single_double_click(function() {
-			singleClick(11);
-		}, function (){
-			doubleClick(11);
-		});
-		$("#btn12").single_double_click(function() {
-			singleClick(12);
-		}, function (){
-			doubleClick(12);
-		});
-		$("#btn13").single_double_click(function() {
-			singleClick(13);
-		}, function (){
-			doubleClick(13);
-		});
-		$("#btn14").single_double_click(function() {
-			singleClick(14);
-		}, function (){
-			doubleClick(14);
-		});
-		$("#btn15").single_double_click(function() {
-			singleClick(15);
-		}, function (){
-			doubleClick(15);
-		});
-		$("#btn16").single_double_click(function() {
-			singleClick(16);
-		}, function (){
-			doubleClick(16);
-		});
-		$("#btn17").single_double_click(function() {
-			singleClick(17);
-		}, function (){
-			doubleClick(17);
-		});
-		$("#btn18").single_double_click(function() {
-			singleClick(18);
-		}, function (){
-			doubleClick(18);
-		});
-		$("#btn19").single_double_click(function() {
-			singleClick(19);
-		}, function (){
-			doubleClick(19);
-		});
-		$("#btn20").single_double_click(function() {
-			singleClick(20);
-		}, function (){
-			doubleClick(20);
-		});
-		$("#btn21").single_double_click(function() {
-			singleClick(21);
-		}, function (){
-			doubleClick(21);
-		});
-		$("#btn22").single_double_click(function() {
-			singleClick(22);
-		}, function (){
-			doubleClick(22);
-		});
-		$("#btn23").single_double_click(function() {
-			singleClick(23);
-		}, function (){
-			doubleClick(23);
-		});
-		$("#btn24").single_double_click(function() {
-			singleClick(24);
-		}, function (){
-			doubleClick(24);
-		});
+			doubleClick(linebtn);
+		});	// handles the btn clicks
 
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
@@ -523,7 +419,7 @@ var techName;
 			}
 		}
 
-		if(autoHideDoneLines == "yes"){
+		/*if(autoHideDoneLines == "yes"){
 			showAll();
 			for(var k = 1; k < 25; k++){
 				var repairBoxName = "#repair-completed-" + k;
@@ -531,7 +427,7 @@ var techName;
 					singleClick(k);
 				}
 			}
-		}
+		}*/
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
@@ -550,7 +446,6 @@ var techName;
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
-
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for (var i = 1; i < 25; i++) {
@@ -605,12 +500,9 @@ var techName;
 
 			exportToCsv(($("#sro-number").val() + ".csv"), lines);
 
-
-
-
 		});//end of export function
 
-		function autoHideLinesOnStartup(){
+		/*function autoHideLinesOnStartup(){
 			if(autoHideDoneLines){
 				showAll();
 				for(var k = 1; k < 25; k++){
@@ -621,7 +513,7 @@ var techName;
 				}
 			}
 
-		}
+		}*/
 
 		$("[id^=repair-completed]").change(function() {
 			var line = this.id;
@@ -631,7 +523,6 @@ var techName;
 					singleClick(line);
 				}
 			}
-
 		});//check if repair complete button was pressed then update what lines are hidden or shown
 		//Code I totally wrote and didn't copy paste from stack overflow
 		function exportToCsv(filename, rows) {
