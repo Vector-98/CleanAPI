@@ -78,7 +78,7 @@ var techName;
 
 	})
 
-	/*function setAutaoHideDoneLines(autoHideRTS){
+	function setAutoHideDoneLines(autoHideRTS){
 		var cookieName = "autoHideDoneLines=" + autoHideRTS;
 		document.cookie = cookieName;
 		if(autoHideRTS == "yes"){
@@ -86,7 +86,7 @@ var techName;
 		}else{
 			autoHideDoneLines = false;
 		}
-	}*/
+	}
 	function setTechName(techName){
 		var cookieName = "techName=" + techName;
 		document.cookie = cookieName;
@@ -419,7 +419,7 @@ var techName;
 			}
 		}
 
-		/*if(autoHideDoneLines == "yes"){
+		if(autoHideDoneLines == "yes"){
 			showAll();
 			for(var k = 1; k < 25; k++){
 				var repairBoxName = "#repair-completed-" + k;
@@ -427,7 +427,7 @@ var techName;
 					singleClick(k);
 				}
 			}
-		}*/
+		}
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
@@ -502,7 +502,7 @@ var techName;
 
 		});//end of export function
 
-		/*function autoHideLinesOnStartup(){
+		function autoHideLinesOnStartup(){
 			if(autoHideDoneLines){
 				showAll();
 				for(var k = 1; k < 25; k++){
@@ -513,15 +513,17 @@ var techName;
 				}
 			}
 
-		}*/
+		}
 
 		$("[id^=repair-completed]").change(function() {
+			if(autoHideDoneLines){
 			var line = this.id;
 			line = line.replace("repair-completed-", "");
 			if(autoHideDoneLines){
 				if(document.getElementById(this.id).checked){
 					singleClick(line);
 				}
+			}
 			}
 		});//check if repair complete button was pressed then update what lines are hidden or shown
 		//Code I totally wrote and didn't copy paste from stack overflow
