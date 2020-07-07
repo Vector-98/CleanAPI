@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.7
+// @version      1.2.8
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -153,8 +153,8 @@ var techName;
 		}//Create button for each line
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
-				var SNlabel = "Enable Save";
-				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;"></button>').insertAfter("#snumber-" + sn)
+				var SNlabel = "Enable Pop-up";
+				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;width: 110%;"></button>').insertAfter("#snumber-" + sn)
 				document.getElementById("insert1").innerHTML = SNlabel;
 				$("#insert1").attr("id", "SN-" + sn);
 				numberOfSNButtons++;
@@ -181,16 +181,19 @@ var techName;
 			}
 		}//Create Tech button for each line
 
-		$("[id^=SN-]").click(function() {
-			RunSave = true;
-			$("[id^=SN-]").text("Save Enabled")
-			$("[id^=SN-]").css({"background-color":"28a745"})
-			setTimeout(function () {
-				$("[id^=SN-]").text("Enable Save")
-				$("[id^=SN-]").css({"background-color": "white"})
-				console.log(RunSave)
-			}, 19500);
-		});//save btn function
+
+$("[id^=SN-]").on('click', function(){
+RunSave = !RunSave
+})
+$("[id^=SN-]").on("click", function(){
+if(RunSave){
+$("[id^=SN-]").text("Disable Pop-up")
+$("[id^=SN-]").css({"background-color":"28a745"})
+}else{
+$("[id^=SN-]").text("Enable Pop-up")
+$("[id^=SN-]").css({"background-color": "white"})
+}
+})
 		$("[id^=DI-]").click(function() {
 			$(this).next("input").focus();
 			$(this).next("input").attr("value", getCookie("techName")) // canges html value
@@ -247,7 +250,7 @@ var techName;
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",setRandomColor);	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -308,16 +311,15 @@ var techName;
 			$("h1").hide()
 		}); // remove bottom of page header
 		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-			if (RunSave) {
-				setTimeout(function () {
-					RunSave = false
-					console.log(RunSave)
-				}, 20000);
-			}else{
-				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-				$("body > div.ui-widget-overlay.ui-front").remove()
-			}
-		});// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+if (RunSave) {
+console.log("SN and Warr save enabled")
+}else{
+$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+$("body > div.ui-widget-overlay.ui-front").remove()
+console.log(RunSave+" wait else")
+console.log("SN and Warr save disabled")
+}
+});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -453,13 +455,13 @@ var techName;
 					var model = modelsArray[i-1].nextSibling.textContent;
 					var modelTrim;
 
-					var warranty = warrArray[i-1].textContent;
+					var fullWarrName = "#warranty-" + i;
+					var warranty = $("#warranty-" + i).val();
 					var warrantyFixed;
 
 
 					if (model.includes("HP-CBK")) {
 						warrantyFixed = fixWarranty(warranty);
-
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
