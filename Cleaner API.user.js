@@ -182,18 +182,19 @@ var techName;
 		}//Create Tech button for each line
 
 
-$("[id^=SN-]").on('click', function(){
-RunSave = !RunSave
-})
-$("[id^=SN-]").on("click", function(){
-if(RunSave){
-$("[id^=SN-]").text("Disable Pop-up")
-$("[id^=SN-]").css({"background-color":"28a745"})
-}else{
-$("[id^=SN-]").text("Enable Pop-up")
-$("[id^=SN-]").css({"background-color": "white"})
-}
-})
+		$("[id^=SN-]").on('click', function(){
+			RunSave = !RunSave
+			console.log(RunSave)
+		})
+		$("[id^=SN-]").on("click", function(){
+			if(RunSave){
+				$("[id^=SN-]").text("Disable Pop-up")
+				$("[id^=SN-]").css("background-color","28a745")
+			}else{
+				$("[id^=SN-]").text("Enable Pop-up")
+				$("[id^=SN-]").css("background-color","white")
+			}
+		})
 		$("[id^=DI-]").click(function() {
 			$(this).next("input").focus();
 			$(this).next("input").attr("value", getCookie("techName")) // canges html value
@@ -250,7 +251,7 @@ $("[id^=SN-]").css({"background-color": "white"})
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -311,15 +312,15 @@ $("[id^=SN-]").css({"background-color": "white"})
 			$("h1").hide()
 		}); // remove bottom of page header
 		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-if (RunSave) {
-console.log("SN and Warr save enabled")
-}else{
-$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-$("body > div.ui-widget-overlay.ui-front").remove()
-console.log(RunSave+" wait else")
-console.log("SN and Warr save disabled")
-}
-});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+			if (RunSave) {
+				console.log("SN and Warr save enabled")
+			}else{
+				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+				$("body > div.ui-widget-overlay.ui-front").remove()
+				console.log(RunSave+" wait else")
+				console.log("SN and Warr save disabled")
+			}
+		});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -518,14 +519,15 @@ console.log("SN and Warr save disabled")
 		}
 
 		$("[id^=repair-completed]").change(function() {
+			autoHideDoneLines = getCookie("autoHideDoneLines");
 			if(autoHideDoneLines){
-			var line = this.id;
-			line = line.replace("repair-completed-", "");
-			if(autoHideDoneLines){
-				if(document.getElementById(this.id).checked){
-					singleClick(line);
+				var line = this.id;
+				line = line.replace("repair-completed-", "");
+				if(autoHideDoneLines){
+					if(document.getElementById(this.id).checked){
+						singleClick(line);
+					}
 				}
-			}
 			}
 		});//check if repair complete button was pressed then update what lines are hidden or shown
 		//Code I totally wrote and didn't copy paste from stack overflow
