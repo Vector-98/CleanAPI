@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.8
+// @version      1.2.9
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -10,7 +10,7 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
-// @grant		 GM_cookie
+// @grant	 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
@@ -122,6 +122,7 @@ var techName;
 		var RunSave = false;
 		var numberOfDIButtons = 0;
 		var numberOfTNButtons = 0;
+		var numberOfl4Buttons= 0;
 		var createdButtons = 0;
 		var TotalButtIndex = createdButtons * 2;
 
@@ -141,7 +142,7 @@ var techName;
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line" + n;
-				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px;" ></button>')
+				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px; line-height: normal;" > </button>')
 				document.getElementById("insert").innerHTML = label;
 				$("#insert").attr("id", "butt-" + n);
 				stateOfButtons.push(false);
@@ -149,6 +150,11 @@ var techName;
 				createdButtons++;
 				//console.log(createdButtons)
 				//console.log(TotalButtIndex)
+				var l4label = $('#snumber-' + n).val().slice(-4);
+				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+n)
+				document.getElementById("Last4").innerHTML = l4label;
+				$("#Last4").attr("id", "Last4-L" + n);
+				numberOfl4Buttons++;
 			}
 		}//Create button for each line
 		for (var sn = 25; sn > 0; sn--) {
@@ -180,7 +186,18 @@ var techName;
 				console.log("tech name fill made")
 			}
 		}//Create Tech button for each line
-
+/* 		for (var l4 = 25; l4 > 0;l4--) {
+			if($("#snumber" + l4).val() == ""){
+				var l4label = $('#snumber-' + l4).val().slice(-4);
+				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+l4)
+				document.getElementById("Last4").innerHTML = l4label;
+				$("#Last4").attr("id", "Last4-L" + l4);
+				numberOfl4Buttons++;
+				console.log("sn on line btn")
+			}
+		}//Create Tech button for each line
+		$('<small id="sm-sn-1" style="display: block; line-height: normal;">  </small>').appendTo("#butt-1")
+ 		$('#snumber-5').val().slice(-4)*/
 
 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
