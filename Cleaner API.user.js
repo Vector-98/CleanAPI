@@ -10,7 +10,7 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
-// @grant	 GM_cookie
+// @grant		 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
@@ -78,6 +78,7 @@ var techName;
 
 	})
 
+
 	function setAutoHideDoneLines(autoHideRTS){
 		var cookieName = "autoHideDoneLines=" + autoHideRTS;
 		document.cookie = cookieName;
@@ -102,7 +103,9 @@ var techName;
 		}
 		return null;
 	}
-
+	//
+	//
+	//
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
 		preferencesEnabled = true;
@@ -115,6 +118,7 @@ var techName;
 
 		}
 
+		//$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
@@ -141,22 +145,22 @@ var techName;
 
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
-				var label = "Line" + n;
+				var label = "Line " + n;
 				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px; line-height: normal;" > </button>')
 				document.getElementById("insert").innerHTML = label;
 				$("#insert").attr("id", "butt-" + n);
 				stateOfButtons.push(false);
 				numberOfButtons++;
 				createdButtons++;
-				//console.log(createdButtons)
-				//console.log(TotalButtIndex)
+				/* 				console.log(createdButtons)
+				console.log(TotalButtIndex) */
 				var l4label = $('#snumber-' + n).val().slice(-4);
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+n)
-				document.getElementById("Last4").innerHTML = l4label;
+				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
 				numberOfl4Buttons++;
 			}
-		}//Create button for each line
+		}//Create button for each line and add last 4 of SN
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
@@ -186,18 +190,6 @@ var techName;
 				console.log("tech name fill made")
 			}
 		}//Create Tech button for each line
-/* 		for (var l4 = 25; l4 > 0;l4--) {
-			if($("#snumber" + l4).val() == ""){
-				var l4label = $('#snumber-' + l4).val().slice(-4);
-				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+l4)
-				document.getElementById("Last4").innerHTML = l4label;
-				$("#Last4").attr("id", "Last4-L" + l4);
-				numberOfl4Buttons++;
-				console.log("sn on line btn")
-			}
-		}//Create Tech button for each line
-		$('<small id="sm-sn-1" style="display: block; line-height: normal;">  </small>').appendTo("#butt-1")
- 		$('#snumber-5').val().slice(-4)*/
 
 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
@@ -261,14 +253,13 @@ var techName;
 				}
 			}
 		}
-
 		function singleClick(buttonNumber){
 			var buttonName = "#butt-" + buttonNumber;
 			var buttonNameOn = "#butt-" + buttonNumber + ".on";
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -285,7 +276,6 @@ var techName;
 				$(buttonName).css("background-color", getRandomColor());
 			}
 		}
-
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -327,7 +317,7 @@ var techName;
 
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
-		}); // remove bottom of page header
+		}); // remove bottom of page footer
 		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
 			if (RunSave) {
 				console.log("SN and Warr save enabled")
@@ -340,45 +330,43 @@ var techName;
 		});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-		/*
-
-		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+/*  	$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
-		*/
+ */
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 
