@@ -140,6 +140,7 @@ var RunSave = false;
 		//var PreCBI = 26;
 		//var CBI = PreCBI - Cont;
 
+
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
 		};
@@ -152,7 +153,8 @@ var RunSave = false;
 
 			}
 		};
-
+ var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;' id='jumpMenu'></ul>");
+		$("#full-container").append(jumpMenu);
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line " + n;
@@ -168,10 +170,22 @@ var RunSave = false;
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
 				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
+				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
+               let jumpLinkID = "jumpLink"+(n+1);
+               $("#placeholder").attr("id",jumpLinkID);
+               $("#"+jumpLinkID).attr("href","#paid-" + (n+1));
+               $("#jumpMenu").prepend(jumpLinks);
 				//PreCBI++
 				//console.log(CBI)
 			}
+
 		};//Create button for each line and add last 4 of SN
+		let jumpLinks = ('<li><a id="placeholder">Jump Menu</a></li>');
+               let jumpLinkID = "jumpLink"+(1);
+               $("#placeholder").attr("id",jumpLinkID);
+						console.log(n);
+               $("#"+jumpLinkID).attr("href","#paid-" + (1));
+               $("#jumpMenu").prepend(jumpLinks);
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
@@ -267,7 +281,7 @@ var RunSave = false;
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -365,6 +379,7 @@ var RunSave = false;
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
+		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
 
 		function fixWarranty(warranty){
 			switch(warranty) {
@@ -520,6 +535,53 @@ var RunSave = false;
 			}
 
 		};
+
+		jQuery(document).bind("keyup keydown", function(e){
+			if(e.ctrlKey && e.keyCode == 80){
+				customPrint();
+			}
+		});
+
+		$('#PrintBtn').click(function(){
+			customPrint();
+		});
+
+		function customPrint(){
+		var w=window.open();
+			var stuffToPrint = $("#sro-number").val().fontsize(7);
+
+			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%'>" +stuffToPrint+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 80%'>" +stuffToPrint+ "</h2>");
+			w.document.write("Customer: ");
+			w.document.write($("#customer").val());
+			w.document.write("<br> <br>");
+
+			var lenLines = [];
+			var hpLines = [];
+			var acerLines = [];
+			var dellLines = [];
+
+			var lines = [];//array to store arrays of line information.
+			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
+			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
+			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
+
+			for (var i = 1; i < 25; i++) {
+				if(!$("#snumber-" + i).val() == ""){
+					var model = modelsArray[i-1].nextSibling.textContent;
+					var desc = custDesc[i-1].nextSibling.textContent;
+					var warranty = $("#warranty-" + i).val();
+					w.document.write(["Line: " + i + " " + $("#snumber-" + i).val() + " " + warranty + " " + desc]);
+					w.document.write("<br> <br>");
+
+				}
+
+
+
+			}
+			w.print();
+			w.close();
+		}
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
