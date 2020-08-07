@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.12
+// @version      1.2.13
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -153,8 +153,10 @@ var RunSave = false;
 
 			}
 		};
- var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;' id='jumpMenu'></ul>");
+
+		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
+
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line " + n;
@@ -171,21 +173,23 @@ var RunSave = false;
 				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
 				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
-               let jumpLinkID = "jumpLink"+(n+1);
-               $("#placeholder").attr("id",jumpLinkID);
-               $("#"+jumpLinkID).attr("href","#paid-" + (n+1));
-               $("#jumpMenu").prepend(jumpLinks);
+				let jumpLinkID = "jumpLink"+(n+1);
+				$("#placeholder").attr("id",jumpLinkID);
+				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
+				$("#jumpMenu").prepend(jumpLinks);
 				//PreCBI++
 				//console.log(CBI)
 			}
 
 		};//Create button for each line and add last 4 of SN
+
 		let jumpLinks = ('<li><a id="placeholder">Jump Menu</a></li>');
-               let jumpLinkID = "jumpLink"+(1);
-               $("#placeholder").attr("id",jumpLinkID);
-						console.log(n);
-               $("#"+jumpLinkID).attr("href","#paid-" + (1));
-               $("#jumpMenu").prepend(jumpLinks);
+		let jumpLinkID = "jumpLink"+(1);
+		$("#placeholder").attr("id",jumpLinkID);
+		console.log(n);
+		$("#"+jumpLinkID).attr("href","#paid-" + (1));
+		$("#jumpMenu").prepend(jumpLinks);
+
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
@@ -281,7 +285,7 @@ var RunSave = false;
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -547,7 +551,7 @@ var RunSave = false;
 		});
 
 		function customPrint(){
-		var w=window.open();
+			var w=window.open();
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 
 			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%'>" +stuffToPrint+ "</h1>");
@@ -582,6 +586,7 @@ var RunSave = false;
 			w.print();
 			w.close();
 		}
+
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
