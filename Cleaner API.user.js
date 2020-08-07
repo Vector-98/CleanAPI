@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.11
+// @version      1.2.12
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -10,14 +10,14 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @grant        GM_addStyle
-// @grant	 GM_cookie
+// @grant		 GM_cookie
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
 var $ = window.jQuery;
 var preferencesEnabled = false;
 var techName;
-
+var RunSave = false;
 (function() {
 	'use strict';
 	var autoHideDoneLines = getCookie("autoHideDoneLines");
@@ -78,6 +78,7 @@ var techName;
 
 	})
 
+
 	function setAutoHideDoneLines(autoHideRTS){
 		var cookieName = "autoHideDoneLines=" + autoHideRTS;
 		document.cookie = cookieName;
@@ -102,6 +103,19 @@ var techName;
 		}
 		return null;
 	}
+	//
+	//
+	waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
+		if (RunSave) {
+			console.log("SN and Warr save enabled")
+		}else{
+			$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
+			$("body > div.ui-widget-overlay.ui-front").remove()
+			console.log(RunSave+" wait else")
+			console.log("SN and Warr save disabled")
+		}
+	});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+
 
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
@@ -114,23 +128,21 @@ var techName;
 			$("body").append('<iframe width="1" height="1" wmode="transparent" src="https:\/\/www.youtube.com\/embed\/y6120QOlsfU?controls=0&amp;start=30&autoplay=1&mute=0" frameborder="0" allow="autoplay"></iframe>');
 
 		}
+
 		$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
-
-
+		//
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
-		var numberOfSNButtons = 0;
-		var RunSave = false;
-		var numberOfDIButtons = 0;
-		var numberOfTNButtons = 0;
-		var numberOfl4Buttons= 0;
 		var createdButtons = 0;
 		var TotalButtIndex = createdButtons * 2;
+		//var Cont = 25;
+		//var PreCBI = 26;
+		//var CBI = PreCBI - Cont;
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
-		}
+		};
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -139,72 +151,58 @@ var techName;
 				stateOfButtons[value] = true;
 
 			}
-		}
+		};
 
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
-				var label = "Line" + n;
+				var label = "Line " + n;
 				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px; line-height: normal;" > </button>')
 				document.getElementById("insert").innerHTML = label;
-				$("#insert").attr("id", "butt-" + n);
+				$("#insert").attr("id", "butt-" + n);// +"-"+CBI
 				stateOfButtons.push(false);
 				numberOfButtons++;
 				createdButtons++;
-				//console.log(createdButtons)
-				//console.log(TotalButtIndex)
+				/* 				console.log(createdButtons)
+				console.log(TotalButtIndex) */
 				var l4label = $('#snumber-' + n).val().slice(-4);
-				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+n)
-				document.getElementById("Last4").innerHTML = l4label;
+				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
+				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
-				numberOfl4Buttons++;
+				//PreCBI++
+				//console.log(CBI)
 			}
-		}//Create button for each line
+		};//Create button for each line and add last 4 of SN
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
 				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;width: 110%;"></button>').insertAfter("#snumber-" + sn)
 				document.getElementById("insert1").innerHTML = SNlabel;
 				$("#insert1").attr("id", "SN-" + sn);
-				numberOfSNButtons++;
 			}
-		}//Create Save button for each line
+		};//Create Save button for each line
 		for (var di = 25; di > 0; di--) {
 			if($("#diagnosed-by-" + di).prop("type") == "text"){
 				var DIlabel = "Fill Diag Name";
 				var DIbtn = $('<button type="button" class="diagbtn" id="DIinsert" onload="document.innerHTML(DIlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#diagnosed-by-" + di)
 				document.getElementById("DIinsert").innerHTML = DIlabel;
 				$("#DIinsert").attr("id", "DI-" + di);
-				numberOfDIButtons++;
 				console.log("diag name fill made")
 			}
-		}//Create Diag button for each line
+		};//Create Diag button for each line
 		for (var tn = 25; tn > 0; tn--) {
 			if($("#tech-name-" + tn).prop("type") == "text"){
 				var TNlabel = "Fill Tech Name";
 				var TNbtn = $('<button type="button" class="techbtn" id="TNinsert" onload="document.innerHTML(TNlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#tech-name-" + tn)
 				document.getElementById("TNinsert").innerHTML = TNlabel;
 				$("#TNinsert").attr("id", "TN-" + tn);
-				numberOfTNButtons++;
 				console.log("tech name fill made")
 			}
-		}//Create Tech button for each line
-		/* 		for (var l4 = 25; l4 > 0;l4--) {
-			if($("#snumber" + l4).val() == ""){
-				var l4label = $('#snumber-' + l4).val().slice(-4);
-				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+l4)
-				document.getElementById("Last4").innerHTML = l4label;
-				$("#Last4").attr("id", "Last4-L" + l4);
-				numberOfl4Buttons++;
-				console.log("sn on line btn")
-			}
-		}//Create Tech button for each line
-		$('<small id="sm-sn-1" style="display: block; line-height: normal;">  </small>').appendTo("#butt-1")
- 		$('#snumber-5').val().slice(-4)*/
+		};//Create Tech button for each line
 
 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
 			console.log(RunSave)
-		})
+		});
 		$("[id^=SN-]").on("click", function(){
 			if(RunSave){
 				$("[id^=SN-]").text("Disable Pop-up")
@@ -213,7 +211,7 @@ var techName;
 				$("[id^=SN-]").text("Enable Pop-up")
 				$("[id^=SN-]").css("background-color","white")
 			}
-		})
+		});
 		$("[id^=DI-]").click(function() {
 			$(this).next("input").focus();
 			$(this).next("input").attr("value", getCookie("techName")) // canges html value
@@ -254,7 +252,7 @@ var techName;
 					toggle[i];
 				}
 			}
-		}//end of hideAll function
+		};//end of hideAll function
 		function showAll(){
 			for(var i = 1; i < 25; i++){
 				if(stateOfButtons[i]){
@@ -262,15 +260,14 @@ var techName;
 					toggle[i];
 				}
 			}
-		}
-
+		};
 		function singleClick(buttonNumber){
 			var buttonName = "#butt-" + buttonNumber;
 			var buttonNameOn = "#butt-" + buttonNumber + ".on";
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
 			var upperLine = buttonNumber * 2;
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -286,8 +283,7 @@ var techName;
 			function setRandomColor() {
 				$(buttonName).css("background-color", getRandomColor());
 			}
-		}
-
+		};
 		function doubleClick(buttonNumber){
 			var count = 0;
 			for(var i = 1; i < 25; i++){
@@ -303,16 +299,14 @@ var techName;
 				hideAll();
 				singleClick(buttonNumber);
 			}
-
 			if(numberOfButtons == count){
 				showAll();//TESTING
 			}
-
 			if(stateOfButtons[buttonNumber]){
 				hideAll();
 				singleClick(buttonNumber);
 			}
-		}
+		};
 
 		var rawbutt = $("[id^=butt-]").click(function() {
 			rawbutt = this.id;
@@ -329,61 +323,48 @@ var techName;
 
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
-		}); // remove bottom of page header
-		waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
-			if (RunSave) {
-				console.log("SN and Warr save enabled")
-			}else{
-				$("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable").remove()
-				$("body > div.ui-widget-overlay.ui-front").remove()
-				console.log(RunSave+" wait else")
-				console.log("SN and Warr save disabled")
-			}
-		});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
+		}); // remove bottom of page footer
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-		/*
-
 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
 		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 500);
+			}, timeout || 100);
 		});
-		*/
+
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
-		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button> </div>') //Add print BTN
 
 		function fixWarranty(warranty){
 			switch(warranty) {
@@ -442,7 +423,7 @@ var techName;
 				default:
 					return "";
 			}
-		}
+		};
 
 		if(autoHideDoneLines == "yes"){
 			showAll();
@@ -452,49 +433,10 @@ var techName;
 					singleClick(k);
 				}
 			}
-		}
-
-		$('#PrintBtn').click(function(){
-			var w=window.open();
-			var stuffToPrint = $("#sro-number").val().fontsize(7);
-
-			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%'>" +stuffToPrint+ "</h1>");
-			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 80%'>" +stuffToPrint+ "</h2>");
-			w.document.write("Customer: ");
-			w.document.write($("#customer").val());
-			w.document.write("<br> <br>");
-
-			var lenLines = [];
-			var hpLines = [];
-			var acerLines = [];
-			var dellLines = [];
-
-			var lines = [];//array to store arrays of line information.
-			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
-			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
-			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
-
-			for (var i = 1; i < 25; i++) {
-				if(!$("#snumber-" + i).val() == ""){
-					var model = modelsArray[i-1].nextSibling.textContent;
-					var desc = custDesc[i-1].nextSibling.textContent;
-					var warranty = $("#warranty-" + i).val();
-					w.document.write(["Line: " + i + " " + $("#snumber-" + i).val() + " " + warranty + " " + desc]);
-					w.document.write("<br> <br>");
-
-				}
-
-
-
-			}
-			w.print();
-			w.close();
-		});
+		};
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
-
-
 
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
@@ -577,7 +519,7 @@ var techName;
 				}
 			}
 
-		}
+		};
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
@@ -631,7 +573,7 @@ var techName;
 					document.body.removeChild(link);
 				}
 			}
-		}// end of exportToCsv function
+		};// end of exportToCsv function
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		//END OF ALL EXPORT BUTTON CODE
