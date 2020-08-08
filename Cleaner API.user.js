@@ -129,16 +129,26 @@ var RunSave = false;
 
 		}
 
-		$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
+		//$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
 		//
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
 		var createdButtons = 0;
 		var TotalButtIndex = createdButtons * 2;
+		var AllLines2DArray = []; //Stores array of line number and upperline index.
+		var currentUpperLine = 2;
 		//var Cont = 25;
 		//var PreCBI = 26;
 		//var CBI = PreCBI - Cont;
+
+		for(var m = 1; m <= 25; m++){
+			if(!$("#snumber-" + m).val() == ""){//check if line exist
+				AllLines2DArray.push([m,currentUpperLine]);
+				currentUpperLine += 2;
+			}
+
+		}
 
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
@@ -264,7 +274,7 @@ var RunSave = false;
 		}
 
 		function hideAll(){
-			for(var i = 1; i < 25; i++){
+			for(var i = 1; i < 26; i++){
 				if(!stateOfButtons[i]){
 					singleClick(i);
 					toggle[i];
@@ -272,7 +282,7 @@ var RunSave = false;
 			}
 		};//end of hideAll function
 		function showAll(){
-			for(var i = 1; i < 25; i++){
+			for(var i = 1; i < 26; i++){
 				if(stateOfButtons[i]){
 					singleClick(i);
 					toggle[i];
@@ -283,9 +293,17 @@ var RunSave = false;
 			var buttonName = "#butt-" + buttonNumber;
 			var buttonNameOn = "#butt-" + buttonNumber + ".on";
 			var buttonNameNotOn = "#butt-" + buttonNumber + "[class='glob']"; //[class!='on']
-			var upperLine = buttonNumber * 2;
+			var upperLine;
+			var currElement;
+
+			for(var q = 0; q < AllLines2DArray.length; q++){
+				currElement = AllLines2DArray[q];
+				if(currElement[0] == buttonNumber){
+					upperLine = currElement[1];
+				}
+			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -304,7 +322,7 @@ var RunSave = false;
 		};
 		function doubleClick(buttonNumber){
 			var count = 0;
-			for(var i = 1; i < 25; i++){
+			for(var i = 0; i < 25; i++){
 				if(stateOfButtons[i]){
 					count++;
 				}
