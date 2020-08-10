@@ -303,7 +303,7 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
