@@ -163,7 +163,7 @@ var RunSave = false;
 			}
 		};
 
-		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;' id='jumpMenu'></ul>");
+		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;padding-left: 5px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
 
 		for (var n = 25; n > 0; n--) {//Create button for each line
