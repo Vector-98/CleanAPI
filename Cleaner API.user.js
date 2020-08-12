@@ -150,7 +150,6 @@ var RunSave = false;
 
 		}
 
-
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
 		};
