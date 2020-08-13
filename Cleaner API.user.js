@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.15
+// @version      1.2.16
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -82,7 +82,7 @@ var RunSave = false;
 	function setAutoHideDoneLines(autoHideRTS){
 		var cookieName = "autoHideDoneLines=" + autoHideRTS;
 		document.cookie = cookieName;
-		if(autoHideRTS == "yes"){
+		if((autoHideRTS == "yes") || (autoHideRTS == "Yes") || (autoHideRTS == "y") || (autoHideRTS == "Y")){
 			autoHideDoneLines = true;
 		}else{
 			autoHideDoneLines = false;
@@ -302,7 +302,7 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -461,7 +461,7 @@ var RunSave = false;
 			}
 		};
 
-		if(autoHideDoneLines == "yes"){
+		if(autoHideDoneLines){
 			showAll();
 			for(var k = 1; k < 25; k++){
 				var repairBoxName = "#repair-completed-" + k;
