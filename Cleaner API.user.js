@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.17
+// @version      1.2.18
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -302,7 +302,7 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	//#28a745 // removed for random colors
+			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -461,7 +461,7 @@ var RunSave = false;
 			}
 		};
 
-		if(autoHideDoneLines){
+		if(autoHideDoneLines == true){
 			showAll();
 			for(var k = 0; k < 26; k++){
 				var repairBoxName = "#repair-completed-" + k;
@@ -545,7 +545,7 @@ var RunSave = false;
 		});//end of export function
 
 		function autoHideLinesOnStartup(){
-			if(autoHideDoneLines){
+			if(autoHideDoneLines == true){
 				showAll();
 				for(var k = 1; k < 25; k++){
 					var repairBoxName = "#repair-completed-" + k;
@@ -610,7 +610,7 @@ var RunSave = false;
 			if(autoHideDoneLines){
 				var line = this.id;
 				line = line.replace("repair-completed-", "");
-				if(autoHideDoneLines){
+				if(autoHideDoneLines == true){
 					if(document.getElementById(this.id).checked){
 						singleClick(line);
 					}
