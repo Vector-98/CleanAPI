@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.18
+// @version      1.2.19
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
-// @author       Vector, Dylon L
+// @author       Vector, Dylon L, Kevin B
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
@@ -36,6 +36,10 @@ var RunSave = false;
 		var SroLength = $("#sro-number").val().length
 		var SroNum = $("#sro-number").val()
 
+		if(SroLength == 1) {
+			var Pre1 = "SRO000000"
+			$("#sro-number").val(Pre1+$("#sro-number").val())
+		}//end of IF
 		if(SroLength == 2) {
 			var Pre2 = "SRO00000"
 			$("#sro-number").val(Pre2+$("#sro-number").val())
@@ -302,7 +306,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color","#28a745");	//#28a745 // removed for random colors
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
