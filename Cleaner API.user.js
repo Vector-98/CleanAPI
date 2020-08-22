@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.19
+// @version      1.2.20
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -306,9 +306,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			 $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -576,9 +576,13 @@ var RunSave = false;
 		function customPrint(){
 			var w=window.open();
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
+			var PntLoc = $("#shelf-location").val()
 
-			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%'>" +stuffToPrint+ "</h1>");
-			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 80%'>" +stuffToPrint+ "</h2>");
+			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 80%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
+
+			w.document.write("<h1 style='position: absolute; top: 80%; right: 33%;font-family: cursive;font-size: xxx-large;'>Location: " +PntLoc+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 75%;font-family: cursive;font-size: xx-large;'>Location: " +PntLoc+ "</h2>");
 			w.document.write("Customer: ");
 			w.document.write($("#customer").val());
 			w.document.write("<br> <br>");
@@ -600,11 +604,7 @@ var RunSave = false;
 					var warranty = $("#warranty-" + i).val();
 					w.document.write(["Line: " + i + " " + $("#snumber-" + i).val() + " " + warranty + " " + desc]);
 					w.document.write("<br> <br>");
-
 				}
-
-
-
 			}
 			w.print();
 			w.close();
