@@ -588,8 +588,8 @@ var RunSave = false;
 			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 79%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
 
-			w.document.write("<h1 style='position: absolute; top: 80%; right: 33%;font-family: cursive;font-size: xxx-large;'>Location: " +PntLoc+ "</h1>");
-			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 73%;font-family: cursive;font-size: xx-large;'>Location: " +PntLoc+ "</h2>");
+			w.document.write("<h1 style='position: absolute; top: 80%; right: 33%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 73%;font-family: cursive;font-size: xx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h2>");
 			w.document.write("Customer: ");
 			w.document.write($("#customer").val());
 			w.document.write("<br> <br>");
