@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.21
+// @version      1.2.22
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -25,6 +25,7 @@ var RunSave = false;
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
 	$("#masthead").hide()
+	document.getElementById("sro-submit").value="Load SRO";
 
 	$("#get-item").focusout(function() {
 		AutoSro();
@@ -75,7 +76,7 @@ var RunSave = false;
 			var techName = prompt("Tech name:", getCookie("techName"));
 			setTechName(techName);
 
-			var autoHideRTS = prompt("Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
+			var autoHideRTS = prompt("(Experimental feature) - Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
 			setAutoHideDoneLines(autoHideRTS);
 
 		}
