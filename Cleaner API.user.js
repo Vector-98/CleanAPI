@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.22
+// @version      1.2.23
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -207,7 +207,7 @@ var RunSave = false;
 		let jumpLinks = ('<li><a id="placeholder">Jump Menu</a></li>');
 		let jumpLinkID = "jumpLink"+(1);
 		$("#placeholder").attr("id",jumpLinkID);
-		console.log(n);
+		//console.log(n);
 		$("#"+jumpLinkID).attr("href","#paid-" + (1));
 		$("#jumpMenu").prepend(jumpLinks);
 
@@ -314,9 +314,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
-			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			//$(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -502,6 +502,7 @@ var RunSave = false;
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
+																	 
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for (var i = 1; i < 25; i++) {
@@ -586,11 +587,11 @@ var RunSave = false;
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 			var PntLoc = $("#shelf-location").val()
 
-			w.document.write("<h1 style='position: absolute; top: 90%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
-			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 79%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
+			w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 77%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
 
-			w.document.write("<h1 style='position: absolute; top: 80%; right: 33%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
-			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 73%;font-family: cursive;font-size: xx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h2>");
+			w.document.write("<h1 style='position: absolute; top: 83%; right: 33%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
+			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 70%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h2>");
 			w.document.write("Customer: ");
 			w.document.write($("#customer").val());
 			w.document.write("<br> <br>");
@@ -600,8 +601,10 @@ var RunSave = false;
 			var acerLines = [];
 			var dellLines = [];
 
+
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
+			//var modelsArray = $('.savebtn').siblings("br:nth-child(4)")												  
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
 
@@ -612,6 +615,7 @@ var RunSave = false;
 					var warranty = $("#warranty-" + i).val();
 					w.document.write(["Line: " + i + " " + $("#snumber-" + i).val() + " " + warranty + " " + desc]);
 					w.document.write("<br> <br>");
+						 
 				}
 			}
 			w.print();
