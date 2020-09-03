@@ -613,7 +613,7 @@ var RunSave = false;
 					var model = modelsArray[i-1].nextSibling.textContent;
 					var desc = custDesc[i-1].nextSibling.textContent;
 					var warranty = $("#warranty-" + i).val();
-					w.document.write(["Line: " + i + " " + $("#snumber-" + i).val() + " " + warranty + " " + desc]);
+					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
 					w.document.write("<br> <br>");
 						 
 				}
