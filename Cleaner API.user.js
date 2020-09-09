@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.25
+// @version      1.2.26
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -372,42 +372,42 @@ var RunSave = false;
 		}); // remove bottom of page footer
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+		/*$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
 			}, timeout || 100);
-		});
-		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
+		});*/
+		/*$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
 			}, timeout || 100);
-		});
-		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
+		});*/
+		/*$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
 			}, timeout || 100);
-		});
-		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
+		});*/
+		/*$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
 			}, timeout || 100);
-		});
-		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
+		});*/
+		/*$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
 			}, timeout || 100);
-		});
-		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
+		});*/
+		/*$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 100);
-		});
+		});*/
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
