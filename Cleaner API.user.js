@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.23
+// @version      1.2.24
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -204,7 +204,7 @@ var RunSave = false;
 
 		};//Create button for each line and add last 4 of SN
 
-		let jumpLinks = ('<li><a id="placeholder">Jump Menu</a></li>');
+		let jumpLinks = ('<li><a id="placeholder"></a></li>');
 		let jumpLinkID = "jumpLink"+(1);
 		$("#placeholder").attr("id",jumpLinkID);
 		//console.log(n);
@@ -314,9 +314,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
-			//$(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
