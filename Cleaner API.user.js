@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.24
+// @version      1.2.25
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -83,28 +83,27 @@ var RunSave = false;
 
 	})
 
-
 	function setAutoHideDoneLines(autoHideRTS) {
-	    var CookieDate = new Date;
-	    CookieDate.setFullYear(CookieDate.getFullYear() + 1);
-	    var cookieName = "autoHideDoneLines=" + autoHideRTS + "; expires=" + CookieDate.toUTCString() + ";";
-	    // alert("autoHideDoneLines:\n\n" + cookieName); // Debugging
-	    document.cookie = cookieName;
-	    if ((autoHideRTS == "yes") || (autoHideRTS == "Yes") || (autoHideRTS == "y") || (autoHideRTS == "Y")) {
-	        autoHideDoneLines = true;
-	    } else {
-	        autoHideDoneLines = false;
-	    }
+		var CookieDate = new Date;
+		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
+		var cookieName = "autoHideDoneLines=" + autoHideRTS + "; expires=" + CookieDate.toUTCString() + ";";
+		// alert("autoHideDoneLines:\n\n" + cookieName); // Debugging
+		document.cookie = cookieName;
+		if ((autoHideRTS == "yes") || (autoHideRTS == "Yes") || (autoHideRTS == "y") || (autoHideRTS == "Y")) {
+			autoHideDoneLines = true;
+		} else {
+			autoHideDoneLines = false;
+		}
 	}
 
 	function setTechName(techName) {
-	    var CookieDate = new Date;
-	    CookieDate.setFullYear(CookieDate.getFullYear() + 1);
-	    var cookieName = "techName=" + techName + "; expires=" + CookieDate.toUTCString() + ";";
-	    // alert("techName:\n\n" + cookieName); // Debugging
-	    document.cookie = cookieName;
+		var CookieDate = new Date;
+		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
+		var cookieName = "techName=" + techName + "; expires=" + CookieDate.toUTCString() + ";";
+		// alert("techName:\n\n" + cookieName); // Debugging
+		document.cookie = cookieName;
 	}
-	
+
 	function getCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -150,9 +149,8 @@ var RunSave = false;
 		var TotalButtIndex = createdButtons * 2;
 		var AllLines2DArray = []; //Stores array of line number and upperline index.
 		var currentUpperLine = 2;
-		//var Cont = 25;
-		//var PreCBI = 26;
-		//var CBI = PreCBI - Cont;
+		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
+		$("#full-container").append(jumpMenu);
 
 		for(var m = 1; m <= 25; m++){
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
@@ -175,9 +173,6 @@ var RunSave = false;
 			}
 		};
 
-		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:130px;padding-left: 5px;' id='jumpMenu'></ul>");
-		$("#full-container").append(jumpMenu);
-
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line " + n;
@@ -187,30 +182,26 @@ var RunSave = false;
 				stateOfButtons.push(false);
 				numberOfButtons++;
 				createdButtons++;
-				/* 				console.log(createdButtons)
-				console.log(TotalButtIndex) */
-				var l4label = $('#snumber-' + n).val().slice(-4);
+				var l4label;
+
+				if($("#snumber-" + n).val().length <= 11){
+					l4label = $('#snumber-' + n).val().slice(-4);
+				}else{
+					l4label = $('#snumber-' + n).val().slice(14,18);
+				}
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
 				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
+
+				// jump menu trash
 				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
 				let jumpLinkID = "jumpLink"+(n+1);
 				$("#placeholder").attr("id",jumpLinkID);
 				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
 				$("#jumpMenu").prepend(jumpLinks);
-				//PreCBI++
-				//console.log(CBI)
 			}
 
 		};//Create button for each line and add last 4 of SN
-
-		let jumpLinks = ('<li><a id="placeholder"></a></li>');
-		let jumpLinkID = "jumpLink"+(1);
-		$("#placeholder").attr("id",jumpLinkID);
-		//console.log(n);
-		$("#"+jumpLinkID).attr("href","#paid-" + (1));
-		$("#jumpMenu").prepend(jumpLinks);
-
 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
@@ -265,6 +256,12 @@ var RunSave = false;
 			$(this).next("input").blur()// should make sure it saves
 		});//name insert function for Tech Name
 
+		let jumpLinks = ('<li><a id="placeholder"></a></li>');
+		let jumpLinkID = "jumpLink"+(1);
+		$("#placeholder").attr("id",jumpLinkID);
+		$("#"+jumpLinkID).attr("href","#paid-" + (1));
+		$("#jumpMenu").prepend(jumpLinks);
+
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
 				var clicks = 0, self = this;
@@ -314,9 +311,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
-			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			//$(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
@@ -502,7 +499,6 @@ var RunSave = false;
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
-																	 
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for (var i = 1; i < 25; i++) {
@@ -575,6 +571,7 @@ var RunSave = false;
 		jQuery(document).bind("keyup keydown", function(e){
 			if(e.ctrlKey && e.keyCode == 80){
 				customPrint();
+				console.log("ctrl+p pressed")
 			}
 		});
 
@@ -604,7 +601,7 @@ var RunSave = false;
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
-			//var modelsArray = $('.savebtn').siblings("br:nth-child(4)")												  
+			//var modelsArray = $('.savebtn').siblings("br:nth-child(4)")
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
 
@@ -615,7 +612,7 @@ var RunSave = false;
 					var warranty = $("#warranty-" + i).val();
 					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
 					w.document.write("<br> <br>");
-						 
+
 				}
 			}
 			w.print();
