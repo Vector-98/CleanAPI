@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.26
+// @version      1.2.27
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -21,6 +21,7 @@ var RunSave = false;
 (function() {
 	'use strict';
 	var autoHideDoneLines = getCookie("autoHideDoneLines");
+	var CheckEm = getCookie("CheckEm");
 
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
@@ -69,8 +70,12 @@ var RunSave = false;
 	if(getCookie("autoHideDoneLines") == "null" || getCookie("autoHideDoneLines") == ""){
 		setAutoHideDoneLines("no");
 	}
+	if(getCookie("CheckEm") == "null" || getCookie("CheckEm") == ""){
+		CheckEm("no");
+	}
 
 	$("#main").prepend('<button type="button" class="glob" id="preferences" style= "background-color: white;position: absolute;top: 0px;right: 0px;margin: 10px;" >Preferences</button>');
+
 	$('#preferences').click(function(){
 		if(preferencesEnabled){
 			var techName = prompt("Tech name:", getCookie("techName"));
@@ -79,8 +84,9 @@ var RunSave = false;
 			var autoHideRTS = prompt("(Experimental feature) - Auto hide done lines? (yes or no):", getCookie("autoHideDoneLines"));
 			setAutoHideDoneLines(autoHideRTS);
 
+			var CheckEm = prompt("(Experimental feature) - Generate Checksum of page? (yes or no):", getCookie("CheckEm"));
+			setCheckEm(CheckEm);
 		}
-
 	})
 
 	function setAutoHideDoneLines(autoHideRTS) {
@@ -104,6 +110,18 @@ var RunSave = false;
 		document.cookie = cookieName;
 	}
 
+	function setCheckEm(CheckEm) {
+		var CookieDate = new Date;
+		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
+		var cookieName = "CheckEm=" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
+		document.cookie = cookieName;
+		if ((CheckEm == "yes") || (CheckEm == "Yes") || (CheckEm == "y") || (CheckEm == "Y")) {
+			CheckEm = true;
+		} else {
+			CheckEm = false;
+		}
+	}
+
 	function getCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -114,8 +132,7 @@ var RunSave = false;
 		}
 		return null;
 	}
-	//
-	//
+
 	waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
 		if (RunSave) {
 			console.log("SN and Warr save enabled")
@@ -126,7 +143,6 @@ var RunSave = false;
 			console.log("SN and Warr save disabled")
 		}
 	});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-
 
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
@@ -141,7 +157,7 @@ var RunSave = false;
 		}
 
 		//$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
-		//
+
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
@@ -158,7 +174,7 @@ var RunSave = false;
 				currentUpperLine += 2;
 			}
 
-		}
+		}// part of 2d array for line numbers
 
 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
@@ -372,46 +388,47 @@ var RunSave = false;
 		}); // remove bottom of page footer
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-		/*$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
 			}, timeout || 100);
-		});*/
-		/*$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
+		});
+		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
 			setTimeout(function(){
 				$(".opers").attr("disabled", false);
 				console.log("Op Box Disable Blocked")
 			}, timeout || 100);
-		});*/
-		/*$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
+		});
+		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
 			setTimeout(function(){
 				$(".diagnosed").attr("disabled", false);
 				console.log("Diag Box Disable Blocked")
 			}, timeout || 100);
-		});*/
-		/*$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
+		});
+		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
 			setTimeout(function(){
 				$(".repair-completed").attr("disabled", false);
 				console.log("Done Box Disable Blocked")
 			}, timeout || 100);
-		});*/
-		/*$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
+		});
+		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
 			setTimeout(function(){
 				$(".opers-checked").attr("disabled", false);
 				console.log("opers-checked Box Disable Blocked")
 			}, timeout || 100);
-		});*/
-		/*$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
+		});
+		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
 			setTimeout(function(){
 				$(".res-select").attr("disabled", false);
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 100);
-		});*/
+		}); */
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
+
 
 		function fixWarranty(warranty){
 			switch(warranty) {
@@ -481,6 +498,27 @@ var RunSave = false;
 				}
 			}
 		};
+		if(CheckEm == "yes"){
+			console.log("check em true")
+			$("#EXP").append('<button type="button" class="glob" id="Checksum" style="background-color: white; border-radius: 8px" >Checksum Gen</button>')
+
+			String.prototype.hashCode = function(){
+				var hash = 0, i, char;
+				if (this.length == 0) return hash;
+				for (i = 0; i < this.length; i++) {
+					char = this.charCodeAt(i);
+					hash = ((hash<<5)-hash)+char;
+					hash = hash & hash; // Convert to 32bit integer
+				}
+				return hash;
+			};
+			var fullPage = $("#full-container").prop('outerHTML')
+
+			$('#Checksum').on("click",function(){
+				alert("Reload page and double check that the code matches code: "+fullPage.hashCode())
+				console.log(fullPage.hashCode())
+			})
+		};// checksum goodies
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
@@ -574,7 +612,6 @@ var RunSave = false;
 				console.log("ctrl+p pressed")
 			}
 		});
-
 		$('#PrintBtn').click(function(){
 			customPrint();
 		});
@@ -598,10 +635,8 @@ var RunSave = false;
 			var acerLines = [];
 			var dellLines = [];
 
-
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
-			//var modelsArray = $('.savebtn').siblings("br:nth-child(4)")
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
 
@@ -616,9 +651,8 @@ var RunSave = false;
 				}
 			}
 			w.print();
-			w.close();
+			//w.close();
 		}
-
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
