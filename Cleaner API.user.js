@@ -14,6 +14,7 @@
 // @grant        GM_log(Script is loaded and 69% chance of working)
 /* globals jQuery, $, waitForKeyElements */
 // ==/UserScript==
+
 var $ = window.jQuery;
 var preferencesEnabled = false;
 var techName;
@@ -22,6 +23,7 @@ var RunSave = false;
 	'use strict';
 	var autoHideDoneLines = getCookie("autoHideDoneLines");
 	var CheckEm = getCookie("CheckEm");
+	var Checked = getCookie('Checked');
 
 	$(".flex_layout_row.layout_2_across.bgnone.bottom-call-action.container_widewidth").hide()
 	$(".footer").hide()
@@ -113,13 +115,31 @@ var RunSave = false;
 	function setCheckEm(CheckEm) {
 		var CookieDate = new Date;
 		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
-		var cookieName = "CheckEm=" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
+		var cookieName = "CheckEm" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
 		document.cookie = cookieName;
 		if ((CheckEm == "yes") || (CheckEm == "Yes") || (CheckEm == "y") || (CheckEm == "Y")) {
 			CheckEm = true;
 		} else {
 			CheckEm = false;
 		}
+	}
+
+	function setChecked(Checked) {
+		String.prototype.hashCode = function(){
+			var hash = 0, i, char;
+			if (this.length == 0) return hash;
+			for (i = 0; i < this.length; i++) {
+				char = this.charCodeAt(i);
+				hash = ((hash<<5)-hash)+char;
+				hash = hash & hash; // Convert to 32bit integer
+			}
+			return hash;
+		};
+		var CookieDate = new Date;
+		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
+		var cookieName = "Checked" + Checked + "; expires=" + CookieDate.toUTCString() + ";";
+		document.cookie = cookieName;
+		Checked = $("#full-container").prop('outerHTML').hashCode();
 	}
 
 	function getCookie(name) {
@@ -162,7 +182,7 @@ var RunSave = false;
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
 		var createdButtons = 0;
-		var TotalButtIndex = createdButtons * 2;
+		//var TotalButtIndex = createdButtons * 2;
 		var AllLines2DArray = []; //Stores array of line number and upperline index.
 		var currentUpperLine = 2;
 		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
@@ -172,13 +192,14 @@ var RunSave = false;
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
 				AllLines2DArray.push([m,currentUpperLine]);
 				currentUpperLine += 2;
+				//console.log(AllLines2DArray)
 			}
 
 		}// part of 2d array for line numbers
 
-		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
+		/* 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
-		};
+		}; */
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -258,18 +279,26 @@ var RunSave = false;
 				$("[id^=SN-]").css("background-color","white")
 			}
 		});
-		$("[id^=DI-]").click(function() {
-			$(this).next("input").focus();
-			$(this).next("input").attr("value", getCookie("techName")) // canges html value
-			$(this).next("input").val(getCookie("techName")) // updates the text in box
-			$(this).next("input").blur()// should make sure it saves
+		$("[id^=DI-]").on('click', function(){
+			if($("[id^=diagnosed-by-]").is(':disabled') === true){
+				console.log("Stoped name fill ")
+			}else{
+				$(this).next("input").focus();
+				$(this).next("input").attr("value", getCookie("techName")) // canges html value
+				$(this).next("input").val(getCookie("techName")) // updates the text in box
+				$(this).next("input").blur()// should make sure it saves
+			}
 
 		});//name insert function for Diag Name
-		$("[id^=TN-]").click(function() {
-			$(this).next("input").focus();
-			$(this).next("input").attr("value", getCookie("techName")) // canges html value
-			$(this).next("input").val(getCookie("techName")) // updates the text in box
-			$(this).next("input").blur()// should make sure it saves
+		$("[id^=TN-]").on('click', function(){
+			if($("[id^=tech-name-]").is(':disabled') === true){
+				console.log("Stoped name fill ")
+			}else{
+				$(this).next("input").focus();
+				$(this).next("input").attr("value", getCookie("techName")) // canges html value
+				$(this).next("input").val(getCookie("techName")) // updates the text in box
+				$(this).next("input").blur()// should make sure it saves
+			}
 		});//name insert function for Tech Name
 
 		let jumpLinks = ('<li><a id="placeholder"></a></li>');
@@ -388,7 +417,7 @@ var RunSave = false;
 		}); // remove bottom of page footer
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
-/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
+		/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
 			setTimeout(function(){
 				$('.res').attr("disabled", false);
 				console.log("Res Box Disable Blocked")
@@ -458,6 +487,10 @@ var RunSave = false;
 					return "MFR-Base";
 				case "LEN EXTBASE ONLY":
 					return "MFR-Base";
+				case "LEN BASE + LEN EXT BASE":
+					return "MFR-Base";
+				case "LEN BASE + LEN EXTBASE":
+					return "MFR-Base";
 				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
 					return "MFR-Full";
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
@@ -476,8 +509,6 @@ var RunSave = false;
 					return "MFR-Base";
 				case "ACER ADP":
 					return "MFR-Base";
-				case "LEN BASE + LEN EXTBASE":
-					return "MFR-Base";
 				case "DELL BASE":
 					return "MFR-Base";
 				case "DELL BASE ONLY":
@@ -485,7 +516,7 @@ var RunSave = false;
 				case "SFW ADP ONLY":
 					return "Safeware";
 				default:
-					return "";
+					return "Missing";
 			}
 		};
 
@@ -498,9 +529,11 @@ var RunSave = false;
 				}
 			}
 		};
+
 		if(CheckEm == "yes"){
 			console.log("check em true")
 			$("#EXP").append('<button type="button" class="glob" id="Checksum" style="background-color: white; border-radius: 8px" >Checksum Gen</button>')
+			console.log("last page checksum   " + Checked)
 
 			String.prototype.hashCode = function(){
 				var hash = 0, i, char;
@@ -515,8 +548,14 @@ var RunSave = false;
 			var fullPage = $("#full-container").prop('outerHTML')
 
 			$('#Checksum').on("click",function(){
-				alert("Reload page and double check that the code matches code: "+fullPage.hashCode())
 				console.log(fullPage.hashCode())
+				var hash = fullPage.hashCode()
+				var opens = prompt("Copy this code: "+fullPage.hashCode()+"\nPaste copied code after ")
+				if(hash == opens){
+					alert("Checksum Matched")
+				}else{
+					alert("Checksum Does not match\nDouble check your fields and reloading the SRO page")
+				}
 			})
 		};// checksum goodies
 
@@ -534,18 +573,24 @@ var RunSave = false;
 			var hpLines = [];
 			var acerLines = [];
 			var dellLines = [];
+			//var modtes = $("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)").toArray()
+
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
+			//console.log("modtest > "+modtes+ " mod len>>"+modtes.length)
+
 			for (var i = 1; i < 25; i++) {
 				if(!$("#snumber-" + i).val() == ""){
 					var model = modelsArray[i-1].nextSibling.textContent;
+					//var model = modtes.get([i-1])
 					var modelTrim;
 
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
+					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
 
 
@@ -555,6 +600,18 @@ var RunSave = false;
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
+					if (model.includes("HP-PBK")) {
+						warrantyFixed = fixWarranty(warranty);
+						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
+						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+
+					}
+					/* 					if (model.includes("HP-")) {
+						warrantyFixed = fixWarranty(warranty);
+						modelTrim = model.replace('Model(Item) : HP-', '');
+						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+
+					} */
 					if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
@@ -609,7 +666,7 @@ var RunSave = false;
 		jQuery(document).bind("keyup keydown", function(e){
 			if(e.ctrlKey && e.keyCode == 80){
 				customPrint();
-				console.log("ctrl+p pressed")
+				//console.log("ctrl+p pressed")
 			}
 		});
 		$('#PrintBtn').click(function(){
