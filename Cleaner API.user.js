@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.28
+// @version      1.2.3
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -469,6 +469,8 @@ var RunSave = false;
 					return "FF-Full";
 				case "FF BASE":
 					return "FF-Base";
+				case "FF BASE + FF EXT BASE":
+					return "FF-Base";
 				case "PAID":
 					return "Paid";
 				case "Paid":
@@ -552,9 +554,9 @@ var RunSave = false;
 				var hash = fullPage.hashCode()
 				var opens = prompt("Copy this code: "+fullPage.hashCode()+"\nPaste copied code after ")
 				if(hash == opens){
-					alert("Checksum Matched")
+					prompt("Checksum Matched")
 				}else{
-					alert("Checksum Does not match\nDouble check your fields and reloading the SRO page")
+					prompt("Checksum Does not match\nDouble check your fields and reloading the SRO page")
 				}
 			})
 		};// checksum goodies
