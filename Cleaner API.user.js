@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.30
+// @version      1.2.35
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -589,23 +589,25 @@ var RunSave = false;
 					var model = modelsArray[i-1].nextSibling.textContent;
 					//var model = modtes.get([i-1])
 					var modelTrim;
-
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
+					var location = $("#shelf-location").val();
 					var diagNotes = $("#diagnosed-notes-" + i).val();
+					//var CsvLines = [today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]
 					var warrantyFixed;
+
 
 
 					if (model.includes("HP-CBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
 					if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
 					/* 					if (model.includes("HP-")) {
@@ -617,19 +619,19 @@ var RunSave = false;
 					if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
-						lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
 					if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
-						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
 					if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
 
