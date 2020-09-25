@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.35
+// @version      1.2.40
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -115,7 +115,7 @@ var RunSave = false;
 	function setCheckEm(CheckEm) {
 		var CookieDate = new Date;
 		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
-		var cookieName = "CheckEm" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
+		var cookieName = "CheckEm=" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
 		document.cookie = cookieName;
 		if ((CheckEm == "yes") || (CheckEm == "Yes") || (CheckEm == "y") || (CheckEm == "Y")) {
 			CheckEm = true;
@@ -356,9 +356,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
-			//$(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
