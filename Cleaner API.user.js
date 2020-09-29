@@ -474,10 +474,12 @@ var RunSave = false;
 					return "FF-Base";
 				case "FF BASE + FF EXT BASE":
 					return "FF-Base";
+
 				case "PAID":
 					return "Paid";
 				case "Paid":
 					return "Paid";
+
 				case "HP BASE":
 					return "MFR-Base";
 				case "HP BASE ONLY":
@@ -486,6 +488,9 @@ var RunSave = false;
 					return "MFR-Base";
 				case "HP BASE + HP EXT BASE":
 					return "MFR-Base";
+				case "HP BASE + HP ADP":
+					return "MFR-Full";
+
 				case "LEN BASE":
 					return "MFR-Base";
 				case "LEN EXT BASE":
@@ -508,6 +513,7 @@ var RunSave = false;
 					return "MFR-ADP";
 				case "LEN ADP ONLY":
 					return "MFR-ADP";
+
 				case "ACER BASE":
 					return "MFR-Base";
 				case "ACER BASE ONLY":
@@ -518,8 +524,10 @@ var RunSave = false;
 					return "MFR-Base";
 				case "DELL BASE ONLY":
 					return "MFR-Base";
+
 				case "SFW ADP ONLY":
 					return "Safeware";
+
 				default:
 					return "Missing";
 			}
