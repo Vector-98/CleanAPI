@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.40
+// @version      1.2.45
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -165,7 +165,10 @@ var RunSave = false;
 	});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
 
 	waitForKeyElements("#full-container", function () {
-		$("[id^=snumber-]").css({"width": "110%","float":"left"}) // serial number width fix
+		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
+		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
+		$("[id^=customer]").css({"width": "145%","float":"left"}) // Customer width fix
+		
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
