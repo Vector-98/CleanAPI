@@ -474,6 +474,8 @@ var RunSave = false;
 					return "FF-Base";
 				case "FF BASE + FF EXT BASE":
 					return "FF-Base";
+				case "FF EXT BASE + FF ADP":
+					return "FF-Full";
 
 				case "PAID":
 					return "Paid";
@@ -515,6 +517,8 @@ var RunSave = false;
 					return "MFR-ADP";
 				case "LEN ADP ONLY":
 					return "MFR-ADP";
+				case "LEN ADP + LEN BASE + LEN EXTBASE":
+-					return "MFR-Full";
 
 				case "ACER BASE":
 					return "MFR-Base";
