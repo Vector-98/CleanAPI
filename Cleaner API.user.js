@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.45
+// @version      1.2.50
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -502,6 +502,8 @@ var RunSave = false;
 				case "LEN BASE + LEN EXTBASE":
 					return "MFR-Base";
 				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
+					return "MFR-Full";
+				case "LEN ADP + LEN BASE + LEN EXTBASE":
 					return "MFR-Full";
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
 					return "MFR-Full";
