@@ -518,7 +518,7 @@ var RunSave = false;
 				case "LEN ADP ONLY":
 					return "MFR-ADP";
 				case "LEN ADP + LEN BASE + LEN EXTBASE":
--					return "MFR-Full";
+					return "MFR-Full";
 
 				case "ACER BASE":
 					return "MFR-Base";
