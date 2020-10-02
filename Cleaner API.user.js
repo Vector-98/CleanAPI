@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.51
+// @version      1.2.52
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -97,7 +97,7 @@ var RunSave = false;
 		var cookieName = "autoHideDoneLines=" + autoHideRTS + "; expires=" + CookieDate.toUTCString() + ";";
 		// alert("autoHideDoneLines:\n\n" + cookieName); // Debugging
 		document.cookie = cookieName;
-		if ((autoHideRTS == "yes") || (autoHideRTS == "Yes") || (autoHideRTS == "y") || (autoHideRTS == "Y")) {
+		if((autoHideRTS.toLowerCase() == "yes") || (autoHideRTS.toLowerCase() == "y")){
 			autoHideDoneLines = true;
 		} else {
 			autoHideDoneLines = false;
@@ -117,7 +117,7 @@ var RunSave = false;
 		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
 		var cookieName = "CheckEm=" + CheckEm + "; expires=" + CookieDate.toUTCString() + ";";
 		document.cookie = cookieName;
-		if ((CheckEm == "yes") || (CheckEm == "Yes") || (CheckEm == "y") || (CheckEm == "Y")) {
+		if((CheckEm.toLowerCase() == "yes") || (CheckEm.toLowerCase() == "y")){
 			CheckEm = true;
 		} else {
 			CheckEm = false;
@@ -363,8 +363,8 @@ var RunSave = false;
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
 			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
-			$("#full-container > div:eq("+upperLine+")").toggle(250,"linear")
-			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(250,"linear")
+			$("#full-container > div:eq("+upperLine+")").toggle(125,"linear")
+			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(125,"linear")
 			toggle(buttonNumber);
 			function getRandomColor() {
 				var letters = '789ABCD';// 0123456EF cut letters for more light colors
@@ -461,79 +461,61 @@ var RunSave = false;
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
 
-
 		function fixWarranty(warranty){
 			switch(warranty) {
-				case "FF ADP ONLY":
-					return "FF-ADP";
-				case "FF ADP":
-					return "FF-ADP";
-				case "FF BASE + FF ADP":
-					return "FF-Full";
-				case "FF BASE":
-					return "FF-Base";
-				case "FF BASE + FF EXT BASE":
-					return "FF-Base";
-				case "FF EXT BASE + FF ADP":
-					return "FF-Full";
-
 				case "PAID":
-					return "Paid";
 				case "Paid":
 					return "Paid";
-
-				case "HP BASE":
-					return "MFR-Base";
-				case "HP BASE ONLY":
-					return "MFR-Base";
-				case "HP EXT BASE ONLY":
-					return "MFR-Base";
-				case "HP BASE + HP EXT BASE":
-					return "MFR-Base";
-				case "HP BASE + HP ADP":
-					return "MFR-Full";
-
-				case "LEN BASE":
-					return "MFR-Base";
-				case "LEN EXT BASE":
-					return "MFR-Base";
-				case "LEN EXTBASE ONLY":
-					return "MFR-Base";
-				case "LEN BASE + LEN EXT BASE":
-					return "MFR-Base";
-				case "LEN BASE + LEN EXTBASE":
-					return "MFR-Base";
-				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
-					return "MFR-Full";
-				case "LEN ADP + LEN BASE + LEN EXTBASE":
-					return "MFR-Full";
-				case "LEN BASE + LEN ADP + LEN EXTBASE":
-					return "MFR-Full";
-				case "LEN EXT BASE ONLY":
-					return "MFR-Base";
-				case "LEN BASE + LEN ADP":
-					return "MFR-Full";
+				
+				case "FF BASE":
+				case "FF BASE + FF EXT BASE":
+					return "FF-Base";
+				
+				case "FF ADP":
+				case "FF ADP ONLY":
+					return "FF-ADP";
+					
 				case "LEN ADP":
-					return "MFR-ADP";
 				case "LEN ADP ONLY":
-					return "MFR-ADP";
-				case "LEN ADP + LEN BASE + LEN EXTBASE":
-					return "MFR-Full";
-
-				case "ACER BASE":
-					return "MFR-Base";
-				case "ACER BASE ONLY":
-					return "MFR-Base";
 				case "ACER ADP":
-					return "MFR-Base";
+					return "MFR-ADP";
+					
+				case "FF BASE + FF ADP":
+				case "FF EXT BASE + FF ADP":
+					return "FF-Full";
+					
+				// Start of Lenovo Base warranties
+				case "LEN BASE":
+				case "LEN EXT BASE":
+				case "LEN EXT BASE ONLY":
+				case "LEN EXTBASE ONLY":
+				case "LEN BASE + LEN EXT BASE":
+				case "LEN BASE + LEN EXTBASE":
+				// Start of HP Base warranties
+				case "HP BASE":
+				case "HP BASE ONLY":
+				case "HP EXT BASE ONLY":
+				case "HP BASE + HP EXT BASE":
+				// Start of Acer Base warranties
+				case "ACER BASE":
+				case "ACER BASE ONLY":
+				// Start of Dell Base warranties
 				case "DELL BASE":
-					return "MFR-Base";
 				case "DELL BASE ONLY":
 					return "MFR-Base";
-
+				// Start of Lenovo Full warranties
+				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
+				case "LEN ADP + LEN BASE + LEN EXTBASE":
+				case "LEN BASE + LEN ADP + LEN EXTBASE":
+				case "LEN BASE + LEN ADP":
+				case "LEN EXT BASE + LEN ADP ONLY":
+				// Start of HP Full warranties
+				case "HP BASE + HP ADP":
+					return "MFR-Full";
+					
 				case "SFW ADP ONLY":
 					return "Safeware";
-
+					
 				default:
 					return "Missing";
 			}
