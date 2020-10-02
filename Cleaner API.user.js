@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.52
+// @version      1.2.53
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -562,6 +562,9 @@ var RunSave = false;
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
+			if(techName = "Tony"){
+				techName = "Vector"
+			};
 
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
@@ -680,6 +683,10 @@ var RunSave = false;
 			var w=window.open();
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 			var PntLoc = $("#shelf-location").val()
+
+			if($("#shelf-location").is(":empty") == true){
+				PntLoc = "__"
+			   }
 
 			w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 77%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
