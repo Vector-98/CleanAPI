@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.53
+// @version      1.2.54
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -562,9 +562,9 @@ var RunSave = false;
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
-			if(techName = "Tony"){
-				techName = "Vector"
-			};
+			// if(techName = "Tony"){
+				// techName = "Vector"
+			// };
 
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
