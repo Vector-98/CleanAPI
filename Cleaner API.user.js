@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.54
+// @version      1.2.55
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -168,7 +168,7 @@ var RunSave = false;
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
 		$("[id^=customer]").css({"width": "145%","float":"left"}) // Customer width fix
-		
+
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
@@ -466,56 +466,54 @@ var RunSave = false;
 				case "PAID":
 				case "Paid":
 					return "Paid";
-				
+
 				case "FF BASE":
 				case "FF BASE + FF EXT BASE":
 					return "FF-Base";
-				
+
 				case "FF ADP":
 				case "FF ADP ONLY":
 					return "FF-ADP";
-					
+
 				case "LEN ADP":
 				case "LEN ADP ONLY":
 				case "ACER ADP":
 					return "MFR-ADP";
-					
+
 				case "FF BASE + FF ADP":
 				case "FF EXT BASE + FF ADP":
 					return "FF-Full";
-					
-				// Start of Lenovo Base warranties
-				case "LEN BASE":
+
+
+				case "LEN BASE"://-----------------------// Start of Lenovo Base warranties
 				case "LEN EXT BASE":
 				case "LEN EXT BASE ONLY":
 				case "LEN EXTBASE ONLY":
 				case "LEN BASE + LEN EXT BASE":
 				case "LEN BASE + LEN EXTBASE":
-				// Start of HP Base warranties
-				case "HP BASE":
+				case "HP BASE":	//-----------------------// Start of HP Base warranties
 				case "HP BASE ONLY":
 				case "HP EXT BASE ONLY":
 				case "HP BASE + HP EXT BASE":
-				// Start of Acer Base warranties
-				case "ACER BASE":
+				case "ACER BASE"://----------------------// Start of Acer Base warranties
 				case "ACER BASE ONLY":
-				// Start of Dell Base warranties
-				case "DELL BASE":
+				case "DELL BASE"://----------------------// Start of Dell Base warranties
+					return "MFR-Base";
+
 				case "DELL BASE ONLY":
 					return "MFR-Base";
-				// Start of Lenovo Full warranties
-				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage
+
+				case "LEN BASE + LEN EXTBASE + LEN ADP": //god damn thats alot of coverage	// Start of Lenovo Full warranties
 				case "LEN ADP + LEN BASE + LEN EXTBASE":
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
 				case "LEN BASE + LEN ADP":
 				case "LEN EXT BASE + LEN ADP ONLY":
-				// Start of HP Full warranties
-				case "HP BASE + HP ADP":
+				case "HP BASE + HP ADP"://---------------// Start of HP Full warranties
 					return "MFR-Full";
-					
+
 				case "SFW ADP ONLY":
 					return "Safeware";
-					
+
 				default:
 					return "Missing";
 			}
@@ -562,9 +560,11 @@ var RunSave = false;
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
-			// if(techName = "Tony"){
-				// techName = "Vector"
-			// };
+			if(techName === "Tony"){
+				techName = "Vector"
+			}else{
+				techName = getCookie("techName");
+			};
 
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
