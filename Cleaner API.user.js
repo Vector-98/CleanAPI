@@ -617,12 +617,12 @@ var RunSave = false;
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
-					/* 					if (model.includes("HP-")) {
+					if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : HP-', '');
+						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					} */
+					}
 					if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
