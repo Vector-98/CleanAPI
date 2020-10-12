@@ -641,6 +641,12 @@ var RunSave = false;
 						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
+					if (model.includes("GEN-REPAIR")) {
+						warrantyFixed = fixWarranty(warranty);
+						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
+						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+
+					}
 
 				}
 			}
