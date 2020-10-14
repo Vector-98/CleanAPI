@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.55
+// @version      1.2.56
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -418,6 +418,10 @@ var RunSave = false;
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
 		}); // remove bottom of page footer
+		waitForKeyElements("h6", function(){
+			$("h6").hide()
+		})
+
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
