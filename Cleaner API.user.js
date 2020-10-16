@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.56
+// @version      1.2.57
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -359,9 +359,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(125,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(125,"linear")
@@ -420,8 +420,16 @@ var RunSave = false;
 		}); // remove bottom of page footer
 		waitForKeyElements("h6", function(){
 			$("h6").hide()
-		})
+		}) // removes ....... from save box
 
+		$(function() {
+			$("textarea").on("keyup", function(event) {
+				var value = $(this).val();
+				if (value.indexOf("'") != -1) {
+					$(this).val(value.replace(/\'/g, ""));
+				}
+			})
+		})// revoves ' from testareas as you type
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -609,7 +617,7 @@ var RunSave = false;
 
 
 
-					if (model.includes("HP-CBK")) {
+					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
@@ -701,7 +709,9 @@ var RunSave = false;
 
 			if($("#shelf-location").is(":empty") == true){
 				PntLoc = "__"
-			   }
+			}else{
+				PntLoc = $("#shelf-location").val()
+			}
 
 			w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 77%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
