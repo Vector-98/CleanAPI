@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.57
+// @version      1.2.58
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -242,14 +242,14 @@ var RunSave = false;
 			}
 
 		};//Create button for each line and add last 4 of SN
-		for (var sn = 25; sn > 0; sn--) {
+/* 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
 				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;width: 110%;"></button>').insertAfter("#snumber-" + sn)
 				document.getElementById("insert1").innerHTML = SNlabel;
 				$("#insert1").attr("id", "SN-" + sn);
 			}
-		};//Create Save button for each line
+		};//Create Save button for each line */
 		for (var di = 25; di > 0; di--) {
 			if($("#diagnosed-by-" + di).prop("type") == "text"){
 				var DIlabel = "Fill Diag Name";
@@ -269,7 +269,7 @@ var RunSave = false;
 			}
 		};//Create Tech button for each line
 
-		$("[id^=SN-]").on('click', function(){
+/* 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
 			console.log(RunSave)
 		});
@@ -281,7 +281,7 @@ var RunSave = false;
 				$("[id^=SN-]").text("Enable Pop-up")
 				$("[id^=SN-]").css("background-color","white")
 			}
-		});
+		}); */
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
 				console.log("Stoped name fill ")
@@ -469,6 +469,7 @@ var RunSave = false;
 			}, timeout || 100);
 		}); */
 
+
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
@@ -647,6 +648,12 @@ var RunSave = false;
 						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
 					}
+					if (model.includes("ASUS-CBK") ) {
+						warrantyFixed = fixWarranty(warranty);
+						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
+						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+
+					}
 					if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
@@ -660,8 +667,9 @@ var RunSave = false;
 
 					}
 
+
 				}
-			}
+			}// most of the thing you are looking for are here
 			var empty = [];
 
 			if(!lenLines.length == 0){
