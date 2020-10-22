@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.59
+// @version      1.2.60
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -497,20 +497,19 @@ var RunSave = false;
 				case "FF EXT BASE + FF ADP":
 					return "FF-Full";
 
-
-				case "LEN BASE"://-----------------------// Start of Lenovo Base warranties
+				case "LEN BASE": // Start of Lenovo Base warranties
 				case "LEN EXT BASE":
 				case "LEN EXT BASE ONLY":
 				case "LEN EXTBASE ONLY":
 				case "LEN BASE + LEN EXT BASE":
 				case "LEN BASE + LEN EXTBASE":
-				case "HP BASE":	//-----------------------// Start of HP Base warranties
+				case "HP BASE":	// Start of HP Base warranties
 				case "HP BASE ONLY":
 				case "HP EXT BASE ONLY":
 				case "HP BASE + HP EXT BASE":
-				case "ACER BASE"://----------------------// Start of Acer Base warranties
+				case "ACER BASE": // Start of Acer Base warranties
 				case "ACER BASE ONLY":
-				case "DELL BASE"://----------------------// Start of Dell Base warranties
+				case "DELL BASE": // Start of Dell Base warranties
 					return "MFR-Base";
 
 				case "DELL BASE ONLY":
@@ -521,7 +520,8 @@ var RunSave = false;
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
 				case "LEN BASE + LEN ADP":
 				case "LEN EXT BASE + LEN ADP ONLY":
-				case "HP BASE + HP ADP"://---------------// Start of HP Full warranties
+				case "HP BASE + HP ADP": // Start of HP Full warranties
+				case "Special HP ADP":
 					return "MFR-Full";
 
 				case "SFW ADP ONLY":
