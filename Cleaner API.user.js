@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.60
+// @version      1.2.70
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -103,7 +103,6 @@ var RunSave = false;
 			autoHideDoneLines = false;
 		}
 	}
-
 	function setTechName(techName) {
 		var CookieDate = new Date;
 		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
@@ -111,7 +110,6 @@ var RunSave = false;
 		// alert("techName:\n\n" + cookieName); // Debugging
 		document.cookie = cookieName;
 	}
-
 	function setCheckEm(CheckEm) {
 		var CookieDate = new Date;
 		CookieDate.setFullYear(CookieDate.getFullYear() + 1);
@@ -123,7 +121,6 @@ var RunSave = false;
 			CheckEm = false;
 		}
 	}
-
 	function setChecked(Checked) {
 		String.prototype.hashCode = function(){
 			var hash = 0, i, char;
@@ -141,7 +138,6 @@ var RunSave = false;
 		document.cookie = cookieName;
 		Checked = $("#full-container").prop('outerHTML').hashCode();
 	}
-
 	function getCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
@@ -195,10 +191,11 @@ var RunSave = false;
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
 				AllLines2DArray.push([m,currentUpperLine]);
 				currentUpperLine += 2;
-				//console.log(AllLines2DArray)
+				console.log(AllLines2DArray)
 			}
 
 		}// part of 2d array for line numbers
+
 
 		/* 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
@@ -224,11 +221,14 @@ var RunSave = false;
 				createdButtons++;
 				var l4label;
 
-				if($("#snumber-" + n).val().length <= 11){
+				if($("#snumber-" + n).val().length <= 11){// For LEN/HP
+					l4label = $('#snumber-' + n).val().slice(-4);
+				}else if($("#snumber-" + n).val().length == 15){// for ASUS CBK
 					l4label = $('#snumber-' + n).val().slice(-4);
 				}else{
-					l4label = $('#snumber-' + n).val().slice(14,18);
+					l4label = $('#snumber-' + n).val().slice(14,18); // for ACER
 				}
+
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
 				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
 				$("#Last4").attr("id", "Last4-L" + n);
@@ -242,7 +242,7 @@ var RunSave = false;
 			}
 
 		};//Create button for each line and add last 4 of SN
-/* 		for (var sn = 25; sn > 0; sn--) {
+		/* 		for (var sn = 25; sn > 0; sn--) {
 			if(!$("#snumber-" + sn).val() == ""){
 				var SNlabel = "Enable Pop-up";
 				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;width: 110%;"></button>').insertAfter("#snumber-" + sn)
@@ -269,7 +269,7 @@ var RunSave = false;
 			}
 		};//Create Tech button for each line
 
-/* 		$("[id^=SN-]").on('click', function(){
+		/* 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
 			console.log(RunSave)
 		});
@@ -429,7 +429,13 @@ var RunSave = false;
 					$(this).val(value.replace(/\'/g, ""));
 				}
 			})
-		})// revoves ' from testareas as you type
+			$("input").on("keyup", function(event) {
+				var value = $(this).val();
+				if (value.indexOf("'") != -1) {
+					$(this).val(value.replace(/\'/g, ""));
+				}
+			})
+		})// revoves ' from testareas and inputs as you type
 
 		// comment these out line by line if issues come up also be sure to double check that all saves
 		/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
@@ -497,19 +503,20 @@ var RunSave = false;
 				case "FF EXT BASE + FF ADP":
 					return "FF-Full";
 
-				case "LEN BASE": // Start of Lenovo Base warranties
+
+				case "LEN BASE"://-----------------------// Start of Lenovo Base warranties
 				case "LEN EXT BASE":
 				case "LEN EXT BASE ONLY":
 				case "LEN EXTBASE ONLY":
 				case "LEN BASE + LEN EXT BASE":
 				case "LEN BASE + LEN EXTBASE":
-				case "HP BASE":	// Start of HP Base warranties
+				case "HP BASE":	//-----------------------// Start of HP Base warranties
 				case "HP BASE ONLY":
 				case "HP EXT BASE ONLY":
 				case "HP BASE + HP EXT BASE":
-				case "ACER BASE": // Start of Acer Base warranties
+				case "ACER BASE"://----------------------// Start of Acer Base warranties
 				case "ACER BASE ONLY":
-				case "DELL BASE": // Start of Dell Base warranties
+				case "DELL BASE"://----------------------// Start of Dell Base warranties
 					return "MFR-Base";
 
 				case "DELL BASE ONLY":
@@ -520,8 +527,7 @@ var RunSave = false;
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
 				case "LEN BASE + LEN ADP":
 				case "LEN EXT BASE + LEN ADP ONLY":
-				case "HP BASE + HP ADP": // Start of HP Full warranties
-				case "Special HP ADP":
+				case "HP BASE + HP ADP"://---------------// Start of HP Full warranties
 					return "MFR-Full";
 
 				case "SFW ADP ONLY":
@@ -573,12 +579,12 @@ var RunSave = false;
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			techName = getCookie("techName");
-			if(techName === "Tony"){
+			/* 			if(techName === "Tony"){
 				techName = "Vector"
 			}else{
 				techName = getCookie("techName");
 			};
-
+ */
 			var today = new Date();
 			var dd = String(today.getDate()).padStart(2, '0');
 			var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -591,6 +597,8 @@ var RunSave = false;
 			var acerLines = [];
 			var dellLines = [];
 			//var modtes = $("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)").toArray()
+			var FstLine = $(":text").eq(3).data("id")
+			const TotLines = $('#num-lines').val();
 
 
 			var lines = [];//array to store arrays of line information.
@@ -599,9 +607,9 @@ var RunSave = false;
 
 			//console.log("modtest > "+modtes+ " mod len>>"+modtes.length)
 
-			for (var i = 1; i < 25; i++) {
+			for (var i = FstLine; i < 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
-					var model = modelsArray[i-1].nextSibling.textContent;
+					var model = modelsArray[i-FstLine].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
 					//var model = modtes.get([i-1])
 					var modelTrim;
 					var fullWarrName = "#warranty-" + i;
@@ -616,59 +624,54 @@ var RunSave = false;
 						warranty = $("#warranty-" + i).val();
 					}
 
-
-
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("HP-PBK")) {
+					}else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("HP-EBK")) {
+					}else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
 						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("LEN-")) {
+					}else if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
 						lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("ACER-")) {
+					}else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
 						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("ASUS-CBK") ) {
+					}else if (model.includes("ASUS-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("DEL-")) {
+					}else if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
 						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
-					}
-					if (model.includes("GEN-REPAIR")) {
+					}else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
 						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 
+					}else {
+						warrantyFixed = fixWarranty(warranty);
+						modelTrim = 'MISSING MODEL'
+						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
 					}
 
-
 				}
+
 			}// most of the thing you are looking for are here
 			var empty = [];
 
@@ -709,13 +712,12 @@ var RunSave = false;
 		$('#PrintBtn').click(function(){
 			customPrint();
 		});
-
 		function customPrint(){
 			var w=window.open();
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 			var PntLoc = $("#shelf-location").val()
 
-			if($("#shelf-location").is(":empty") == true){
+			if(PntLoc.length < 1){
 				PntLoc = "__"
 			}else{
 				PntLoc = $("#shelf-location").val()
@@ -739,17 +741,44 @@ var RunSave = false;
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
+			var EXP2DArray = []
+			var Curline;
 
-			for (var i = 1; i < 25; i++) {
+			var FstLine = $(":text").eq(3).data("id")
+			const TotLines = $('#num-lines').val();
+
+			for(var m = 1; m <= 25; m++){
+			if(!$("#snumber-" + m).val() == ""){//check if line exist
+				EXP2DArray.push([m]);
+				console.log(EXP2DArray)
+				}
+
+			}
+
+			for (var i = 0; i <= 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
-					var model = modelsArray[i-1].nextSibling.textContent;
-					var desc = custDesc[i-1].nextSibling.textContent;
+					Curline = EXP2DArray[i]
+					console.log("CC"+Curline)
+					console.log("EXP"+EXP2DArray[i])
+					var model = modelsArray[i-1].nextSibling.textContent;//	i-1
+					var desc = custDesc[i-1].nextSibling.textContent;//		i-1
 					var warranty = $("#warranty-" + i).val();
 					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
 					w.document.write("<br> <br>");
 
 				}
 			}
+
+/* 			for (var i = FstLine; i < 25; i++) {//i = 1
+				if(!$("#snumber-" + i).val() == ""){
+					var model = modelsArray[i-FstLine].nextSibling.textContent;//	i-1
+					var desc = custDesc[i-FstLine].nextSibling.textContent;//		i-1
+					var warranty = $("#warranty-" + i).val();
+					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
+					w.document.write("<br> <br>");
+
+				}
+			} */
 			w.print();
 			//w.close();
 		}
