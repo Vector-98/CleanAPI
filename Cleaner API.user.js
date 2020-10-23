@@ -191,7 +191,7 @@ var RunSave = false;
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
 				AllLines2DArray.push([m,currentUpperLine]);
 				currentUpperLine += 2;
-				console.log(AllLines2DArray)
+				//console.log(AllLines2DArray)
 			}
 
 		}// part of 2d array for line numbers
@@ -596,34 +596,41 @@ var RunSave = false;
 			var hpLines = [];
 			var acerLines = [];
 			var dellLines = [];
-			//var modtes = $("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(4)").toArray()
 			var FstLine = $(":text").eq(3).data("id")
 			const TotLines = $('#num-lines').val();
+			var CurIn = 0;
+			var EXP2DArray = []
 
 
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
-			//console.log("modtest > "+modtes+ " mod len>>"+modtes.length)
+			for(var m = 1; m <= 25; m++){
+			if(!$("#snumber-" + m).val() == ""){//check if line exist
+				EXP2DArray.push([m]);
+				console.log(EXP2DArray)
+				}
 
-			for (var i = FstLine; i < 25; i++) {//for (var i = 1; i < 25; i++
+			}
+
+			for (var i = 0; i <= 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
-					var model = modelsArray[i-FstLine].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
-					//var model = modtes.get([i-1])
+					CurIn ++
+					console.log(CurIn)
+					var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
 					var modelTrim;
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
 					var location = $("#shelf-location").val();
 					var diagNotes = $("#diagnosed-notes-" + i).val();
-					//var CsvLines = [today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]
 					var warrantyFixed;
+
 					if ($("#paid-"+i).is(":checked") == true){
 						warranty = "Paid"
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
-
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
@@ -742,8 +749,7 @@ var RunSave = false;
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
 			var EXP2DArray = []
-			var Curline;
-
+			var CurIn = 0
 			var FstLine = $(":text").eq(3).data("id")
 			const TotLines = $('#num-lines').val();
 
@@ -757,11 +763,13 @@ var RunSave = false;
 
 			for (var i = 0; i <= 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
-					Curline = EXP2DArray[i]
-					console.log("CC"+Curline)
-					console.log("EXP"+EXP2DArray[i])
-					var model = modelsArray[i-1].nextSibling.textContent;//	i-1
-					var desc = custDesc[i-1].nextSibling.textContent;//		i-1
+					CurIn ++
+					console.log("EXP"+EXP2DArray[i-1])
+					console.log(i)
+					console.log(CurIn-1)
+
+					var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
+					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
 					var warranty = $("#warranty-" + i).val();
 					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
 					w.document.write("<br> <br>");
