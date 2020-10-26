@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.70
+// @version      1.2.8
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -196,7 +196,6 @@ var RunSave = false;
 
 		}// part of 2d array for line numbers
 
-
 		/* 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
 			$(".warrantyToStyle").css({"color": "red"})
 		}; */
@@ -359,9 +358,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(125,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(125,"linear")
@@ -475,7 +474,6 @@ var RunSave = false;
 			}, timeout || 100);
 		}); */
 
-
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
@@ -566,19 +564,45 @@ var RunSave = false;
 			var fullPage = $("#full-container").prop('outerHTML')
 
 			$('#Checksum').on("click",function(){
-				console.log(fullPage.hashCode())
+				var ff = [];
+				var line = $(this).data("id");
+
+				var ShtPrt = ['Batt.','MLB','LCD','LCD Cable','Palmrest','KB','TPD','TPD Cable','WLAN','DC Jack','HDD/SSD','HDD/SSD Cable','Speakers','Power Button Board','Sensor Board','USB Board',
+							  'Audio Board','LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam','Secondary Webcam','Webcam Cable','RAM','CMOS','Click Board','Service Door'];
+
+				var CutPrt = ['WWAN','AC Adapter','HDD/SSD Bracket','Finger Print Reader','Rubber Kit','Optical Drive','G-Sensor','Touchscreen Sensor','Stylus','Screw Kit','Card Reader','Hinge Cap',
+							  'Power Board','Backlit MLB','Heatsink','Thermal Pad','Fan','Batt. Cable','Cable Kit'];
+
+				var Dstr = ('|LCD||Batt||TPD||TPD CBL||Lcdc|'); //$("#diagnosed-notes-1").val();
+				var Store
+
+				var regex = /\|(.*?)\|/g;
+				//var MatchReg = Dstr.match(regex)
+				//var finMatch = ff.push([MatchReg])
+				//console.log("finMatch"+ff)
+
+				while((Store = regex.exec(Dstr)) != null){
+					console.log("full match "+Store[0])
+					console.log("G1 Match "+Store[1])
+					ff.push(Store[1])
+					console.log("parts array "+ff)
+				}
+
+
+				/* 				console.log(fullPage.hashCode())
 				var hash = fullPage.hashCode()
 				var opens = prompt("Copy this code: "+fullPage.hashCode()+"\nPaste copied code after ")
 				if(hash == opens){
 					prompt("Checksum Matched")
 				}else{
 					prompt("Checksum Does not match\nDouble check your fields and reloading the SRO page")
-				}
+				} */
+
 			})
 		};// checksum goodies
 
 		$('#copy').click(function(){// this is called when export button is clicked
-			techName = getCookie("techName");
+			var techName = getCookie("techName");
 			/* 			if(techName === "Tony"){
 				techName = "Vector"
 			}else{
@@ -607,78 +631,94 @@ var RunSave = false;
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for(var m = 1; m <= 25; m++){
-			if(!$("#snumber-" + m).val() == ""){//check if line exist
-				EXP2DArray.push([m]);
-				console.log(EXP2DArray)
+				if(!$("#snumber-" + m).val() == ""){//check if line exist
+					EXP2DArray.push([m]);
+					//console.log(EXP2DArray)
 				}
 
+			}
+			function test(){
+				i
 			}
 
 			for (var i = 0; i <= 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
-					console.log(CurIn)
+					//console.log(CurIn)
 					var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
 					var modelTrim;
+					var SroNum = $("#sro-number").val()
+					var Cust = $("#customer").val()
+					var SerNum = $("#snumber-" + i).val()
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
 					var location = $("#shelf-location").val();
 					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
+					var s = ""
+					var p1
+					var p2
+					var p3
+					var p4
+					var p5
 
 					if ($("#paid-"+i).is(":checked") == true){
 						warranty = "Paid"
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
+					//let HpLinArr = [today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed]
+					//hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+					//lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+					//dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+					test()
+
+
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
-						lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
-						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("ASUS-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
-
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 					}else {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = 'MISSING MODEL'
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 					}
-
 				}
-
 			}// most of the thing you are looking for are here
 			var empty = [];
 
@@ -694,7 +734,6 @@ var RunSave = false;
 			lines = lines.concat(dellLines);
 
 			exportToCsv(($("#sro-number").val() + ".csv"), lines);
-
 		});//end of export function
 
 		function autoHideLinesOnStartup(){
@@ -754,9 +793,9 @@ var RunSave = false;
 			const TotLines = $('#num-lines').val();
 
 			for(var m = 1; m <= 25; m++){
-			if(!$("#snumber-" + m).val() == ""){//check if line exist
-				EXP2DArray.push([m]);
-				console.log(EXP2DArray)
+				if(!$("#snumber-" + m).val() == ""){//check if line exist
+					EXP2DArray.push([m]);
+					console.log(EXP2DArray)
 				}
 
 			}
@@ -777,7 +816,7 @@ var RunSave = false;
 				}
 			}
 
-/* 			for (var i = FstLine; i < 25; i++) {//i = 1
+			/* 			for (var i = FstLine; i < 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
 					var model = modelsArray[i-FstLine].nextSibling.textContent;//	i-1
 					var desc = custDesc[i-FstLine].nextSibling.textContent;//		i-1
