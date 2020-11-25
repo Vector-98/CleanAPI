@@ -9,13 +9,13 @@
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
+// @require 	 https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js
 // @require		 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js
 // @resource	 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css
-// @grant        GM_addStyle
+// @grant		 GM_addStyle
 // @grant		 GM_cookie
 // @grant		 GM.getResourceUrl
-// @grant        GM_log(Script is loaded and 69% chance of working)
-/* globals jQuery, $, waitForKeyElements */
+/* globals jQuery, $, waitForKeyElements, JsBarcode */
 // ==/UserScript==
 
 var $ = window.jQuery;
@@ -31,7 +31,8 @@ var RunSave = false;
 	$(".footer").hide()
 	$("#masthead").hide()
 	document.getElementById("sro-submit").value="Load SRO";
-	var multisel = GM.getResourceUrl('https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css')
+	//var multisel = GM.getResourceUrl('https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css')
+
 
 	$("#get-item").focusout(function() {
 		AutoSro();
@@ -152,6 +153,7 @@ var RunSave = false;
 		return null;
 	}
 
+
 	waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
 		if (RunSave) {
 			console.log("SN and Warr save enabled")
@@ -167,7 +169,6 @@ var RunSave = false;
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
 		$("[id^=customer]").css({"width": "145%","float":"left"}) // Customer width fix
-
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
@@ -179,7 +180,6 @@ var RunSave = false;
 		}
 
 		//$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
-
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
@@ -189,6 +189,14 @@ var RunSave = false;
 		var currentUpperLine = 2;
 		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
+
+		/* 		$('#full-container').append("<svg id='barcode'> </svg>")
+		var ToPrint = $("#sro-number").val()
+		JsBarcode("#barcode", ToPrint, {
+			format: "CODE39"
+		}); */
+
+
 
 		for(var m = 1; m <= 25; m++){
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
@@ -481,7 +489,7 @@ var RunSave = false;
 			'Multiple Select'+
 			' </label>'*/
 
-		var chkdrp = '<select multiple="multiple" class="offscreen">' +
+		/* 		var chkdrp = '<select multiple="multiple" class="offscreen">' +
 			'<option value="1">January</option>' +
 			'<option value="2">February</option>' +
 			'<option value="3">March</option>' +
@@ -574,17 +582,20 @@ var RunSave = false;
 			'<input type="checkbox" value="12" data-key="option_11" data-name="selectItem">'+
 			'<span>December</span>'+
 			'</label>'+
-			'</li>'+
+			'</li>'+ */
 
-			$(function () {
-				$('.multiple-select').multipleSelect()
-			})
+		$(function () {
+			$('.multiple-select').multipleSelect()
+		})
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
 		//$("#bottom-item-wrap > div.col-md-12").append(box)
 		//$('#bottom-item-wrap > div.col-md-12 > div > label').append(chkdrp)
-		$('#bottom-item-wrap > div.col-md-12').append(btndrp)
+		/* 		$('#bottom-item-wrap > div.col-md-12').append(btndrp)
+ */
+
+
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -871,21 +882,21 @@ var RunSave = false;
 		$('#PrintBtn').click(function(){
 			customPrint();
 		});
+
+
+
+
 		function customPrint(){
-			var w=window.open();
-			//('head').append('<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Libre Barcode 39">');
-			w.GM_addStyle ( `
-    			font-face {
-							font-family: 'Libre Barcode 39';
-							 font-style: normal;
-							 font-weight: 400;
-							 src: url(https://fonts.gstatic.com/s/librebarcode39/v10/-nFnOHM08vwC6h8Li1eQnP_AHzI2G_Bx0g.woff2) format('woff2');
-							 unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-							 }` );
+			GM.getResourceUrl('https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js')
 
-
+			var w = window.open("","Print page 9000","width=816","height=1056");
+			const openerWindow = window.opener
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 			var PntLoc = $("#shelf-location").val()
+
+			var OnlySRO = document.querySelector("#sro-number").value
+			var osr = String(OnlySRO)
+			console.log("yeet "+osr)
 
 			if(PntLoc.length < 1){
 				PntLoc = "__"
@@ -893,14 +904,11 @@ var RunSave = false;
 				PntLoc = $("#shelf-location").val().toUpperCase();
 			}
 
-
-
 			//w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 77%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
 
-			w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: Libire Barcode 39');>" +stuffToPrint+ "</h1>");
-
-			w.document.write("<h1 style='position: absolute; top: 83%; right: 33%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
+			w.document.write("<h1 style='position: absolute; top: 89%; right: 60%;font-family: cursive');>" +stuffToPrint+ "</h1>");
+			w.document.write("<h1 style='position: absolute; top: 83%; right: 60%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 70%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h2>");
 			w.document.write("Customer: ");
 			w.document.write($("#customer").val());
@@ -927,7 +935,6 @@ var RunSave = false;
 				}
 
 			}
-
 			for (var i = 0; i <= 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
@@ -938,11 +945,25 @@ var RunSave = false;
 					var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
 					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
 					var warranty = $("#warranty-" + i).val();
-					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
+					w.document.write("Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc);
 					w.document.write("<br> <br>");
 
 				}
 			}
+
+			w.document.write($('#full-container').append("<svg id='barcode' style='visibility: hidden;'></svg>"));
+			//w.document.write($('body').append("<svg class='barcode' jsbarcode-format='CODE39'jsbarcode-value="+osr+"></svg>"));
+
+			JsBarcode("#barcode", osr, {format: "CODE39"});
+			window.open("","Print page 9000").document.write($('svg:last').css({'position': 'absolute', 'top': '87%', 'right': '8%'}))
+			window.open("","Print page 9000").document.write($('svg:last').prop('outerHTML'));
+
+			waitForKeyElements("#full-container > #barcode",function(){
+				$(w.document.body).ready(function() {
+					//document.wrtie($('svg#barcode').appendTo(this))
+					jQuery('#full-container > #barcode').hide()
+				});
+			})
 
 			/* 			for (var i = FstLine; i < 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
@@ -954,9 +975,12 @@ var RunSave = false;
 
 				}
 			} */
-			w.print();
+
+
+			//w.print();
 			//w.close();
 		}
+
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
