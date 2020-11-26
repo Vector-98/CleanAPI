@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.70
+// @version      1.2.80
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -9,10 +9,13 @@
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
-// @grant        GM_addStyle
+// @require 	 https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js
+// @require		 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js
+// @resource	 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css
+// @grant		 GM_addStyle
 // @grant		 GM_cookie
-// @grant        GM_log(Script is loaded and 69% chance of working)
-/* globals jQuery, $, waitForKeyElements */
+// @grant		 GM.getResourceUrl
+/* globals jQuery, $, waitForKeyElements, JsBarcode */
 // ==/UserScript==
 
 var $ = window.jQuery;
@@ -29,6 +32,8 @@ var RunSave = false;
 	$(".footer").hide()
 	$("#masthead").hide()
 	document.getElementById("sro-submit").value="Load SRO";
+	//var multisel = GM.getResourceUrl('https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css')
+
 
 	$("#get-item").focusout(function() {
 		AutoSro();
@@ -149,6 +154,7 @@ var RunSave = false;
 		return null;
 	}
 
+
 	waitForKeyElements("body > div.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable", function () {
 		if (RunSave) {
 			console.log("SN and Warr save enabled")
@@ -187,6 +193,7 @@ var RunSave = false;
 		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
 
+
 		for(var m = 1; m <= 25; m++){
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
 				AllLines2DArray.push([m,currentUpperLine]);
@@ -196,10 +203,6 @@ var RunSave = false;
 
 		}// part of 2d array for line numbers
 
-
-		/* 		if ($("span.warrantyToStyle").text().includes("PAID")){//Highlights text red if repair is PAID
-			$(".warrantyToStyle").css({"color": "red"})
-		}; */
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -419,7 +422,7 @@ var RunSave = false;
 			$("h1").hide()
 		}); // remove bottom of page footer
 		waitForKeyElements("h6", function(){
-			$("h6").hide()
+			$("h6").remove()
 		}) // removes ....... from save box
 
 		$(function() {
@@ -474,6 +477,116 @@ var RunSave = false;
 				console.log("Repair Action Or Specific Action Box Disable Blocked")
 			}, timeout || 100);
 		}); */
+		/* 		var box = '<div class="form-group row">'+
+			' <label class="col-sm-2">'+
+			'Multiple Select'+
+			' </label>'*/
+
+		/* 		var chkdrp = '<select multiple="multiple" class="offscreen">' +
+			'<option value="1">January</option>' +
+			'<option value="2">February</option>' +
+			'<option value="3">March</option>' +
+			'<option value="4">April</option>' +
+			'<option value="5">May</option>' +
+			'<option value="6">June</option>' +
+			'<option value="7">July</option>' +
+			'<option value="8">August</option>' +
+			'<option value="9">September</option>' +
+			'<option value="10">October</option>' +
+			'<option value="11">November</option>' +
+			'<option value="12">December</option>' +
+			'</select>';
+
+		var btndrp = '<button type="button" class="ms-choice">'+
+			'<span class="placeholder"></span>'+
+			'<div class="icon-caret"></div>'+
+			'Parts List'+
+			'</button>'+
+
+			'<div class="ms-drop bottom" style="display: none;"><ul style="max-height: 250px;">'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="1" data-key="option_0" data-name="selectItem">'+
+			'<span>January</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="2" data-key="option_1" data-name="selectItem">'+
+			'<span>February</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="3" data-key="option_2" data-name="selectItem">'+
+			'<span>March</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="4" data-key="option_3" data-name="selectItem">'+
+			'<span>April</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="5" data-key="option_4" data-name="selectItem">'+
+			'<span>May</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="6" data-key="option_5" data-name="selectItem">'+
+			'<span>June</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="7" data-key="option_6" data-name="selectItem">'+
+			'<span>July</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="8" data-key="option_7" data-name="selectItem">'+
+			'<span>August</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="9" data-key="option_8" data-name="selectItem">'+
+			'<span>September</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="10" data-key="option_9" data-name="selectItem">'+
+			'<span>October</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="11" data-key="option_10" data-name="selectItem">'+
+			'<span>November</span>'+
+			'</label>'+
+			'</li>'+
+			'<li class="">'+
+			'<label class="">'+
+			'<input type="checkbox" value="12" data-key="option_11" data-name="selectItem">'+
+			'<span>December</span>'+
+			'</label>'+
+			'</li>'+ */
+
+		$(function () {
+			$('.multiple-select').multipleSelect()
+		})
+
+		$("body > div.navbar-brand > a").removeAttr("href");
+		$('body > div.navbar-brand > a > img').removeAttr("alt");
+		//$("#bottom-item-wrap > div.col-md-12").append(box)
+		//$('#bottom-item-wrap > div.col-md-12 > div > label').append(chkdrp)
+		//$('#bottom-item-wrap > div.col-md-12').append(btndrp)
+
 
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
@@ -496,10 +609,12 @@ var RunSave = false;
 
 				case "LEN ADP":
 				case "LEN ADP ONLY":
+				case "HP ADP":
 				case "ACER ADP":
 					return "MFR-ADP";
 
 				case "FF BASE + FF ADP":
+				case "FF EXT BASE+ FF ADP":
 				case "FF EXT BASE + FF ADP":
 					return "FF-Full";
 
@@ -566,19 +681,45 @@ var RunSave = false;
 			var fullPage = $("#full-container").prop('outerHTML')
 
 			$('#Checksum').on("click",function(){
-				console.log(fullPage.hashCode())
+				var ff = [];
+				var line = $(this).data("id");
+				var ShtPrt = ['Batt.','MLB','LCD','LCD Cable','Palmrest','KB','TPD','TPD Cable','WLAN','DC Jack','HDD/SSD','Speakers','Power Button Board','USB Board',
+							  'Audio Board','LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam','Secondary Webcam','Webcam Cable','RAM','Service Door'];
+
+				var CutPrt = ['WWAN','AC Adapter','HDD/SSD Bracket','Finger Print Reader','Rubber Kit','Optical Drive','G-Sensor','Touchscreen Sensor','Stylus','Screw Kit','Card Reader','Hinge Cap',
+							  'Power Board','Backlit MLB','Heatsink','Thermal Pad','Fan','Batt. Cable','Cable Kit','Click Board','HDD/SSD Cable','Sensor Board','CMOS'];
+
+				var Dstr = ('|LCD||Batt||TPD||TPD CBL||Lcdc|'); //$("#diagnosed-notes-1").val();
+				var Store
+
+				var regex = /\|(.*?)\|/g;
+				//var MatchReg = Dstr.match(regex)
+				//var finMatch = ff.push([MatchReg])
+				//console.log("finMatch"+ff)
+
+				while((Store = regex.exec(Dstr)) != null){
+					//console.log("full match "+Store[0])
+					console.log("G1 Match "+Store[1])
+					ff.push(Store[1])
+					console.log("parts array "+ff)
+					console.log('parts array len'+ShtPrt)
+				}
+
+
+				/* 				console.log(fullPage.hashCode())
 				var hash = fullPage.hashCode()
 				var opens = prompt("Copy this code: "+fullPage.hashCode()+"\nPaste copied code after ")
 				if(hash == opens){
 					prompt("Checksum Matched")
 				}else{
 					prompt("Checksum Does not match\nDouble check your fields and reloading the SRO page")
-				}
+				} */
+
 			})
 		};// checksum goodies
 
 		$('#copy').click(function(){// this is called when export button is clicked
-			techName = getCookie("techName");
+			var techName = getCookie("techName");
 			/* 			if(techName === "Tony"){
 				techName = "Vector"
 			}else{
@@ -607,74 +748,92 @@ var RunSave = false;
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for(var m = 1; m <= 25; m++){
-			if(!$("#snumber-" + m).val() == ""){//check if line exist
-				EXP2DArray.push([m]);
-				console.log(EXP2DArray)
+				if(!$("#snumber-" + m).val() == ""){//check if line exist
+					EXP2DArray.push([m]);
+					//console.log(EXP2DArray)
 				}
 
+			}
+			function testw(){
+				i
 			}
 
 			for (var i = 0; i <= 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
-					console.log(CurIn)
+					//console.log(CurIn)
 					var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
 					var modelTrim;
+					var SroNum = $("#sro-number").val()
+					var Cust = $("#customer").val()
+					var SerNum = $("#snumber-" + i).val()
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
 					var location = $("#shelf-location").val();
 					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
+					var s = ""
+					var p1 = ""
+					var p2 = ""
+					var p3 = ""
+					var p4 = ""
+					var p5 = ""
 
 					if ($("#paid-"+i).is(":checked") == true){
 						warranty = "Paid"
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
+					//let HpLinArr = [today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed]
+					//hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+					//lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+					//dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+
+
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, p1, s, p2, s, p3, s, p4, s, p5])
 
 					}else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
-						hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
-						lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
-						acerLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("ASUS-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
 					}else {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = 'MISSING MODEL'
-						dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 					}
 
 				}
@@ -710,7 +869,7 @@ var RunSave = false;
 
 		};
 
-		jQuery(document).bind("keyup keydown", function(e){
+		$(document).on("keydown", function(e){
 			if(e.ctrlKey && e.keyCode == 80){
 				customPrint();
 				//console.log("ctrl+p pressed")
@@ -719,21 +878,30 @@ var RunSave = false;
 		$('#PrintBtn').click(function(){
 			customPrint();
 		});
+
 		function customPrint(){
-			var w=window.open();
+			GM.getResourceUrl('https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js')
+
+			var w = window.open("","Print page 9000","width=816","height=1056");
+			const openerWindow = window.opener
 			var stuffToPrint = $("#sro-number").val().fontsize(7);
 			var PntLoc = $("#shelf-location").val()
+
+			var OnlySRO = document.querySelector("#sro-number").value
+			var osr = String(OnlySRO)
+			console.log("yeet "+osr)
 
 			if(PntLoc.length < 1){
 				PntLoc = "__"
 			}else{
-				PntLoc = $("#shelf-location").val()
+				PntLoc = $("#shelf-location").val().toUpperCase();
 			}
 
-			w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
+			//w.document.write("<h1 style='position: absolute; top: 89%; right: 33%;font-family: cursive;'>" +stuffToPrint+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 45%; left: 77%;font-family: cursive;'>" +stuffToPrint+ "</h2>");
 
-			w.document.write("<h1 style='position: absolute; top: 83%; right: 33%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
+			w.document.write("<h1 style='position: absolute; top: 89%; right: 45%;font-family: cursive');>" +stuffToPrint+ "</h1>");
+			w.document.write("<h1 style='position: absolute; top: 83%; right: 45%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h1>");
 			w.document.write("<h2 style='position: absolute; transform: rotate(-90deg); bottom: 43%; left: 70%;font-family: cursive;font-size: xxx-large;white-space: nowrap;'>Location: " +PntLoc+ "</h2>");
 			w.document.write("Customer: ");
 			w.document.write($("#customer").val());
@@ -754,9 +922,9 @@ var RunSave = false;
 			const TotLines = $('#num-lines').val();
 
 			for(var m = 1; m <= 25; m++){
-			if(!$("#snumber-" + m).val() == ""){//check if line exist
-				EXP2DArray.push([m]);
-				console.log(EXP2DArray)
+				if(!$("#snumber-" + m).val() == ""){//check if line exist
+					EXP2DArray.push([m]);
+					console.log(EXP2DArray)
 				}
 
 			}
@@ -771,13 +939,31 @@ var RunSave = false;
 					var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
 					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
 					var warranty = $("#warranty-" + i).val();
-					w.document.write(["Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc]);
+					w.document.write("Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc);
 					w.document.write("<br> <br>");
 
 				}
 			}
 
-/* 			for (var i = FstLine; i < 25; i++) {//i = 1
+			w.document.write($('#full-container').append("<svg id='barcode' style='visibility: hidden;'></svg>"));
+			//w.document.write($('body').append("<svg class='barcode' jsbarcode-format='CODE39'jsbarcode-value="+osr+"></svg>"));
+
+			JsBarcode("#barcode", osr, {
+				format: "CODE39",
+				width: 1
+			});
+
+			window.open("","Print page 9000").document.write($('svg:last').css({'position': 'absolute', 'top': '86%', 'right': '8%'}))
+			window.open("","Print page 9000").document.write($('svg:last').prop('outerHTML'));
+
+			waitForKeyElements("#full-container > #barcode",function(){
+				$(w.document.body).ready(function() {
+					//document.wrtie($('svg#barcode').appendTo(this))
+					jQuery('#full-container > #barcode').hide()
+				});
+			})
+
+			/* 			for (var i = FstLine; i < 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
 					var model = modelsArray[i-FstLine].nextSibling.textContent;//	i-1
 					var desc = custDesc[i-FstLine].nextSibling.textContent;//		i-1
@@ -787,9 +973,12 @@ var RunSave = false;
 
 				}
 			} */
+
+
 			w.print();
 			//w.close();
 		}
+
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
