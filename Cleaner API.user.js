@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.80
+// @version      1.2.85
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -187,12 +187,12 @@ var RunSave = false;
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
 		var createdButtons = 0;
-		//var TotalButtIndex = createdButtons * 2;
 		var AllLines2DArray = []; //Stores array of line number and upperline index.
 		var currentUpperLine = 2;
 		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
-
+		var SroNum = $("#sro-number").val()
+		$('title').text(SroNum);
 
 		for(var m = 1; m <= 25; m++){
 			if(!$("#snumber-" + m).val() == ""){//check if line exist
@@ -202,7 +202,6 @@ var RunSave = false;
 			}
 
 		}// part of 2d array for line numbers
-
 
 		function toggle(value){//class to flip value
 			if (stateOfButtons[value]){
@@ -440,146 +439,7 @@ var RunSave = false;
 			})
 		})// revoves ' from testareas and inputs as you type
 
-		// comment these out line by line if issues come up also be sure to double check that all saves
-		/* 		$(document).on( "blur", ".res", function(timeout) { // disable the disable on res notes
-			setTimeout(function(){
-				$('.res').attr("disabled", false);
-				console.log("Res Box Disable Blocked")
-			}, timeout || 100);
-		});
-		$(document).on( "blur", ".opers", function(timeout) { // disable the disable on names
-			setTimeout(function(){
-				$(".opers").attr("disabled", false);
-				console.log("Op Box Disable Blocked")
-			}, timeout || 100);
-		});
-		$(document).on( "blur", ".diagnosed", function(timeout) { // disable the disable on diagnosed box
-			setTimeout(function(){
-				$(".diagnosed").attr("disabled", false);
-				console.log("Diag Box Disable Blocked")
-			}, timeout || 100);
-		});
-		$(document).on( "blur", ".repair-completed", function(timeout) { // disable the disable on repair-completed
-			setTimeout(function(){
-				$(".repair-completed").attr("disabled", false);
-				console.log("Done Box Disable Blocked")
-			}, timeout || 100);
-		});
-		$(document).on( "blur", ".opers-checked", function(timeout) { // disable the disable on paid  repair
-			setTimeout(function(){
-				$(".opers-checked").attr("disabled", false);
-				console.log("opers-checked Box Disable Blocked")
-			}, timeout || 100);
-		});
-		$(document).on( "blur", ".res-select", function(timeout) { // disable the disable on paid repair
-			setTimeout(function(){
-				$(".res-select").attr("disabled", false);
-				console.log("Repair Action Or Specific Action Box Disable Blocked")
-			}, timeout || 100);
-		}); */
-		/* 		var box = '<div class="form-group row">'+
-			' <label class="col-sm-2">'+
-			'Multiple Select'+
-			' </label>'*/
 
-		/* 		var chkdrp = '<select multiple="multiple" class="offscreen">' +
-			'<option value="1">January</option>' +
-			'<option value="2">February</option>' +
-			'<option value="3">March</option>' +
-			'<option value="4">April</option>' +
-			'<option value="5">May</option>' +
-			'<option value="6">June</option>' +
-			'<option value="7">July</option>' +
-			'<option value="8">August</option>' +
-			'<option value="9">September</option>' +
-			'<option value="10">October</option>' +
-			'<option value="11">November</option>' +
-			'<option value="12">December</option>' +
-			'</select>';
-
-		var btndrp = '<button type="button" class="ms-choice">'+
-			'<span class="placeholder"></span>'+
-			'<div class="icon-caret"></div>'+
-			'Parts List'+
-			'</button>'+
-
-			'<div class="ms-drop bottom" style="display: none;"><ul style="max-height: 250px;">'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="1" data-key="option_0" data-name="selectItem">'+
-			'<span>January</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="2" data-key="option_1" data-name="selectItem">'+
-			'<span>February</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="3" data-key="option_2" data-name="selectItem">'+
-			'<span>March</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="4" data-key="option_3" data-name="selectItem">'+
-			'<span>April</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="5" data-key="option_4" data-name="selectItem">'+
-			'<span>May</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="6" data-key="option_5" data-name="selectItem">'+
-			'<span>June</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="7" data-key="option_6" data-name="selectItem">'+
-			'<span>July</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="8" data-key="option_7" data-name="selectItem">'+
-			'<span>August</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="9" data-key="option_8" data-name="selectItem">'+
-			'<span>September</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="10" data-key="option_9" data-name="selectItem">'+
-			'<span>October</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="11" data-key="option_10" data-name="selectItem">'+
-			'<span>November</span>'+
-			'</label>'+
-			'</li>'+
-			'<li class="">'+
-			'<label class="">'+
-			'<input type="checkbox" value="12" data-key="option_11" data-name="selectItem">'+
-			'<span>December</span>'+
-			'</label>'+
-			'</li>'+ */
-
-		$(function () {
-			$('.multiple-select').multipleSelect()
-		})
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
@@ -600,6 +460,7 @@ var RunSave = false;
 					return "Paid";
 
 				case "FF BASE":
+				case "FF EXT BASE":
 				case "FF BASE + FF EXT BASE":
 					return "FF-Base";
 
@@ -616,6 +477,7 @@ var RunSave = false;
 				case "FF BASE + FF ADP":
 				case "FF EXT BASE+ FF ADP":
 				case "FF EXT BASE + FF ADP":
+				case "FF ADP + FF EXT BASE":
 					return "FF-Full";
 
 
@@ -623,12 +485,15 @@ var RunSave = false;
 				case "LEN EXT BASE":
 				case "LEN EXT BASE ONLY":
 				case "LEN EXTBASE ONLY":
+				case "LEN BASE ONLY":
 				case "LEN BASE + LEN EXT BASE":
 				case "LEN BASE + LEN EXTBASE":
 				case "HP BASE":	//-----------------------// Start of HP Base warranties
 				case "HP BASE ONLY":
 				case "HP EXT BASE ONLY":
 				case "HP BASE + HP EXT BASE":
+				case "HP BASE+ HP EXT BASE":
+				case "HP BASE +HP EXT BASE":
 				case "ACER BASE"://----------------------// Start of Acer Base warranties
 				case "ACER BASE ONLY":
 				case "DELL BASE"://----------------------// Start of Dell Base warranties
@@ -889,7 +754,6 @@ var RunSave = false;
 
 			var OnlySRO = document.querySelector("#sro-number").value
 			var osr = String(OnlySRO)
-			console.log("yeet "+osr)
 
 			if(PntLoc.length < 1){
 				PntLoc = "__"
@@ -953,15 +817,15 @@ var RunSave = false;
 				width: 1
 			});
 
-			window.open("","Print page 9000").document.write($('svg:last').css({'position': 'absolute', 'top': '86%', 'right': '8%'}))
-			window.open("","Print page 9000").document.write($('svg:last').prop('outerHTML'));
+			window.open("","Print page 9000").document.write($('svg:last').css({'position': 'absolute', 'top': '86%', 'right': '8%'}))// css for barcode loc
+			window.open("","Print page 9000").document.write($('svg:last').prop('outerHTML'));// ripping barcode from main window to print page
+			//window.open("","Print page 9000").document.write();
 
 			waitForKeyElements("#full-container > #barcode",function(){
 				$(w.document.body).ready(function() {
-					//document.wrtie($('svg#barcode').appendTo(this))
 					jQuery('#full-container > #barcode').hide()
 				});
-			})
+			})// hide barcode on main window after copying
 
 			/* 			for (var i = FstLine; i < 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
