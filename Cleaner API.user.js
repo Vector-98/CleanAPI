@@ -215,6 +215,7 @@ var RunSave = false;
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				var label = "Line " + n;
+				var done = "";
 				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px; line-height: normal;" > </button>')
 				document.getElementById("insert").innerHTML = label;
 				$("#insert").attr("id", "butt-" + n);// +"-"+CBI
@@ -236,6 +237,15 @@ var RunSave = false;
 				$("#Last4").attr("id", "Last4-L" + n);
 
 				// jump menu trash
+				var repairBoxName = "#repair-completed-" + n;
+				var diagBoxName = "#diagnosed-" + n;
+				if($(repairBoxName).is(":checked")){
+                   			done = " Done";
+                		}
+				else if($(diagBoxName).is(":checked")){
+                   			done = " Diag";
+                		}
+				label = "Line " + n + done;
 				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
 				let jumpLinkID = "jumpLink"+(n+1);
 				$("#placeholder").attr("id",jumpLinkID);
@@ -382,6 +392,7 @@ var RunSave = false;
 		};
 		function doubleClick(buttonNumber){
 			var count = 0;
+			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
 			for(var i = 0; i < 25; i++){
 				if(stateOfButtons[i]){
 					count++;
