@@ -238,8 +238,12 @@ var RunSave = false;
 
 				// jump menu trash
 				var repairBoxName = "#repair-completed-" + n;
+				var diagBoxName = "#diagnosed-" + n;
 				if($(repairBoxName).is(":checked")){
                    			done = " Done";
+                		}
+				else if($(diagBoxName).is(":checked")){
+                   			done = " Diag";
                 		}
 				label = "Line " + n + done;
 				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
