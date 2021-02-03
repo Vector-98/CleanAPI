@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.86
+// @version      1.2.87
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -239,18 +239,28 @@ var RunSave = false;
 				// jump menu trash
 				var repairBoxName = "#repair-completed-" + n;
 				var diagBoxName = "#diagnosed-" + n;
-				if($(repairBoxName).is(":checked")){
-                   			done = " Ready";
-                		}
+                var shipBoxName = "#QtyShippedConv-" +n;
+                label = "Line " + n;
+                var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+				if($(shipBoxName).is(":checked")){
+                    label = "Line " + n + " Done";
+                    jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
+
+                }else if($(repairBoxName).is(":checked")){
+                    label = "Line " + n + " Ready";
+                    jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
+                    //$("#" + jumpLinkID).css("color", "green");
+                }
 				else if($(diagBoxName).is(":checked")){
-                   			done = " Diag";
-                		}
-				label = "Line " + n + done;
-				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
-				let jumpLinkID = "jumpLink"+(n+1);
-				$("#placeholder").attr("id",jumpLinkID);
-				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
-				$("#jumpMenu").prepend(jumpLinks);
+                    label = "Line " + n + " Diag";
+                    jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+                }
+                let jumpLinkID = "jumpLink"+(n+1);
+                $("#placeholder").attr("id",jumpLinkID);
+                $("#"+jumpLinkID).attr("href","#paid-" + (n+1));
+                $("#jumpMenu").prepend(jumpLinks123);
 			}
 
 		};//Create button for each line and add last 4 of SN
