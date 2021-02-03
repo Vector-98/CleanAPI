@@ -240,7 +240,7 @@ var RunSave = false;
 				var repairBoxName = "#repair-completed-" + n;
 				var diagBoxName = "#diagnosed-" + n;
 				if($(repairBoxName).is(":checked")){
-                   			done = " Done";
+                   			done = " Ready";
                 		}
 				else if($(diagBoxName).is(":checked")){
                    			done = " Diag";
