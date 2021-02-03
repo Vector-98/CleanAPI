@@ -239,18 +239,28 @@ var RunSave = false;
 				// jump menu trash
 				var repairBoxName = "#repair-completed-" + n;
 				var diagBoxName = "#diagnosed-" + n;
-				if($(repairBoxName).is(":checked")){
-                   			done = " Ready";
-                		}
+                var shipBoxName = "#QtyShippedConv-" +n;
+                label = "Line " + n;
+                var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+				if($(shipBoxName).is(":checked")){
+                    label = "Line " + n + " Done";
+                    jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
+
+                }else if($(repairBoxName).is(":checked")){
+                    label = "Line " + n + " Ready";
+                    jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
+                    //$("#" + jumpLinkID).css("color", "green");
+                }
 				else if($(diagBoxName).is(":checked")){
-                   			done = " Diag";
-                		}
-				label = "Line " + n + done;
-				let jumpLinks = ('<li><a id="placeholder">' + label + '</a></li>');
-				let jumpLinkID = "jumpLink"+(n+1);
-				$("#placeholder").attr("id",jumpLinkID);
-				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
-				$("#jumpMenu").prepend(jumpLinks);
+                    label = "Line " + n + " Diag";
+                    jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+                }
+                let jumpLinkID = "jumpLink"+(n+1);
+                $("#placeholder").attr("id",jumpLinkID);
+                $("#"+jumpLinkID).attr("href","#paid-" + (n+1));
+                $("#jumpMenu").prepend(jumpLinks123);
 			}
 
 		};//Create button for each line and add last 4 of SN
