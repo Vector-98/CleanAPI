@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.85
+// @version      1.2.86
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -240,7 +240,7 @@ var RunSave = false;
 				var repairBoxName = "#repair-completed-" + n;
 				var diagBoxName = "#diagnosed-" + n;
 				if($(repairBoxName).is(":checked")){
-                   			done = " Done";
+                   			done = " Ready";
                 		}
 				else if($(diagBoxName).is(":checked")){
                    			done = " Diag";
