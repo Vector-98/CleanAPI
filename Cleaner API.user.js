@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.87
+// @version      1.2.88
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
-// @author       Vector, Dylon L, Kevin B
+// @author       Vector, Dylon L, Kevin B, Nick R
 // @match        https://fireflycomputers.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
@@ -315,7 +315,43 @@ var RunSave = false;
 				$("#TNinsert").attr("id", "TN-" + tn);
 				console.log("tech name fill made")
 			}
-		};//Create Tech button for each line
+		};
+		
+		$(".save-line").click(function () {//Live updating of jumpmenu
+            var hold = $(this).attr("data-id");
+            var label = "";
+            //console.log("Element was removed " + $(this).attr("data-id"));
+            var repairBoxName = "#repair-completed-" + hold;
+            var diagBoxName = "#diagnosed-" + hold;
+            var shipBoxName = "#QtyShippedConv-" + hold;
+
+            if($(shipBoxName).is(":checked")){
+                label = "Line " + hold + " Done";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "gray");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
+
+            }else if($(repairBoxName).is(":checked")){
+                label = "Line " + hold + " Ready";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "green");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
+            }
+            else if($(diagBoxName).is(":checked")){
+                label = "Line " + hold + " Diag";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+            } else {
+                $("#jumpLink" + hold).text("Line " + hold);
+                $("#jumpLink" + hold).css("color", "");
+            }
+        });
+		//Create Tech button for each line
 
 		/* 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
