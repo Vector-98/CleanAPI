@@ -7,6 +7,7 @@
 // @description  try to make things better for everyone
 // @author       Vector, Dylon L, Kevin B, Nick R
 // @match        https://fireflycomputers.com/api-sro/
+// @match        http://firefly.johnsonwebsites.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require 	 https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js
