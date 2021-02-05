@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.88
+// @version      1.2.89
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -451,9 +451,6 @@ var RunSave = false;
 				if(!stateOfButtons[i]){
 					singleClick(i);
 					toggle[i];
-												 
-												   
-																								
 				}
 			}
 		};//end of hideAll function
@@ -461,8 +458,7 @@ var RunSave = false;
 			for(var i = 1; i < 26; i++){
 				if(stateOfButtons[i]){
 					singleClick(i);
-					toggle[i];
-																								
+					toggle[i];	
 				}
 			}
 		};
@@ -566,10 +562,6 @@ var RunSave = false;
 			})
 		})// revoves ' from testareas and inputs as you type
 
-																			 
-   
-   
-
 
 
 		$("body > div.navbar-brand > a").removeAttr("href");
@@ -577,7 +569,6 @@ var RunSave = false;
 		//$("#bottom-item-wrap > div.col-md-12").append(box)
 		//$('#bottom-item-wrap > div.col-md-12 > div > label').append(chkdrp)
 		//$('#bottom-item-wrap > div.col-md-12').append(btndrp)
-
 
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
@@ -637,9 +628,9 @@ var RunSave = false;
 				case "LEN ADP + LEN BASE + LEN EXTBASE":
 				case "LEN BASE + LEN ADP + LEN EXTBASE":
 				case "LEN BASE + LEN ADP":
-				case "LEN ADP + LEN BASE":			  
+				case "LEN ADP + LEN BASE":
 				case "LEN EXT BASE + LEN ADP ONLY":
-				case "LEN EXTBASE ONLYLEN ADP ONLY":											
+				case "LEN EXTBASE ONLYLEN ADP ONLY":
 				case "HP BASE + HP ADP"://---------------// Start of HP Full warranties
 					return "MFR-Full";
 
@@ -724,8 +715,7 @@ var RunSave = false;
 				default:
 					return PrMatch
 			}
-		};
-
+	
 		if(autoHideDoneLines == true){
 			showAll();
 			for(var k = 0; k < 26; k++){
@@ -806,7 +796,6 @@ var RunSave = false;
 								   'Secondary Webcam','Webcam Cable','Cable Kit','RAM',
 								   'Click Board','LCD Adhesive Strip']
 			}
-
 		$('#copy').click(function(){// this is called when export button is clicked
 			var techName = getCookie("techName");
 			/* 			if(techName === "Tony"){
@@ -831,7 +820,6 @@ var RunSave = false;
 			var CurIn = 0;
 			var EXP2DArray = []
 
-
 			var lines = [];//array to store arrays of line information.
 			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
@@ -850,8 +838,6 @@ var RunSave = false;
 				}
 
 			}
-
-
 			for (var i = 0; i <= 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
@@ -879,82 +865,72 @@ var RunSave = false;
 						//prt = part value
 
 						prt[v] = FixParts(PrMatch[v])
-					};	   
+	   
 
 					if ($("#paid-"+i).is(":checked") == true){
 						warranty = "Paid"
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
-					
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
-										 
+						//PartsFixed = fixParts(group1Caps)
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, p1, s, p2, s, p3, s, p4, s, p5])
-
-	  
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 					else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : LEN-', '');
-						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
-						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else if (model.includes("ASUS-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : DEL-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
-
-	  
+ 
 					}
 					else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
-	  
 					}
 					else {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = 'MISSING MODEL'
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 
 				}
