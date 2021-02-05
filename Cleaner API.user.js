@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.87
+// @version      1.2.88
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
-// @author       Vector, Dylon L, Kevin B
+// @author       Vector, Dylon L, Kevin B, Nick R
 // @match        https://fireflycomputers.com/api-sro/
+// @match        http://firefly.johnsonwebsites.com/api-sro/
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require 	 https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js
@@ -196,7 +197,11 @@ var RunSave = false;
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
 		$("[id^=customer]").css({"width": "145%","float":"left"}) // Customer width fix
-
+        $("[id^=res-notes-]").css({"width": "100%"})
+        $("[id^=diagnosed-notes-]").css({"width": "104%"})
+        $("[id^=out-]").css({"width": "100%"})
+        $("[id^=device-notes-]").css({"width": "104%"})
+		
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
@@ -263,22 +268,22 @@ var RunSave = false;
 				$("#Last4").attr("id", "Last4-L" + n);
 
 				// jump menu trash
-				var repairBoxName = "#repair-completed-" + n;
-				var diagBoxName = "#diagnosed-" + n;
-                var shipBoxName = "#QtyShippedConv-" +n;
+				var repairBoxCheck = "#repair-completed-" + n;
+				var diagBoxCheck = "#diagnosed-" + n;
+                var shipBoxCheck = "#QtyShippedConv-" +n;
                 label = "Line " + n;
                 var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
-				if($(shipBoxName).is(":checked")){
-                    label = "Line " + n + " Done";
+				if($(shipBoxCheck).is(":checked")){
+                    label = "Line " + n + " Ship";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
-                }else if($(repairBoxName).is(":checked")){
-                    label = "Line " + n + " Ready";
+                }else if($(repairBoxCheck).is(":checked")){
+                    label = "Line " + n + " Done";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
                     //$("#" + jumpLinkID).css("color", "green");
                 }
-				else if($(diagBoxName).is(":checked")){
+				else if($(diagBoxCheck).is(":checked")){
                     label = "Line " + n + " Diag";
                     jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
@@ -315,7 +320,71 @@ var RunSave = false;
 				$("#TNinsert").attr("id", "TN-" + tn);
 				console.log("tech name fill made")
 			}
-		};//Create Tech button for each line
+		};
+		
+		$(".save-line").click(function () {//Live updating of jumpmenu
+            var hold = $(this).attr("data-id");
+            var label = "";
+            //console.log("Element was removed " + $(this).attr("data-id"));
+            repairBoxCheck = "#repair-completed-" + hold;
+            diagBoxCheck = "#diagnosed-" + hold;
+            shipBoxCheck = "#QtyShippedConv-" + hold;
+
+            if($(shipBoxCheck).is(":checked")){
+                label = "Line " + hold + " Ship";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "gray");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
+
+            }else if($(repairBoxCheck).is(":checked")){
+                label = "Line " + hold + " Done";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "green");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
+            }
+            else if($(diagBoxCheck).is(":checked")){
+                label = "Line " + hold + " Diag";
+                $("#jumpLink" + hold).text(label);
+                $("#jumpLink" + hold).css("color", "");
+                //console.log(label);
+                //jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+
+            } else {
+                $("#jumpLink" + hold).text("Line " + hold);
+                $("#jumpLink" + hold).css("color", "");
+            }
+        });
+		
+		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:100px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
+
+        $("#key").hide();
+
+
+        $("a").hover(function(){
+            var textHold = $(this).text();
+            var textLength = textHold.length;
+            var status = textHold.slice(textLength - 4)
+            //console.log(textLength);
+            //console.log(status);
+
+            if(status == "Diag"){
+                $("#key").text("Diag = Diagnosed");
+                $("#key").show();
+            } else if(status == "Done"){
+                $("#key").text("Done = Ready to Ship");
+                $("#key").show();
+            } else if(status == "Ship"){
+                $("#key").text("Ship = Shipped");
+                $("#key").show();
+            }
+            console.log("Hi");
+        }, function(){
+            $("#key").hide();
+        });
+		
+		//Create Tech button for each line
 
 		/* 		$("[id^=SN-]").on('click', function(){
 			RunSave = !RunSave
