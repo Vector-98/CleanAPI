@@ -650,6 +650,81 @@ var RunSave = false;
 					return "Missing";
 			}
 		};
+		function FixParts(PrMatch){
+			switch(PrMatch.toLowerCase()){
+				case "batt":
+				case "bat":
+					return "Batt.";
+				case "mlb":
+				case "mb":
+					return "MLB";
+				case "lcd":
+					return "LCD";
+				case "lcdc":
+				case "lcd cbl":
+					return "LCD Cable";
+				case "kb":
+					return "KB";
+				case "tpd":
+					return "TPD";
+				case "tpdc":
+				case "tpd cbl":
+					return "TPD Cable";
+				case "wc":
+				case "wifi":
+					return "WLAN";
+				case "dc-in":
+				case "dc jack":
+					return "DC Jack";
+				case "hdd":
+				case "ssd":
+				case "m.2":
+					return "HDD/SSD";
+				case "speakers":
+				case "spk":
+					return "Speakers";
+				case "button":
+				case "power button board":
+					return "Power Button Board";
+				case "usb board":
+				case "db":
+					return "USB Board";
+				case "db":
+				case "auido board":
+					return "Audio Board";
+				case "bezel":
+				case "bez":
+					return "LCD Bezel";
+				case "top":
+				case "top cover":
+					return "LCD Back Cover";
+				case "bottom case":
+				case "btm":
+					return "Bottom Chassis";
+				case "hinges":
+				case "hng":
+					return "Hinges";
+				case "webcam":
+				case "cam":
+					return "Webcam";
+				case "secondary webcam":
+					return "Secondary Webcam";
+				case "webcam cable":
+				case "cam cbl":
+					return "Webcam Cable";
+				case "cable kit":
+					return "Cable Kit";
+				case "ram":
+				case "RAM":
+					return "RAM";
+				case "click board":
+					return "Click Board";
+				case "adhesive":
+					return "LCD Adhesive Strip";
+				default:
+					return PrMatch
+			}
+		};
 
 		if(autoHideDoneLines == true){
 			showAll();
@@ -716,6 +791,22 @@ var RunSave = false;
 			})
 		};// checksum goodies
 
+		function PartsImport(){
+			//var dNotes = $("#diagnosed-notes-" + i).val();
+			var partsArray = ['Batt.','MLB','LCD','LCD Cable','KB',
+							  'TPD','TPD Cable','WLAN','DC Jack','HDD/SSD',
+							  'Speakers','Power Button Board','Sensor Board','USB Board','Audio Board',
+							  'LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam',
+							  'Secondary Webcam','Webcam Cable','Cable Kit','RAM',
+							  'Click Board','LCD Adhesive Strip']
+			var partsValueArray = ['Battery.','MLB','LCD','LCD Cable','KB',
+								   'TPD','TPD Cable','WLAN','DC Jack','HDD/SSD',
+								   'Speakers','Power Button Board','Sensor Board','USB Board','Audio Board',
+								   'LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam',
+								   'Secondary Webcam','Webcam Cable','Cable Kit','RAM',
+								   'Click Board','LCD Adhesive Strip']
+			}
+
 		$('#copy').click(function(){// this is called when export button is clicked
 			var techName = getCookie("techName");
 			/* 			if(techName === "Tony"){
@@ -759,9 +850,7 @@ var RunSave = false;
 				}
 
 			}
-			function testw(){
-				i
-			}
+
 
 			for (var i = 0; i <= 25; i++) {//for (var i = 1; i < 25; i++
 				if(!$("#snumber-" + i).val() == ""){
@@ -778,31 +867,29 @@ var RunSave = false;
 					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
 					var s = ""// space filler may not be needed but i did it anyway[V]
-					var p1 = ""
-					var p2 = ""
-					var p3 = ""
-					var p4 = ""
-					var p5 = ""
+					var regex = /{([\s\S]+?)}/i;
+					var match = regex.exec(diagNotes)
+					var prt = ['','','','','']
+					var PrMatch = match[1].split(",")
+					let ss = prt.push(PrMatch)
+
+					for(var v = 0; v < PrMatch.length; v++) {
+						//find index of prtMatch in keys;
+						//put that index in values array
+						//prt = part value
+
+						prt[v] = FixParts(PrMatch[v])
+					};	   
 
 					if ($("#paid-"+i).is(":checked") == true){
 						warranty = "Paid"
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
-					//let HpLinArr = [today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed]
-					//hpLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
-					//lenLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
-					//dellLines.push([today, techName, $("#sro-number").val(), $("#customer").val(), i, location, $("#snumber-" + i).val(), modelTrim, warrantyFixed]);
-
-					if($.inArray(diagNotes.toUpperCase(), partsArray ) > -1){
-						console.log('found one')
-					}																						 
-																   
-	  
-
-
+					
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
+										 
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, p1, s, p2, s, p3, s, p4, s, p5])
 
@@ -813,12 +900,14 @@ var RunSave = false;
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
 						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
+
 	  
 					}
 					else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
 						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+
 
 	  
 					}
@@ -827,12 +916,14 @@ var RunSave = false;
 						modelTrim = model.replace('Model(Item) : LEN-', '');
 						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
+
 	  
 					}
 					else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : ACER-', '');
 						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+
 
 	  
 					}
@@ -841,6 +932,7 @@ var RunSave = false;
 						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
+
 	  
 					}
 					else if (model.includes("DEL-")) {
@@ -848,12 +940,14 @@ var RunSave = false;
 						modelTrim = model.replace('Model(Item) : DEL-', '');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
 
+
 	  
 					}
 					else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed])
+
 
 	  
 					}
