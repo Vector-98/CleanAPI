@@ -865,6 +865,7 @@ var RunSave = false;
 						//prt = part value
 
 						prt[v] = FixParts(PrMatch[v])
+					}
 	   
 
 					if ($("#paid-"+i).is(":checked") == true){
