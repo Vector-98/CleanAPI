@@ -270,16 +270,16 @@ var RunSave = false;
                 var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				if($(shipBoxName).is(":checked")){
-                    label = "Line " + n + " Done";
+                    label = "Line " + n + " S";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
                 }else if($(repairBoxName).is(":checked")){
-                    label = "Line " + n + " Ready";
+                    label = "Line " + n + " R";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
                     //$("#" + jumpLinkID).css("color", "green");
                 }
 				else if($(diagBoxName).is(":checked")){
-                    label = "Line " + n + " Diag";
+                    label = "Line " + n + " D";
                     jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
                 }
@@ -326,21 +326,21 @@ var RunSave = false;
             var shipBoxName = "#QtyShippedConv-" + hold;
 
             if($(shipBoxName).is(":checked")){
-                label = "Line " + hold + " Done";
+                label = "Line " + hold + " S";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "gray");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
             }else if($(repairBoxName).is(":checked")){
-                label = "Line " + hold + " Ready";
+                label = "Line " + hold + " R";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "green");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
             }
             else if($(diagBoxName).is(":checked")){
-                label = "Line " + hold + " Diag";
+                label = "Line " + hold + " D";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "");
                 //console.log(label);
@@ -351,6 +351,19 @@ var RunSave = false;
                 $("#jumpLink" + hold).css("color", "");
             }
         });
+		
+		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:100px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
+
+        $("#key").hide();
+
+
+        $("a").hover(function(){
+            $("#key").show();
+            console.log("Hi");
+        }, function(){
+            $("#key").hide();
+        });
+		
 		//Create Tech button for each line
 
 		/* 		$("[id^=SN-]").on('click', function(){
