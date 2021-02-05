@@ -197,7 +197,11 @@ var RunSave = false;
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
 		$("[id^=customer]").css({"width": "145%","float":"left"}) // Customer width fix
-
+        $("[id^=res-notes-]").css({"width": "100%"})
+        $("[id^=diagnosed-notes-]").css({"width": "104%"})
+        $("[id^=out-]").css({"width": "100%"})
+        $("[id^=device-notes-]").css({"width": "104%"})
+		
 		preferencesEnabled = true;
 
 		if($("#sro-number").val().includes(420)){
