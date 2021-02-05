@@ -358,7 +358,22 @@ var RunSave = false;
 
 
         $("a").hover(function(){
-            $("#key").show();
+            var textHold = $(this).text();
+            var textLength = textHold.length;
+            var status = textHold.slice(textLength - 1)
+            //console.log(textLength);
+            //console.log(status);
+
+            if(status == "D"){
+                $("#key").text("D = Diagnosed");
+                $("#key").show();
+            } else if(status == "R"){
+                $("#key").text("R = Ready to Ship");
+                $("#key").show();
+            } else if(status == "S"){
+                $("#key").text("S = Shipped");
+                $("#key").show();
+            }
             console.log("Hi");
         }, function(){
             $("#key").hide();
