@@ -271,16 +271,16 @@ var RunSave = false;
                 var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				if($(shipBoxCheck).is(":checked")){
-                    label = "Line " + n + " S";
+                    label = "Line " + n + " Ship";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
                 }else if($(repairBoxCheck).is(":checked")){
-                    label = "Line " + n + " R";
+                    label = "Line " + n + " Done";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
                     //$("#" + jumpLinkID).css("color", "green");
                 }
 				else if($(diagBoxCheck).is(":checked")){
-                    label = "Line " + n + " D";
+                    label = "Line " + n + " Diag";
                     jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
                 }
@@ -327,21 +327,21 @@ var RunSave = false;
             shipBoxCheck = "#QtyShippedConv-" + hold;
 
             if($(shipBoxCheck).is(":checked")){
-                label = "Line " + hold + " S";
+                label = "Line " + hold + " Ship";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "gray");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
             }else if($(repairBoxCheck).is(":checked")){
-                label = "Line " + hold + " R";
+                label = "Line " + hold + " Done";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "green");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
             }
             else if($(diagBoxCheck).is(":checked")){
-                label = "Line " + hold + " D";
+                label = "Line " + hold + " Diag";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "");
                 //console.log(label);
@@ -361,18 +361,18 @@ var RunSave = false;
         $("a").hover(function(){
             var textHold = $(this).text();
             var textLength = textHold.length;
-            var status = textHold.slice(textLength - 1)
+            var status = textHold.slice(textLength - 4)
             //console.log(textLength);
             //console.log(status);
 
-            if(status == "D"){
-                $("#key").text("D = Diagnosed");
+            if(status == "Diag"){
+                $("#key").text("Diag = Diagnosed");
                 $("#key").show();
-            } else if(status == "R"){
-                $("#key").text("R = Ready to Ship");
+            } else if(status == "Done"){
+                $("#key").text("Done = Ready to Ship");
                 $("#key").show();
-            } else if(status == "S"){
-                $("#key").text("S = Shipped");
+            } else if(status == "Ship"){
+                $("#key").text("Ship = Shipped");
                 $("#key").show();
             }
             console.log("Hi");
