@@ -263,22 +263,22 @@ var RunSave = false;
 				$("#Last4").attr("id", "Last4-L" + n);
 
 				// jump menu trash
-				var repairBoxName = "#repair-completed-" + n;
-				var diagBoxName = "#diagnosed-" + n;
-                var shipBoxName = "#QtyShippedConv-" +n;
+				var repairBoxCheck = "#repair-completed-" + n;
+				var diagBoxCheck = "#diagnosed-" + n;
+                var shipBoxCheck = "#QtyShippedConv-" +n;
                 label = "Line " + n;
                 var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
-				if($(shipBoxName).is(":checked")){
+				if($(shipBoxCheck).is(":checked")){
                     label = "Line " + n + " S";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
-                }else if($(repairBoxName).is(":checked")){
+                }else if($(repairBoxCheck).is(":checked")){
                     label = "Line " + n + " R";
                     jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
                     //$("#" + jumpLinkID).css("color", "green");
                 }
-				else if($(diagBoxName).is(":checked")){
+				else if($(diagBoxCheck).is(":checked")){
                     label = "Line " + n + " D";
                     jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
@@ -321,25 +321,25 @@ var RunSave = false;
             var hold = $(this).attr("data-id");
             var label = "";
             //console.log("Element was removed " + $(this).attr("data-id"));
-            var repairBoxName = "#repair-completed-" + hold;
-            var diagBoxName = "#diagnosed-" + hold;
-            var shipBoxName = "#QtyShippedConv-" + hold;
+            repairBoxCheck = "#repair-completed-" + hold;
+            diagBoxCheck = "#diagnosed-" + hold;
+            shipBoxCheck = "#QtyShippedConv-" + hold;
 
-            if($(shipBoxName).is(":checked")){
+            if($(shipBoxCheck).is(":checked")){
                 label = "Line " + hold + " S";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "gray");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
-            }else if($(repairBoxName).is(":checked")){
+            }else if($(repairBoxCheck).is(":checked")){
                 label = "Line " + hold + " R";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "green");
                 //console.log(label);
                 //jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
             }
-            else if($(diagBoxName).is(":checked")){
+            else if($(diagBoxCheck).is(":checked")){
                 label = "Line " + hold + " D";
                 $("#jumpLink" + hold).text(label);
                 $("#jumpLink" + hold).css("color", "");
