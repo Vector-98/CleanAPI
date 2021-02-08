@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.90
+// @version      1.2.91
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -11,8 +11,6 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 // @require      https://gist.githubusercontent.com/raw/2625891/waitForKeyElements.js
 // @require 	 https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js
-// @require		 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js
-// @resource	 https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css
 // @grant		 GM_addStyle
 // @grant		 GM_cookie
 // @grant		 GM.getResourceUrl
@@ -74,7 +72,7 @@ var RunSave = false;
 			$('#sro-submit').prop('disabled', false)
 		}else{
 			$('#sro-submit').prop('disabled', true)
-		} */					   
+		} */
 	};
 
 	if(getCookie("techName") == "null" || getCookie("techName") == ""){
@@ -240,6 +238,9 @@ var RunSave = false;
 					l4label = $('#snumber-' + n).val().slice(-4);
 				}else{
 					l4label = $('#snumber-' + n).val().slice(14,18); // for ACER
+				}
+				if($('#diagnosed-notes-'+n).is(':empty') == true){
+					$('#diagnosed-notes-'+n).append('{ }')
 				}
 
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
@@ -621,6 +622,7 @@ var RunSave = false;
 			}
 		};
 		function FixParts(PrMatch){
+			console.log('fixparts passed var>>'+PrMatch.toLowerCase())
 			switch(PrMatch.toLowerCase()){
 				case "batt":
 				case "bat":
@@ -723,59 +725,24 @@ var RunSave = false;
 			};
 			var fullPage = $("#full-container").prop('outerHTML')
 
+			waitForKeyElements('#popContainer',function(){
+					$('#popContainer').remove()
+					$('#sro-submit').prop("disabled", false );
+				})
+
 			$('#Checksum').on("click",function(){
-				var ff = [];
-				var line = $(this).data("id");
-				var ShtPrt = ['Batt.','MLB','LCD','LCD Cable','Palmrest','KB','TPD','TPD Cable','WLAN','DC Jack','HDD/SSD','Speakers','Power Button Board','USB Board',
-							  'Audio Board','LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam','Secondary Webcam','Webcam Cable','RAM','Service Door'];
-
-				var CutPrt = ['WWAN','AC Adapter','HDD/SSD Bracket','Finger Print Reader','Rubber Kit','Optical Drive','G-Sensor','Touchscreen Sensor','Stylus','Screw Kit','Card Reader','Hinge Cap',
-							  'Power Board','Backlit MLB','Heatsink','Thermal Pad','Fan','Batt. Cable','Cable Kit','Click Board','HDD/SSD Cable','Sensor Board','CMOS'];
-
-				var Dstr = ('|LCD||Batt||TPD||TPD CBL||Lcdc|'); //$("#diagnosed-notes-1").val();
-				var Store
-
-				var regex = /\|(.*?)\|/g;
-				//var MatchReg = Dstr.match(regex)
-				//var finMatch = ff.push([MatchReg])
-				//console.log("finMatch"+ff)
-
-				while((Store = regex.exec(Dstr)) != null){
-					//console.log("full match "+Store[0])
-					console.log("G1 Match "+Store[1])
-					ff.push(Store[1])
-					console.log("parts array "+ff)
-					console.log('parts array len'+ShtPrt)
-				}
-
-
-				/* 				console.log(fullPage.hashCode())
+				console.log(fullPage.hashCode())
 				var hash = fullPage.hashCode()
 				var opens = prompt("Copy this code: "+fullPage.hashCode()+"\nPaste copied code after ")
 				if(hash == opens){
 					prompt("Checksum Matched")
 				}else{
 					prompt("Checksum Does not match\nDouble check your fields and reloading the SRO page")
-				} */
+				}
 
 			})
 		};// checksum goodies
 
-		function PartsImport(){
-			//var dNotes = $("#diagnosed-notes-" + i).val();
-			var partsArray = ['Batt.','MLB','LCD','LCD Cable','KB',
-							  'TPD','TPD Cable','WLAN','DC Jack','HDD/SSD',
-							  'Speakers','Power Button Board','Sensor Board','USB Board','Audio Board',
-							  'LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam',
-							  'Secondary Webcam','Webcam Cable','Cable Kit','RAM',
-							  'Click Board','LCD Adhesive Strip']
-			var partsValueArray = ['Battery.','MLB','LCD','LCD Cable','KB',
-								   'TPD','TPD Cable','WLAN','DC Jack','HDD/SSD',
-								   'Speakers','Power Button Board','Sensor Board','USB Board','Audio Board',
-								   'LCD Bezel','LCD Back Cover','Bottom Chassis','Hinges','Webcam',
-								   'Secondary Webcam','Webcam Cable','Cable Kit','RAM',
-								   'Click Board','LCD Adhesive Strip']
-			}
 		$('#copy').click(function(){// this is called when export button is clicked
 			var techName = getCookie("techName");
 			/* 			if(techName === "Tony"){
@@ -826,21 +793,22 @@ var RunSave = false;
 					var warrantyFixed;
 					var s = ""// space filler may not be needed but i did it anyway[V]
 					try {
-						var regex = /{([\s\S]+?)}/i;
-						var match = regex.exec(diagNotes)
-						var prt = ['','','','','']
-						var PrMatch = match[1].split(",")
-						let ss = prt.push(PrMatch)
+						var regex = /{([\s\S]+?)}/i; // search match beteen { }
+						var match = regex.exec(diagNotes) // find match in diag notes
+						var prt = ['','','','',''] // array to put matches
+						var PrMatch = match[1].split(",") // split matches by ,
+						let ss = prt.push(PrMatch)// put matches in
 						for(var v = 0; v < PrMatch.length; v++) {
 							//find index of prtMatch in keys;
 							//put that index in values array
 							//prt = part value
 							prt[v] = FixParts(PrMatch[v])
+							console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
 						}
 					}
 					catch(err){
-						alert('missing parts in diag notes try putting in like {mlb,kb,lcd}')
-						console.log('missing parts in diag notes try putting in like {mlb,kb,lcd}')
+						alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
+						console.log('missing parts in diag notes line'+i)
 					}
 
 
