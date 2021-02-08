@@ -240,7 +240,7 @@ var RunSave = false;
 					l4label = $('#snumber-' + n).val().slice(14,18); // for ACER
 				}
 				if($('#diagnosed-notes-'+n).is(':empty') == true){
-					$('#diagnosed-notes-'+n).append('{ }')
+					$('#diagnosed-notes-'+n).append('{,}')
 				}
 
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
