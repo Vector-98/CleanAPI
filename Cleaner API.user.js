@@ -330,7 +330,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 			}else if($(repairBoxCheck).is(":checked")){
-				label = "Line " + hold + " Done";
+				label = "Line " + hold + " RTS";
                 $("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
