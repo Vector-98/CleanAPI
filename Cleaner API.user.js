@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.91
+// @version      1.2.92
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -67,6 +67,10 @@ var RunSave = false;
 		if(SroLength == 6) {
 			var Pre6 = "SRO0"
 			$("#sro-number").val(Pre6+$("#sro-number").val())
+		}//end of IF
+		if(SroLength == 7) {
+			var Pre7 = "SRO"
+			$("#sro-number").val(Pre7+$("#sro-number").val())
 		}//end of IF
 		/* 		if(SroLength == 10){
 			$('#sro-submit').prop('disabled', false)
@@ -337,7 +341,7 @@ var RunSave = false;
 			}
 		});
 
-		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:100px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
+		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
 
 		$("#key").hide();
 
@@ -350,13 +354,13 @@ var RunSave = false;
 			//console.log(status);
 
 			if(status == "Diag"){
-				$("#key").text("Diag = Diagnosed");
+				$("#key").text("Diagnosed");
 				$("#key").show();
 			} else if(status == "Done"){
-				$("#key").text("Done = Ready to Ship");
+				$("#key").text("Ready to Ship");
 				$("#key").show();
 			} else if(status == "Ship"){
-				$("#key").text("Ship = Shipped");
+				$("#key").text("Shipped");
 				$("#key").show();
 			}
 			console.log("Hi");
@@ -456,9 +460,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// FireFly Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(125,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(125,"linear")
