@@ -260,23 +260,23 @@ var RunSave = false;
 				var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				if($(shipBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " Ship";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:#FE5000; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#FE5000; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " Diag";
 					jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				} else {
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '"margin-right:5px; style="height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
                 }
 				
 				let jumpLinkID = "jumpLink"+(n+1);
