@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.92
+// @version      1.2.93
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -263,7 +263,7 @@ var RunSave = false;
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
-					label = "Line " + n + " Done";
+					label = "Line " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
@@ -356,7 +356,7 @@ var RunSave = false;
 			if(status == "Diag"){
 				$("#key").text("Diagnosed");
 				$("#key").show();
-			} else if(status == "Done"){
+			} else if(status == " RTS"){
 				$("#key").text("Ready to Ship");
 				$("#key").show();
 			} else if(status == "Ship"){
