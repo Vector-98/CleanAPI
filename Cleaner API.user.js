@@ -276,7 +276,7 @@ var RunSave = false;
 					jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				} else {
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '"margin-right:5px; style="height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
                 }
 				
 				let jumpLinkID = "jumpLink"+(n+1);
