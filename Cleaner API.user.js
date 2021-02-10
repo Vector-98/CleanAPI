@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.93
+// @version      1.2.94
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -256,22 +256,29 @@ var RunSave = false;
 				var diagBoxCheck = "#diagnosed-" + n;
 				var shipBoxCheck = "#QtyShippedConv-" +n;
 				label = "Line " + n;
+				var whichButt = "#butt-" + n;
 				var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				if($(shipBoxCheck).is(":checked")){
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " Ship";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:#FE5000; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " Diag";
 					jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
-				}
+				} else {
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+                }
+				
 				let jumpLinkID = "jumpLink"+(n+1);
 				$("#placeholder").attr("id",jumpLinkID);
 				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
@@ -316,6 +323,7 @@ var RunSave = false;
 
 			if($(shipBoxCheck).is(":checked")){
 				label = "Line " + hold + " Ship";
+                $("#buttCircle-" + hold).css("background-color", "gray");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "gray");
 				//console.log(label);
@@ -323,6 +331,7 @@ var RunSave = false;
 
 			}else if($(repairBoxCheck).is(":checked")){
 				label = "Line " + hold + " Done";
+                $("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
 				//console.log(label);
@@ -330,12 +339,14 @@ var RunSave = false;
 			}
 			else if($(diagBoxCheck).is(":checked")){
 				label = "Line " + hold + " Diag";
+                $("#buttCircle-" + hold).css("background-color", "#FE5000");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "");
 				//console.log(label);
 				//jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 			} else {
+                $("#buttCircle-" + hold).css("background-color", "white");
 				$("#jumpLink" + hold).text("Line " + hold);
 				$("#jumpLink" + hold).css("color", "");
 			}
