@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.94
+// @version      1.2.95
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -271,9 +271,9 @@ var RunSave = false;
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#FE5000; border-radius:50%; display:inline-block;"></span>');
+                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#800020; border-radius:50%; display:inline-block;"></span>');
 					label = "Line " + n + " Diag";
-					jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+					jumpLinks123 = ('<li><a id="placeholder" style="color:#800020";>' + label + '</a></li>');
 
 				} else {
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
@@ -339,9 +339,9 @@ var RunSave = false;
 			}
 			else if($(diagBoxCheck).is(":checked")){
 				label = "Line " + hold + " Diag";
-                $("#buttCircle-" + hold).css("background-color", "#FE5000");
+                $("#buttCircle-" + hold).css("background-color", "#800020");
 				$("#jumpLink" + hold).text(label);
-				$("#jumpLink" + hold).css("color", "");
+				$("#jumpLink" + hold).css("color", "#800020");
 				//console.log(label);
 				//jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
