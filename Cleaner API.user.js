@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.95
+// @version      1.2.96
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -970,7 +970,7 @@ var RunSave = false;
 			var dellLines = [];
 
 			var lines = [];//array to store arrays of line information.
-			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
+			//var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)");
 			var EXP2DArray = []
@@ -993,7 +993,7 @@ var RunSave = false;
 					console.log(i)
 					console.log(CurIn-1)
 
-					var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
+					//var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
 					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
 					var warranty = $("#warranty-" + i).val();
 					w.document.write("Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc);
