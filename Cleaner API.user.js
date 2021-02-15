@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.96
+// @version      1.2.98
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -14,9 +14,11 @@
 // @grant		 GM_addStyle
 // @grant		 GM_cookie
 // @grant		 GM.getResourceUrl
+// @grant		 GM.info
 /* globals jQuery, $, waitForKeyElements, JsBarcode */
 // ==/UserScript==
 // Test SROs<|||>4020,16753
+var vers = GM_info.script.version;
 var $ = window.jQuery;
 var preferencesEnabled = false;
 var techName;
@@ -32,6 +34,7 @@ var RunSave = false;
 	$("#masthead").remove()
 	document.getElementById("sro-submit").value="Load SRO";
 	//var multisel = GM.getResourceUrl('https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css')
+	console.log
 
 
 	$("#get-item").focusout(function() {
@@ -713,6 +716,20 @@ var RunSave = false;
 					return PrMatch
 			}
 		}
+		function FixModel(SlModel){
+			switch(SlModel){
+				case 'HP':
+					return 'HP-CBK';
+				case 'Lenovo':
+					return 'LEN-';
+				case 'Acer':
+					return'ACER';
+				case 'Asus':
+					return'ASUS-CBK';
+				case 'Dell':
+					return'DEL';
+			}
+		}
 
 		if(autoHideDoneLines == true){
 			showAll();
@@ -784,7 +801,8 @@ var RunSave = false;
 			var EXP2DArray = []
 
 			var lines = [];//array to store arrays of line information.
-			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
+			//var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
+			var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > a.btn.btn-info.btn-sm.text-white.w-100.rounded-bottom") // grab text from linw
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
 
 			for(var m = 1; m <= 25; m++){
@@ -798,7 +816,10 @@ var RunSave = false;
 					CurIn ++
 					//console.log(CurIn)
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent; used with pre patched api with model on page between <br>
-					var model = 'MISSING MODEL';
+					var premodel = modelsArray[CurIn-1].textContent;
+					console.log(premodel+'line model pre slice')
+					var SlModel
+					var model
 					var modelTrim;
 					var SroNum = $("#sro-number").val()
 					var Cust = $("#customer").val()
@@ -809,6 +830,7 @@ var RunSave = false;
 					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
 					var s = ""// space filler may not be needed but i did it anyway[V]
+					model = FixModel(SlModel)
 					try {
 						var regex = /{([\s\S]+?)}/i; // search match beteen { }
 						var match = regex.exec(diagNotes) // find match in diag notes
@@ -827,7 +849,10 @@ var RunSave = false;
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
 					}
-
+					var regexA = /(^[^\s]+)/;
+					var matchA = regexA.exec(premodel)
+					SlModel = matchA[1]
+					model = FixModel(SlModel)
 
 					if ($("#paid-"+i).is(":checked") == true){
 							warranty = "Paid"
@@ -836,7 +861,8 @@ var RunSave = false;
 						}
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
+						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
+						modelTrim = model.replace('HP-CBK', '');
 						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 					else if (model.includes("HP-PBK")) {
@@ -855,28 +881,32 @@ var RunSave = false;
 					}
 					else if (model.includes("LEN-")) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : LEN-', '');
+						//modelTrim = model.replace('Model(Item) : LEN-', '');
+						modelTrim = model.replace('LEN-', '');
 						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else if (model.includes("ACER-")) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : ACER-', '');
+						//modelTrim = model.replace('Model(Item) : ACER-', '');
+						modelTrim = model.replace('ACER-', '');
 						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else if (model.includes("ASUS-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
+						//modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
+						modelTrim = model.replace('ASUS-CBK-', '');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else if (model.includes("DEL-")) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : DEL-', '');
+						//modelTrim = model.replace('Model(Item) : DEL-', '');
+						modelTrim = model.replace('DEL-', '');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
@@ -995,8 +1025,10 @@ var RunSave = false;
 
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
 					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
+					var descA = desc.slice(7)
 					var warranty = $("#warranty-" + i).val();
-					w.document.write("Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc);
+					warranty = fixWarranty(warranty)
+					w.document.write("Line: " + i + " ~ _________ ~ " + $("#snumber-" + i).val() + " ~~ " + warranty + " ~~ " + descA);
 					w.document.write("<br> <br>");
 
 				}
