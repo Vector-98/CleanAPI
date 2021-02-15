@@ -1025,8 +1025,10 @@ var RunSave = false;
 
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
 					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
+					var descA = desc.slice(7)
 					var warranty = $("#warranty-" + i).val();
-					w.document.write("Line: " + i + " ~~~ " + $("#snumber-" + i).val() + " ~~~ " + warranty + " ~~~ " + desc);
+					warranty = fixWarranty(warranty)
+					w.document.write("Line: " + i + " ~ _________ ~ " + $("#snumber-" + i).val() + " ~~ " + warranty + " ~~ " + descA);
 					w.document.write("<br> <br>");
 
 				}
