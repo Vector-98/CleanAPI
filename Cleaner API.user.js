@@ -16,7 +16,7 @@
 // @grant		 GM.getResourceUrl
 /* globals jQuery, $, waitForKeyElements, JsBarcode */
 // ==/UserScript==
-
+// Test SROs<|||>4020,16753
 var $ = window.jQuery;
 var preferencesEnabled = false;
 var techName;
@@ -797,7 +797,8 @@ var RunSave = false;
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
 					//console.log(CurIn)
-					var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent;
+					//var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent; used with pre patched api with model on page between <br>
+					var model = 'MISSING MODEL';
 					var modelTrim;
 					var SroNum = $("#sro-number").val()
 					var Cust = $("#customer").val()
@@ -828,14 +829,13 @@ var RunSave = false;
 					}
 
 
-						if ($("#paid-"+i).is(":checked") == true){
+					if ($("#paid-"+i).is(":checked") == true){
 							warranty = "Paid"
 						}else{
 							warranty = $("#warranty-" + i).val();
 						}
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
-						//PartsFixed = fixParts(group1Caps)
 						modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
