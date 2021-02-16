@@ -262,21 +262,27 @@ var RunSave = false;
 				label = "Ln " + n;
 				var whichButt = "#butt-" + n;
 				var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
+				var paidCheck = checkPaidStatus(n);
+                if(paidCheck.length > 0){
+                    paidCheck = "*";
+                } else{
+                    paidCheck = "";
+                }
 
 				if($(shipBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " Ship";
+					label = "Ln " + n + " Ship" + paidCheck;
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " RTS";
+					label = "Ln " + n + " RTS" + paidCheck;
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#800020; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " Diag";
+					label = "Ln " + n + " Diag" + paidCheck;
 					jumpLinks123 = ('<li><a id="placeholder" style="color:#800020";>' + label + '</a></li>');
 
 				} else {
@@ -324,9 +330,15 @@ var RunSave = false;
 			repairBoxCheck = "#repair-completed-" + hold;
 			diagBoxCheck = "#diagnosed-" + hold;
 			shipBoxCheck = "#QtyShippedConv-" + hold;
+			var paidCheck = checkPaidStatus(n);
+            if(paidCheck.length > 0){
+				paidCheck = "*";
+            } else{
+				paidCheck = "";
+			}
 
 			if($(shipBoxCheck).is(":checked")){
-				label = "Ln " + hold + " Ship";
+				label = "Ln " + hold + " Ship" + paidCheck;
                 $("#buttCircle-" + hold).css("background-color", "gray");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "gray");
@@ -334,7 +346,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 			}else if($(repairBoxCheck).is(":checked")){
-				label = "Ln " + hold + " RTS";
+				label = "Ln " + hold + " RTS" + paidCheck;
                 $("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
@@ -342,7 +354,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 			}
 			else if($(diagBoxCheck).is(":checked")){
-				label = "Ln " + hold + " Diag";
+				label = "Ln " + hold + " Diag" + paidCheck;
                 $("#buttCircle-" + hold).css("background-color", "#800020");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "#800020");
@@ -356,32 +368,64 @@ var RunSave = false;
 			}
 		});
 
-		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
-
+		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"></div>');
 		$("#key").hide();
-
 
 		$("a").hover(function(){
 			var textHold = $(this).text();
 			var textLength = textHold.length;
-			var status = textHold.slice(textLength - 4)
+			var status = textHold.slice(textLength - 4);
 			//console.log(textLength);
 			//console.log(status);
 
-			if(status == "Diag"){
-				$("#key").text("Diagnosed");
+            //console.log((this.id).slice(8));
+            var lineNumber = (this.id).slice(8);
+            //console.log(lineNumber);
+            var paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
+            var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
+            //console.log(paidStatus);
+
+			if(status == "iag*" || status == "Diag"){
+				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
 				$("#key").show();
-			} else if(status == " RTS"){
-				$("#key").text("Ready to Ship");
+			} else if(status == "RTS*" || status == " RTS"){
+				$("#key").text(repairStatus + 'Ready to Ship</p>' + paidStatus);
 				$("#key").show();
-			} else if(status == "Ship"){
-				$("#key").text("Shipped");
+			} else if(status == "hip*" || status == "Ship"){
+				$("#key").text(repairStatus + 'Shipped</p>' + paidStatus);
 				$("#key").show();
 			}
-			console.log("Hi");
 		}, function(){
 			$("#key").hide();
 		});
+
+        function checkPaidStatus(lineNumb){
+            /*
+            paid-1
+            quote-sent-1
+            quote-approved-1
+            repair-declined-1
+            repairBoxCheck = "#repair-completed-" + hold;
+            if($(repairBoxCheck).is(":checked")){
+            */
+            var paidRepairCheck = "#paid-" + lineNumb;
+            var quoteSentCheck = "#quote-sent-" + lineNumb;
+            var quoteApprovedCheck = "quote-approved-" + lineNumb;
+            var repairDeclineCheck = "repair-declined-" + lineNumb;
+            if($(repairDeclineCheck).is(":checked")){
+                return "Paid Repair was declined.";
+            }else if ($(quoteApprovedCheck).is(":checked")){
+                return "Paid Repair is approved, either waiting for parts or ready to be worked on.";
+            }else if ($(quoteSentCheck).is(":checked")){
+                return "Quote sent to customer, waiting on response.";
+            }else if ($(paidRepairCheck).is(":checked")){
+                return "Unit is a paid repair, waiting on quote";
+            }else {
+                return "";
+            }
+            //console.log($(paidRepairCheck).is(":checked"));
+            //return $(paidRepairCheck).is(":checked");
+        };
 
 		//Create Tech button for each line
 
