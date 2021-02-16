@@ -271,12 +271,12 @@ var RunSave = false;
 
 				if($(shipBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " Ship" + paidCheck;
+					label = "Ln " + n + " Ship";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " RTS" + paidCheck;
+					label = "Ln " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
@@ -338,7 +338,7 @@ var RunSave = false;
 			}
 
 			if($(shipBoxCheck).is(":checked")){
-				label = "Ln " + hold + " Ship" + paidCheck;
+				label = "Ln " + hold + " Ship";
                 $("#buttCircle-" + hold).css("background-color", "gray");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "gray");
@@ -346,7 +346,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 			}else if($(repairBoxCheck).is(":checked")){
-				label = "Ln " + hold + " RTS" + paidCheck;
+				label = "Ln " + hold + " RTS";
                 $("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
@@ -389,10 +389,10 @@ var RunSave = false;
 				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
 				$("#key").show();
 			} else if(status == "RTS*" || status == " RTS"){
-				$("#key").text(repairStatus + 'Ready to Ship</p>' + paidStatus);
+				$("#key").text(repairStatus + 'Ready to Ship</p>');
 				$("#key").show();
 			} else if(status == "hip*" || status == "Ship"){
-				$("#key").text(repairStatus + 'Shipped</p>' + paidStatus);
+				$("#key").text(repairStatus + 'Shipped</p>');
 				$("#key").show();
 			}
 		}, function(){
@@ -410,8 +410,8 @@ var RunSave = false;
             */
             var paidRepairCheck = "#paid-" + lineNumb;
             var quoteSentCheck = "#quote-sent-" + lineNumb;
-            var quoteApprovedCheck = "quote-approved-" + lineNumb;
-            var repairDeclineCheck = "repair-declined-" + lineNumb;
+            var quoteApprovedCheck = "#quote-approved-" + lineNumb;
+            var repairDeclineCheck = "#repair-declined-" + lineNumb;
             if($(repairDeclineCheck).is(":checked")){
                 return "Paid Repair was declined.";
             }else if ($(quoteApprovedCheck).is(":checked")){
