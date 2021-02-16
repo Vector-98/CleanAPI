@@ -389,10 +389,10 @@ var RunSave = false;
 				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
 				$("#key").show();
 			} else if(status == "RTS*" || status == " RTS"){
-				$("#key").text(repairStatus + 'Ready to Ship</p>');
+				$("#key").html(repairStatus + 'Ready to Ship</p>');
 				$("#key").show();
 			} else if(status == "hip*" || status == "Ship"){
-				$("#key").text(repairStatus + 'Shipped</p>');
+				$("#key").html(repairStatus + 'Shipped</p>');
 				$("#key").show();
 			}
 		}, function(){
