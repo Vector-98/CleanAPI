@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.2.99
+// @version      1.2.991
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -18,7 +18,6 @@
 /* globals jQuery, $, waitForKeyElements, JsBarcode */
 // ==/UserScript==
 // Test SROs<|||>4020,16753
-
 var vers = GM_info.script.version;
 var $ = window.jQuery;
 var preferencesEnabled = false;
@@ -205,7 +204,7 @@ var RunSave = false;
 		var createdButtons = 0;
 		var AllLines2DArray = []; //Stores array of line number and upperline index.
 		var currentUpperLine = 2;
-		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:136px;padding-left: 2px;' id='jumpMenu'></ul>");
+		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:100px;padding-left: 5px;' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
 		var SroNum = $("#sro-number").val()
 		$('title').text(SroNum);
@@ -259,24 +258,24 @@ var RunSave = false;
 				var repairBoxCheck = "#repair-completed-" + n;
 				var diagBoxCheck = "#diagnosed-" + n;
 				var shipBoxCheck = "#QtyShippedConv-" +n;
-				label = "Ln " + n;
+				label = "Line " + n;
 				var whichButt = "#butt-" + n;
 				var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 				if($(shipBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " Ship";
+					label = "Line " + n + " Ship";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " RTS";
+					label = "Line " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
                     $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#800020; border-radius:50%; display:inline-block;"></span>');
-					label = "Ln " + n + " Diag";
+					label = "Line " + n + " Diag";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:#800020";>' + label + '</a></li>');
 
 				} else {
@@ -326,7 +325,7 @@ var RunSave = false;
 			shipBoxCheck = "#QtyShippedConv-" + hold;
 
 			if($(shipBoxCheck).is(":checked")){
-				label = "Ln " + hold + " Ship";
+				label = "Line " + hold + " Ship";
                 $("#buttCircle-" + hold).css("background-color", "gray");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "gray");
@@ -334,7 +333,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 			}else if($(repairBoxCheck).is(":checked")){
-				label = "Ln " + hold + " RTS";
+				label = "Line " + hold + " RTS";
                 $("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
@@ -342,7 +341,7 @@ var RunSave = false;
 				//jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 			}
 			else if($(diagBoxCheck).is(":checked")){
-				label = "Ln " + hold + " Diag";
+				label = "Line " + hold + " Diag";
                 $("#buttCircle-" + hold).css("background-color", "#800020");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "#800020");
@@ -356,7 +355,7 @@ var RunSave = false;
 			}
 		});
 
-		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
+		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>D = Diagnosed<br>R = Ready to Ship<br>S = Shipped</p></div>');
 
 		$("#key").hide();
 
@@ -475,12 +474,12 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
-			$("#full-container > div:eq("+upperLine+")").toggle(110,"linear")
-			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(110,"linear")
+			$("#full-container > div:eq("+upperLine+")").toggle(125,"linear")
+			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(125,"linear")
 			toggle(buttonNumber);
 			function getRandomColor() {
 				var letters = '789ABCD';// 0123456EF cut letters for more light colors
@@ -580,11 +579,13 @@ var RunSave = false;
 				case "Paid":
 					return "Paid";
 
+				case "TF BASE":
 				case "FF BASE":
 				case "FF EXT BASE":
 				case "FF BASE + FF EXT BASE":
 					return "FF-Base";
 
+				case "TF ADP":
 				case "FF ADP":
 				case "FF ADP ONLY":
 					return "FF-ADP";
@@ -595,9 +596,12 @@ var RunSave = false;
 				case "ACER ADP":
 					return "MFR-ADP";
 
+				case "TF BASE + TF ADP":
+				case "TF Full":
 				case "FF BASE + FF ADP":
 				case "FF EXT BASE+ FF ADP":
 				case "FF EXT BASE + FF ADP":
+				case "FF EXT BASE+ FF ADP a":
 				case "FF ADP + FF EXT BASE":
 					return "FF-Full";
 
@@ -641,7 +645,7 @@ var RunSave = false;
 			}
 		};
 		function FixParts(PrMatch){
-			console.log('fixparts passed var>>'+PrMatch.toLowerCase())
+			//console.log('fixparts passed var>>'+PrMatch.toLowerCase())
 			switch(PrMatch.toLowerCase()){
 				case "batt":
 				case "bat":
@@ -692,6 +696,7 @@ var RunSave = false;
 					return "LCD Back Cover";
 				case "bottom case":
 				case "btm":
+				case "bot":
 					return "Bottom Chassis";
 				case "hinges":
 				case "hng":
@@ -703,6 +708,7 @@ var RunSave = false;
 					return "Secondary Webcam";
 				case "webcam cable":
 				case "cam cbl":
+				case "camc":
 					return "Webcam Cable";
 				case "cable kit":
 					return "Cable Kit";
@@ -850,6 +856,7 @@ var RunSave = false;
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
 					}
+
 					var regexA = /(^[^\s]+)/;
 					var matchA = regexA.exec(premodel)
 					SlModel = matchA[1]
