@@ -330,7 +330,7 @@ var RunSave = false;
 			repairBoxCheck = "#repair-completed-" + hold;
 			diagBoxCheck = "#diagnosed-" + hold;
 			shipBoxCheck = "#QtyShippedConv-" + hold;
-			var paidCheck = checkPaidStatus(n);
+			var paidCheck = checkPaidStatus(hold);
             if(paidCheck.length > 0){
 				paidCheck = "*";
             } else{
