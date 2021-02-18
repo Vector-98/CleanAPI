@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.01
+// @version      1.3.02
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -768,11 +768,11 @@ var RunSave = false;
 				case 'Lenovo':
 					return 'LEN-';
 				case 'Acer':
-					return'ACER';
+					return'ACER-';
 				case 'Asus':
-					return'ASUS-CBK';
+					return'ASUS-CBK-';
 				case 'Dell':
-					return'DEL';
+					return'DEL-';
 			}
 		}
 
