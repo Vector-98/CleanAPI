@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.05
+// @version      1.3.06
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -263,32 +263,32 @@ var RunSave = false;
 				var whichButt = "#butt-" + n;
 				var jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 				var paidCheck = checkPaidStatus(n);
-                if(paidCheck.length > 0){
-                    paidCheck = "*";
-                } else{
-                    paidCheck = "";
-                }
+				if(paidCheck.length > 0){
+					paidCheck = "*";
+				} else{
+					paidCheck = "";
+				}
 
 				if($(shipBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
+					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:gray; border-radius:50%; display:inline-block;"></span>');
 					label = "Ln " + n + " Ship";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:gray">' + label + '</a></li>');
 
 				}else if($(repairBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
+					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:green; border-radius:50%; display:inline-block;"></span>');
 					label = "Ln " + n + " RTS";
 					jumpLinks123 = ('<li><a id="placeholder" style="color:green";>' + label + '</a></li>');
 					//$("#" + jumpLinkID).css("color", "green");
 				}
 				else if($(diagBoxCheck).is(":checked")){
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#800020; border-radius:50%; display:inline-block;"></span>');
+					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:#800020; border-radius:50%; display:inline-block;"></span>');
 					label = "Ln " + n + " Diag" + paidCheck;
 					jumpLinks123 = ('<li><a id="placeholder" style="color:#800020";>' + label + '</a></li>');
 
 				} else {
-                    $(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
-                }
-				
+					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+				}
+
 				let jumpLinkID = "jumpLink"+(n+1);
 				$("#placeholder").attr("id",jumpLinkID);
 				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
@@ -331,15 +331,15 @@ var RunSave = false;
 			diagBoxCheck = "#diagnosed-" + hold;
 			shipBoxCheck = "#QtyShippedConv-" + hold;
 			var paidCheck = checkPaidStatus(hold);
-            if(paidCheck.length > 0){
+			if(paidCheck.length > 0){
 				paidCheck = "*";
-            } else{
+			} else{
 				paidCheck = "";
 			}
 
 			if($(shipBoxCheck).is(":checked")){
 				label = "Ln " + hold + " Ship";
-                $("#buttCircle-" + hold).css("background-color", "gray");
+				$("#buttCircle-" + hold).css("background-color", "gray");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "gray");
 				//console.log(label);
@@ -347,7 +347,7 @@ var RunSave = false;
 
 			}else if($(repairBoxCheck).is(":checked")){
 				label = "Ln " + hold + " RTS";
-                $("#buttCircle-" + hold).css("background-color", "green");
+				$("#buttCircle-" + hold).css("background-color", "green");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "green");
 				//console.log(label);
@@ -355,14 +355,14 @@ var RunSave = false;
 			}
 			else if($(diagBoxCheck).is(":checked")){
 				label = "Ln " + hold + " Diag" + paidCheck;
-                $("#buttCircle-" + hold).css("background-color", "#800020");
+				$("#buttCircle-" + hold).css("background-color", "#800020");
 				$("#jumpLink" + hold).text(label);
 				$("#jumpLink" + hold).css("color", "#800020");
 				//console.log(label);
 				//jumpLinks123 = ('<li><a id="placeholder">' + label + '</a></li>');
 
 			} else {
-                $("#buttCircle-" + hold).css("background-color", "white");
+				$("#buttCircle-" + hold).css("background-color", "white");
 				$("#jumpLink" + hold).text("Line " + hold);
 				$("#jumpLink" + hold).css("color", "");
 			}
@@ -378,12 +378,12 @@ var RunSave = false;
 			//console.log(textLength);
 			//console.log(status);
 
-            //console.log((this.id).slice(8));
-            var lineNumber = (this.id).slice(8);
-            //console.log(lineNumber);
-            var paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
-            var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
-            //console.log(paidStatus);
+			//console.log((this.id).slice(8));
+			var lineNumber = (this.id).slice(8);
+			//console.log(lineNumber);
+			var paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
+			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
+			//console.log(paidStatus);
 
 			if(status == "iag*" || status == "Diag"){
 				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
@@ -399,8 +399,8 @@ var RunSave = false;
 			$("#key").hide();
 		});
 
-        function checkPaidStatus(lineNumb){
-            /*
+		function checkPaidStatus(lineNumb){
+			/*
             paid-1
             quote-sent-1
             quote-approved-1
@@ -408,24 +408,24 @@ var RunSave = false;
             repairBoxCheck = "#repair-completed-" + hold;
             if($(repairBoxCheck).is(":checked")){
             */
-            var paidRepairCheck = "#paid-" + lineNumb;
-            var quoteSentCheck = "#quote-sent-" + lineNumb;
-            var quoteApprovedCheck = "#quote-approved-" + lineNumb;
-            var repairDeclineCheck = "#repair-declined-" + lineNumb;
-            if($(repairDeclineCheck).is(":checked")){
-                return "Paid Repair was declined.";
-            }else if ($(quoteApprovedCheck).is(":checked")){
-                return "Paid Repair is approved, either waiting for parts or ready to be worked on.";
-            }else if ($(quoteSentCheck).is(":checked")){
-                return "Quote sent to customer, waiting on response.";
-            }else if ($(paidRepairCheck).is(":checked")){
-                return "Unit is a paid repair, waiting on quote";
-            }else {
-                return "";
-            }
-            //console.log($(paidRepairCheck).is(":checked"));
-            //return $(paidRepairCheck).is(":checked");
-        };
+			var paidRepairCheck = "#paid-" + lineNumb;
+			var quoteSentCheck = "#quote-sent-" + lineNumb;
+			var quoteApprovedCheck = "#quote-approved-" + lineNumb;
+			var repairDeclineCheck = "#repair-declined-" + lineNumb;
+			if($(repairDeclineCheck).is(":checked")){
+				return "Paid Repair was declined.";
+			}else if ($(quoteApprovedCheck).is(":checked")){
+				return "Paid Repair is approved, either waiting for parts or ready to be worked on.";
+			}else if ($(quoteSentCheck).is(":checked")){
+				return "Quote sent to customer, waiting on response.";
+			}else if ($(paidRepairCheck).is(":checked")){
+				return "Unit is a paid repair, waiting on quote";
+			}else {
+				return "";
+			}
+			//console.log($(paidRepairCheck).is(":checked"));
+			//return $(paidRepairCheck).is(":checked");
+		};
 
 		//Create Tech button for each line
 
@@ -519,9 +519,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(110,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(110,"linear")
@@ -806,9 +806,9 @@ var RunSave = false;
 			var fullPage = $("#full-container").prop('outerHTML')
 
 			waitForKeyElements('#popContainer',function(){
-					$('#popContainer').remove()
-					$('#sro-submit').prop("disabled", false );
-				})
+				$('#popContainer').remove()
+				$('#sro-submit').prop("disabled", false );
+			})
 
 			$('#Checksum').on("click",function(){
 				console.log(fullPage.hashCode())
@@ -865,20 +865,20 @@ var RunSave = false;
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent; used with pre patched api with model on page between <br>
 					//var premodel = modelsArray[CurIn-1].textContent;
 					try{
-					var premodel = modelsArray[CurIn-1].textContent;
-					var SlModel
-					var model
-					var modelTrim;
-					var regexA = /(^[^\s]+)/;
-					var matchA = regexA.exec(premodel)
-					SlModel = matchA[1]
-					model = FixModel(SlModel)
+						var premodel = modelsArray[CurIn-1].textContent;
+						var SlModel
+						var model
+						var modelTrim;
+						var regexA = /(^[^\s]+)/;
+						var matchA = regexA.exec(premodel)
+						SlModel = matchA[1]
+						model = FixModel(SlModel)
 					}
 					catch(err){
-					SlModel = 'FuD'
-					model = FixModel(SlModel)
+						SlModel = 'FuD'
+						model = FixModel(SlModel)
 					}
-/* 					console.log(premodel+'line model pre slice')
+					/* 					console.log(premodel+'line model pre slice')
 					var SlModel
 					var model
 					var modelTrim; */
@@ -910,16 +910,16 @@ var RunSave = false;
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
 					}
-/* 					var regexA = /(^[^\s]+)/;
+					/* 					var regexA = /(^[^\s]+)/;
 					var matchA = regexA.exec(premodel)
 					/SlModel = matchA[1]
 					model = FixModel(SlModel) */
 
 					if ($("#paid-"+i).is(":checked") == true){
-							warranty = "Paid"
-						}else{
-							warranty = $("#warranty-" + i).val();
-						}
+						warranty = "Paid"
+					}else{
+						warranty = $("#warranty-" + i).val();
+					}
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
@@ -1064,7 +1064,8 @@ var RunSave = false;
 			var lines = [];//array to store arrays of line information.
 			//var modelsArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(1) > br:nth-child(3)");
 			var warrArray = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(1) > div:nth-child(2) > span");
-			var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > a > br:nth-child(1)");
+
+
 			var EXP2DArray = []
 			var CurIn = 0
 			var FstLine = $(":text").eq(3).data("id")
@@ -1081,12 +1082,18 @@ var RunSave = false;
 			for (var i = 0; i <= 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
-					console.log("EXP"+EXP2DArray[i-1])
-					console.log(i)
-					console.log(CurIn-1)
-
+					//console.log("EXP"+EXP2DArray[i-1])
+					//console.log(i)
+					//console.log(CurIn-1)
+					try{
+						var custDesc = document.querySelectorAll("#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > a > br:nth-child(1)");
+						var desc = custDesc[CurIn-1].nextSibling.textContent;
+					}catch(err){
+						custDesc = document.querySelectorAll('#top-item-wrap > div.col-md-4 > div > div:nth-child(2) > div > br:nth-child(2)')
+						desc = custDesc[CurIn-1].nextSibling.textContent;
+					}
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//	i-1
-					var desc = custDesc[CurIn-1].nextSibling.textContent;//		i-1
+					//		i-1
 					var descA = desc.slice(7)
 					var warranty = $("#warranty-" + i).val();
 					warranty = fixWarranty(warranty)
