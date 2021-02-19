@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.03
+// @version      1.3.05
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -773,6 +773,8 @@ var RunSave = false;
 					return'ASUS-CBK-';
 				case 'Dell':
 					return'DEL-';
+				case 'FuD':
+					return'GEN-REPAIR';
 			}
 		}
 
@@ -861,11 +863,25 @@ var RunSave = false;
 					CurIn ++
 					//console.log(CurIn)
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent; used with pre patched api with model on page between <br>
+					//var premodel = modelsArray[CurIn-1].textContent;
+					try{
 					var premodel = modelsArray[CurIn-1].textContent;
-					console.log(premodel+'line model pre slice')
 					var SlModel
 					var model
 					var modelTrim;
+					var regexA = /(^[^\s]+)/;
+					var matchA = regexA.exec(premodel)
+					SlModel = matchA[1]
+					model = FixModel(SlModel)
+					}
+					catch(err){
+					SlModel = 'FuD'
+					model = FixModel(SlModel)
+					}
+/* 					console.log(premodel+'line model pre slice')
+					var SlModel
+					var model
+					var modelTrim; */
 					var SroNum = $("#sro-number").val()
 					var Cust = $("#customer").val()
 					var SerNum = $("#snumber-" + i).val()
@@ -894,10 +910,10 @@ var RunSave = false;
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
 					}
-					var regexA = /(^[^\s]+)/;
+/* 					var regexA = /(^[^\s]+)/;
 					var matchA = regexA.exec(premodel)
-					SlModel = matchA[1]
-					model = FixModel(SlModel)
+					/SlModel = matchA[1]
+					model = FixModel(SlModel) */
 
 					if ($("#paid-"+i).is(":checked") == true){
 							warranty = "Paid"
@@ -958,7 +974,8 @@ var RunSave = false;
 					}
 					else if (model.includes("GEN-REPAIR")) {
 						warrantyFixed = fixWarranty(warranty);
-						modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
+						//modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
+						modelTrim = model.replace('GEN-REPAIR', 'MISSING MODEL');
 						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
