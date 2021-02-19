@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.02
+// @version      1.3.03
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -205,7 +205,7 @@ var RunSave = false;
 		var createdButtons = 0;
 		var AllLines2DArray = []; //Stores array of line number and upperline index.
 		var currentUpperLine = 2;
-		var jumpMenu = ("<ul style='list-style-type:none;position:fixed;left:0px;top:136px;padding-left: 2px;line-height: 140%;' id='jumpMenu'></ul>");
+		var jumpMenu = ("<ul style='list-style-type:none; position:fixed; left:0px; top:136px; padding-left:0px; line-height: 125%' id='jumpMenu'></ul>");
 		$("#full-container").append(jumpMenu);
 		var SroNum = $("#sro-number").val()
 		$('title').text(SroNum);
