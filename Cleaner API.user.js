@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.06
+// @version      1.3.07
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -376,18 +376,33 @@ var RunSave = false;
 			var textHold = $(this).text();
 			var textLength = textHold.length;
 			var status = textHold.slice(textLength - 4);
+			var paidStatus = ""; //Adds a * if the unit is a paid repair
+            var partsNeeded = ""; //Holds list of parts
+            var partsLeft = 0; //Variable to hold index of {
+            var partsRight = 0; //Variable to hold index of }
 			//console.log(textLength);
 			//console.log(status);
 
-			//console.log((this.id).slice(8));
-			var lineNumber = (this.id).slice(8);
-			//console.log(lineNumber);
-			var paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
-			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
-			//console.log(paidStatus);
+            //console.log((this.id).slice(8));
+            var lineNumber = (this.id).slice(8);
+            //console.log(lineNumber);
+            var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
+            //console.log(paidStatus);
+
 
 			if(status == "iag*" || status == "Diag"){
-				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
+                partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
+                partsLeft = partsNeeded.indexOf("{") + 1;
+                partsRight = partsNeeded.indexOf("}");
+                partsNeeded = partsNeeded.slice(partsLeft,partsRight);
+                if(partsNeeded.length > 2){
+                    partsNeeded = '<div>' + partsNeeded + '</div>';
+                    //console.log(partsNeeded);
+                } else {
+                    partsNeeded = "";
+                }
+                paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
+				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
 			} else if(status == "RTS*" || status == " RTS"){
 				$("#key").html(repairStatus + 'Ready to Ship</p>');
