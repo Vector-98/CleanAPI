@@ -287,6 +287,7 @@ var RunSave = false;
 
 				} else {
 					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+					jumpLinks123 = ('<li><a id="placeholder">' + label + " " + l4label + '</a></li>');//Adds Serial Number on Jump menu when a unit hasn't been touched yet
 				}
 
 				let jumpLinkID = "jumpLink"+(n+1);
