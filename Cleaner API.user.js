@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.06
+// @version      1.3.07
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -230,6 +230,8 @@ var RunSave = false;
 
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
+				let pre =''
+				let post =''
 				var label = "Line " + n;
 				var done = "";
 				var butt = $("#full-container").prepend('<button type="button" class="glob" id="insert" onload="document.innerHTML(label)" style="background-color: white; border-radius: 8px; margin-top: 4px; margin-right: 4px; line-height: normal;" > </button>')
@@ -250,6 +252,11 @@ var RunSave = false;
 				if($('#diagnosed-notes-'+n).is(':empty') == true){
 					$('#diagnosed-notes-'+n).append('{,}')
 				}
+
+				pre = $('#snumber-'+n).val()// auto upper case SN
+				post = pre.toUpperCase()
+				console.log(post)
+				$('#snumber-'+n).val(post)
 
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
 				document.getElementById("Last4").innerHTML = ("SN: ")+l4label;
@@ -427,21 +434,6 @@ var RunSave = false;
 			//return $(paidRepairCheck).is(":checked");
 		};
 
-		//Create Tech button for each line
-
-		/* 		$("[id^=SN-]").on('click', function(){
-			RunSave = !RunSave
-			console.log(RunSave)
-		});
-		$("[id^=SN-]").on("click", function(){
-			if(RunSave){
-				$("[id^=SN-]").text("Disable Pop-up")
-				$("[id^=SN-]").css("background-color","28a745")
-			}else{
-				$("[id^=SN-]").text("Enable Pop-up")
-				$("[id^=SN-]").css("background-color","white")
-			}
-		}); */
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
 				console.log("Stoped name fill ")
@@ -519,9 +511,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			//$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
+			$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(110,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(110,"linear")
@@ -605,14 +597,44 @@ var RunSave = false;
 			})
 		})// revoves ' from testareas and inputs as you type
 
+/*  		var Prsro
+		$("[id^=prev-serv-]").on('click',function(pID){console.log(this.id)})
+		waitForKeyElements('.RedText', function(){
+			console.log("testtestrt")
+				//var perv = $('[id^=prev-serv]')
+				//var regexB = /(\w{3}\d{7})/
+				for(var u = 1; u <= 25; u++){
+					if($("#prev-serv-"+u).text() !== ''){
+					Prsro = $('#prev-serv-'+u).text().slice(0,10)
 
+
+					//console.log(this.id+'id tet DD')
+
+					$('#prev-serv-'+u).attr('onclick','window.open("https://fireflycomputers.com/api-sro","width=816","height=1056");setTimeout(function(){var RR = window.parent.document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);document.querySelector("#sro-number").value=RR;},5000)')
+					//$('prev-srev-'+u).on('click',OnP(Prsro))
+				}
+			}
+  			var NN = document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);
+			window.open("https://fireflycomputers.com/api-sro");
+			document.querySelesctor('#sro-number').value=window.opener.document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);
+
+			jQuery.ready(function(NN){jQuery("#sro-number").val(NN)});
+
+
+		})
+		function OnP(Prsro){
+				console.log('hov Test')
+				//var w1 = window.open("https://fireflycomputers.com/api-sro");
+				//w1.document.querySelector("#sro-number").value(Prsro)
+			 //jquery.("#sro-number").val("SRO0004020")
+
+				//window.open("https://fireflycomputers.com/api-sro").addEventListener('DOMContentLoaded',function(){document.querySelector("#sro-number").value(this.id.textContent.slice(0,10))});
+
+
+				} */
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
-		//$("#bottom-item-wrap > div.col-md-12").append(box)
-		//$('#bottom-item-wrap > div.col-md-12 > div > label').append(chkdrp)
-		//$('#bottom-item-wrap > div.col-md-12').append(btndrp)
-
 
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
@@ -1078,7 +1100,6 @@ var RunSave = false;
 				}
 
 			}
-
 			for (var i = 0; i <= 25; i++) {//i = 1
 				if(!$("#snumber-" + i).val() == ""){
 					CurIn ++
@@ -1136,7 +1157,6 @@ var RunSave = false;
 			w.print();
 			//w.close();
 		}
-
 
 		$("[id^=repair-completed]").change(function() {
 			autoHideDoneLines = getCookie("autoHideDoneLines");
