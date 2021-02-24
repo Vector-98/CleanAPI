@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.07
+// @version      1.3.10
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -35,7 +35,14 @@ var RunSave = false;
 	$("#masthead").remove()
 	document.getElementById("sro-submit").value="Load SRO";
 	//var multisel = GM.getResourceUrl('https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css')
-	console.log
+	var sroHolder = window.location.href;
+	var sroHoldStart = sroHolder.length - 10;
+	sroHolder = sroHolder.slice(sroHoldStart);
+	console.log(sroHolder.slice(0,3));
+	if(sroHolder.slice(0,3) == "SRO"){
+		console.log("IT WORKS");
+		$("#sro-number").val(sroHolder);
+	}
 
 
 	$("#get-item").focusout(function() {
@@ -197,8 +204,6 @@ var RunSave = false;
 
 		}
 
-		//$("#full-container").append('<input id="item-submit" class="btn btn-success" type="submit" name="save_items" value="Submit">')
-
 		//Begin adding show/hide for each line
 		var stateOfButtons = [];//stores state of buttons. false for shown true for hidden
 		var numberOfButtons = 0;
@@ -218,16 +223,6 @@ var RunSave = false;
 			}
 
 		}// part of 2d array for line numbers
-
-		function toggle(value){//class to flip value
-			if (stateOfButtons[value]){
-				stateOfButtons[value] = false;
-			}else{
-				stateOfButtons[value] = true;
-
-			}
-		};
-
 		for (var n = 25; n > 0; n--) {//Create button for each line
 			if(!$("#snumber-" + n).val() == ""){
 				let pre =''
@@ -303,15 +298,7 @@ var RunSave = false;
 				$("#jumpMenu").prepend(jumpLinks123);
 			}
 
-		};//Create button for each line and add last 4 of SN
-		/* 		for (var sn = 25; sn > 0; sn--) {
-			if(!$("#snumber-" + sn).val() == ""){
-				var SNlabel = "Enable Pop-up";
-				var SNbtn = $('<button type="button" class="savebtn" id="insert1" onload="document.innerHTML(SNlabel)" style="background-color: white; border-radius: 8px; margin-top: -5px;width: 110%;"></button>').insertAfter("#snumber-" + sn)
-				document.getElementById("insert1").innerHTML = SNlabel;
-				$("#insert1").attr("id", "SN-" + sn);
-			}
-		};//Create Save button for each line */
+		};//Create line button for each line and add last 4 of SN plus other things ¯\_(ツ)_/¯
 		for (var di = 25; di > 0; di--) {
 			if($("#diagnosed-by-" + di).prop("type") == "text"){
 				var DIlabel = "Fill Diag Name";
@@ -320,7 +307,7 @@ var RunSave = false;
 				$("#DIinsert").attr("id", "DI-" + di);
 				console.log("diag name fill made")
 			}
-		};//Create Diag button for each line
+		};//Create Diag name button for each line
 		for (var tn = 25; tn > 0; tn--) {
 			if($("#tech-name-" + tn).prop("type") == "text"){
 				var TNlabel = "Fill Tech Name";
@@ -328,6 +315,14 @@ var RunSave = false;
 				document.getElementById("TNinsert").innerHTML = TNlabel;
 				$("#TNinsert").attr("id", "TN-" + tn);
 				console.log("tech name fill made")
+			}
+		};//Create Tech name button for each line
+		function toggle(value){//class to flip value
+			if (stateOfButtons[value]){
+				stateOfButtons[value] = false;
+			}else{
+				stateOfButtons[value] = true;
+
 			}
 		};
 
@@ -375,40 +370,38 @@ var RunSave = false;
 				$("#jumpLink" + hold).css("color", "");
 			}
 		});
-
 		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"></div>');
 		$("#key").hide();
-
 		$("a").hover(function(){
 			var textHold = $(this).text();
 			var textLength = textHold.length;
 			var status = textHold.slice(textLength - 4);
 			var paidStatus = ""; //Adds a * if the unit is a paid repair
-            var partsNeeded = ""; //Holds list of parts
-            var partsLeft = 0; //Variable to hold index of {
-            var partsRight = 0; //Variable to hold index of }
+			var partsNeeded = ""; //Holds list of parts
+			var partsLeft = 0; //Variable to hold index of {
+			var partsRight = 0; //Variable to hold index of }
 			//console.log(textLength);
 			//console.log(status);
 
-            //console.log((this.id).slice(8));
-            var lineNumber = (this.id).slice(8);
-            //console.log(lineNumber);
-            var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
-            //console.log(paidStatus);
+			//console.log((this.id).slice(8));
+			var lineNumber = (this.id).slice(8);
+			//console.log(lineNumber);
+			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
+			//console.log(paidStatus);
 
 
 			if(status == "iag*" || status == "Diag"){
-                partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
-                partsLeft = partsNeeded.indexOf("{") + 1;
-                partsRight = partsNeeded.indexOf("}");
-                partsNeeded = partsNeeded.slice(partsLeft,partsRight);
-                if(partsNeeded.length > 2){
-                    partsNeeded = '<div>' + partsNeeded + '</div>';
-                    //console.log(partsNeeded);
-                } else {
-                    partsNeeded = "";
-                }
-                paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
+				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
+				partsLeft = partsNeeded.indexOf("{") + 1;
+				partsRight = partsNeeded.indexOf("}");
+				partsNeeded = partsNeeded.slice(partsLeft,partsRight);
+				if(partsNeeded.length > 2){
+					partsNeeded = '<div>' + partsNeeded + '</div>';
+					//console.log(partsNeeded);
+				} else {
+					partsNeeded = "";
+				}
+				paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
 				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
 			} else if(status == "RTS*" || status == " RTS"){
@@ -421,7 +414,6 @@ var RunSave = false;
 		}, function(){
 			$("#key").hide();
 		});
-
 		function checkPaidStatus(lineNumb){
 			/*
             paid-1
@@ -450,6 +442,12 @@ var RunSave = false;
 			//return $(paidRepairCheck).is(":checked");
 		};
 
+		let jumpLinks = ('<li><a id="placeholder"></a></li>');
+		let jumpLinkID = "jumpLink"+(1);
+		$("#placeholder").attr("id",jumpLinkID);
+		$("#"+jumpLinkID).attr("href","#paid-" + (1));
+		$("#jumpMenu").prepend(jumpLinks);
+
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
 				console.log("Stoped name fill ")
@@ -472,12 +470,6 @@ var RunSave = false;
 			}
 		});//name insert function for Tech Name
 
-		let jumpLinks = ('<li><a id="placeholder"></a></li>');
-		let jumpLinkID = "jumpLink"+(1);
-		$("#placeholder").attr("id",jumpLinkID);
-		$("#"+jumpLinkID).attr("href","#paid-" + (1));
-		$("#jumpMenu").prepend(jumpLinks);
-
 		$.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {//function to add double click functionality
 			return this.each(function(){
 				var clicks = 0, self = this;
@@ -496,7 +488,6 @@ var RunSave = false;
 				});
 			});
 		}
-
 		function hideAll(){
 			for(var i = 1; i < 26; i++){
 				if(!stateOfButtons[i]){
@@ -527,9 +518,9 @@ var RunSave = false;
 				}
 			}
 			$(buttonName).toggleClass("on")
-			// $(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
+			$(buttonNameOn).css("background-color",getRandomColor());	// Random colors - Aka last commit by Tony ;)
 			// $(buttonNameOn).css("background-color","#28a745");	// Green - Aka last commit by Dylon ;)
-			$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
+			//$(buttonNameOn).css("background-color","#FA4D1C");	// "FireFly" Orange - Aka last commit by Kevin ;)
 			$(buttonNameNotOn).css("background-color","white");
 			$("#full-container > div:eq("+upperLine+")").toggle(110,"linear")
 			$("#full-container > div:eq("+(upperLine + 1)+")").toggle(110,"linear")
@@ -590,7 +581,6 @@ var RunSave = false;
 			doubleClick(linebtn);
 		});	// handles the btn clicks
 
-
 		waitForKeyElements("h1", function () {
 			$("h1").hide()
 		}); // remove bottom of page footer
@@ -613,41 +603,21 @@ var RunSave = false;
 			})
 		})// revoves ' from testareas and inputs as you type
 
-/*  		var Prsro
-		$("[id^=prev-serv-]").on('click',function(pID){console.log(this.id)})
+		var Prsro
 		waitForKeyElements('.RedText', function(){
 			console.log("testtestrt")
-				//var perv = $('[id^=prev-serv]')
-				//var regexB = /(\w{3}\d{7})/
-				for(var u = 1; u <= 25; u++){
-					if($("#prev-serv-"+u).text() !== ''){
+			//var perv = $('[id^=prev-serv]')
+			//var regexB = /(\w{3}\d{7})/
+			for(var u = 1; u <= 25; u++){
+				if($("#prev-serv-"+u).text() !== ''){
 					Prsro = $('#prev-serv-'+u).text().slice(0,10)
-
-
-					//console.log(this.id+'id tet DD')
-
-					$('#prev-serv-'+u).attr('onclick','window.open("https://fireflycomputers.com/api-sro","width=816","height=1056");setTimeout(function(){var RR = window.parent.document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);document.querySelector("#sro-number").value=RR;},5000)')
+					$('.RedText').css({"color":"crimson"})
+					$('#prev-serv-'+u).attr('onclick',`window.open("https://fireflycomputers.com/api-sro/#`+Prsro+`","Prev-Sro","width=816","height=1056")`)
+					$('#prev-serv-'+u).css({"color": "mediumblue", "cursor": "alias"})
 					//$('prev-srev-'+u).on('click',OnP(Prsro))
 				}
 			}
-  			var NN = document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);
-			window.open("https://fireflycomputers.com/api-sro");
-			document.querySelesctor('#sro-number').value=window.opener.document.querySelector("#prev-serv-'+u+'").textContent.slice(0,10);
-
-			jQuery.ready(function(NN){jQuery("#sro-number").val(NN)});
-
-
 		})
-		function OnP(Prsro){
-				console.log('hov Test')
-				//var w1 = window.open("https://fireflycomputers.com/api-sro");
-				//w1.document.querySelector("#sro-number").value(Prsro)
-			 //jquery.("#sro-number").val("SRO0004020")
-
-				//window.open("https://fireflycomputers.com/api-sro").addEventListener('DOMContentLoaded',function(){document.querySelector("#sro-number").value(this.id.textContent.slice(0,10))});
-
-
-				} */
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
@@ -815,7 +785,18 @@ var RunSave = false;
 					return'GEN-REPAIR';
 			}
 		}
+		function autoHideLinesOnStartup(){
+			if(autoHideDoneLines == true){
+				showAll();
+				for(var k = 1; k < 25; k++){
+					var repairBoxName = "#repair-completed-" + k;
+					if($(repairBoxName).is(":checked")){
+						singleClick(k);
+					}
+				}
+			}
 
+		};
 		if(autoHideDoneLines == true){
 			showAll();
 			for(var k = 0; k < 26; k++){
@@ -860,6 +841,18 @@ var RunSave = false;
 
 			})
 		};// checksum goodies
+		$("[id^=repair-completed]").change(function() {
+			autoHideDoneLines = getCookie("autoHideDoneLines");
+			if(autoHideDoneLines){
+				var line = this.id;
+				line = line.replace("repair-completed-", "");
+				if(autoHideDoneLines == true){
+					if(document.getElementById(this.id).checked){
+						singleClick(line);
+					}
+				}
+			}
+		});//check if repair complete button was pressed then update what lines are hidden or shown
 
 		$('#copy').click(function(){// this is called when export button is clicked
 			var techName = getCookie("techName");
@@ -1044,29 +1037,15 @@ var RunSave = false;
 
 		});//end of export function
 
-		function autoHideLinesOnStartup(){
-			if(autoHideDoneLines == true){
-				showAll();
-				for(var k = 1; k < 25; k++){
-					var repairBoxName = "#repair-completed-" + k;
-					if($(repairBoxName).is(":checked")){
-						singleClick(k);
-					}
-				}
-			}
-
-		};
-
 		$(document).on("keydown", function(e){
 			if(e.ctrlKey && e.keyCode == 80){
 				customPrint();
-				//console.log("ctrl+p pressed")
+				console.log("ctrl+p pressed oon key down")
 			}
 		});
 		$('#PrintBtn').click(function(){
 			customPrint();
 		});
-
 		function customPrint(){
 			GM.getResourceUrl('https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/barcodes/JsBarcode.code39.min.js')
 
@@ -1172,22 +1151,8 @@ var RunSave = false;
 
 			w.print();
 			//w.close();
-		}
-
-		$("[id^=repair-completed]").change(function() {
-			autoHideDoneLines = getCookie("autoHideDoneLines");
-			if(autoHideDoneLines){
-				var line = this.id;
-				line = line.replace("repair-completed-", "");
-				if(autoHideDoneLines == true){
-					if(document.getElementById(this.id).checked){
-						singleClick(line);
-					}
-				}
-			}
-		});//check if repair complete button was pressed then update what lines are hidden or shown
-		//Code I totally wrote and didn't copy paste from stack overflow
-		function exportToCsv(filename, rows) {
+		};
+		function exportToCsv(filename, rows) {//Code I totally wrote and didn't copy paste from stack overflow
 			var processRow = function (row) {
 				var finalVal = '';
 				for (var j = 0; j < row.length; j++) {
