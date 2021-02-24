@@ -294,6 +294,7 @@ var RunSave = false;
 
 				} else {
 					$(whichButt).prepend('<span id="buttCircle-' + n + '" style="margin-right:5px; height:12px; width:12px; background-color:white; border-radius:50%; display:inline-block;"></span>');
+					jumpLinks123 = ('<li><a id="placeholder">' + label + " " + l4label + '</a></li>');//Adds Serial Number on Jump menu when a unit hasn't been touched yet
 				}
 
 				let jumpLinkID = "jumpLink"+(n+1);
@@ -382,18 +383,33 @@ var RunSave = false;
 			var textHold = $(this).text();
 			var textLength = textHold.length;
 			var status = textHold.slice(textLength - 4);
+			var paidStatus = ""; //Adds a * if the unit is a paid repair
+            var partsNeeded = ""; //Holds list of parts
+            var partsLeft = 0; //Variable to hold index of {
+            var partsRight = 0; //Variable to hold index of }
 			//console.log(textLength);
 			//console.log(status);
 
-			//console.log((this.id).slice(8));
-			var lineNumber = (this.id).slice(8);
-			//console.log(lineNumber);
-			var paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
-			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
-			//console.log(paidStatus);
+            //console.log((this.id).slice(8));
+            var lineNumber = (this.id).slice(8);
+            //console.log(lineNumber);
+            var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
+            //console.log(paidStatus);
+
 
 			if(status == "iag*" || status == "Diag"){
-				$("#key").html(repairStatus + 'Diagnosed</p>' + paidStatus);
+                partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
+                partsLeft = partsNeeded.indexOf("{") + 1;
+                partsRight = partsNeeded.indexOf("}");
+                partsNeeded = partsNeeded.slice(partsLeft,partsRight);
+                if(partsNeeded.length > 2){
+                    partsNeeded = '<div>' + partsNeeded + '</div>';
+                    //console.log(partsNeeded);
+                } else {
+                    partsNeeded = "";
+                }
+                paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
+				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
 			} else if(status == "RTS*" || status == " RTS"){
 				$("#key").html(repairStatus + 'Ready to Ship</p>');
