@@ -42,6 +42,7 @@ var RunSave = false;
 	if(sroHolder.slice(0,3) == "SRO"){
 		console.log("IT WORKS");
 		$("#sro-number").val(sroHolder);
+		$("#sro-submit").click();
 	}
 
 
