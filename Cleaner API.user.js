@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.10
+// @version      1.3.11
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -42,6 +42,7 @@ var RunSave = false;
 	if(sroHolder.slice(0,3) == "SRO"){
 		console.log("IT WORKS");
 		$("#sro-number").val(sroHolder);
+		$("#sro-submit").click();
 	}
 
 
@@ -604,20 +605,30 @@ var RunSave = false;
 		})// revoves ' from testareas and inputs as you type
 
 		var Prsro
-		waitForKeyElements('.RedText', function(){
-			console.log("testtestrt")
+            $('.RedText').css({"color":"crimson"})
+
 			//var perv = $('[id^=prev-serv]')
 			//var regexB = /(\w{3}\d{7})/
 			for(var u = 1; u <= 25; u++){
-				if($("#prev-serv-"+u).text() !== ''){
-					Prsro = $('#prev-serv-'+u).text().slice(0,10)
-					$('.RedText').css({"color":"crimson"})
-					$('#prev-serv-'+u).attr('onclick',`window.open("https://fireflycomputers.com/api-sro/#`+Prsro+`","Prev-Sro","width=816","height=1056")`)
-					$('#prev-serv-'+u).css({"color": "mediumblue", "cursor": "alias"})
-					//$('prev-srev-'+u).on('click',OnP(Prsro))
+                var sroIndexHold = 0;
+                var sroPrevIndex = 0;
+                var currentSRO = "";
+                var sroReplacement = "";
+                var sroHolder = $("#prev-serv-"+u).text();
+				$('#prev-serv-'+u).css({"color": "mediumblue", "cursor": "alias"});
+                //console.log(sroHolder);
+				if(sroHolder !== ''){
+                    while(sroIndexHold != -1){
+                        //sroPrevIndex = sroIndexHold;
+                        Prsro = sroHolder.slice(sroIndexHold,sroIndexHold+10);
+                        sroIndexHold = sroHolder.indexOf("SRO", sroIndexHold+3);
+                        sroReplacement = sroReplacement + '<a target="_blank" href="http://www.fireflycomputers.com/api-sro#' + Prsro + '">' + Prsro + '</a>,';
+                    }
+                    //console.log(sroReplacement);
+                    $('#prev-serv-'+u).text("");
+                    $('#prev-serv-'+u).append(sroReplacement);
 				}
 			}
-		})
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
