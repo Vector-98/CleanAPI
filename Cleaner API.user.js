@@ -542,7 +542,13 @@ var RunSave = false;
 		};
 		function doubleClick(buttonNumber){
 			var count = 0;
-			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
+			var serialNumb = $('#snumber-'+ buttonNumber).val();
+            if(serialNumb.length <= 11|| serialNumb.length == 15){// For LEN/HP
+                serialNumb = serialNumb.slice(-4);
+			}else{
+				serialNumb = serialNumb.slice(14,18); // for ACER
+			}
+			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber + " SN:" + serialNumb);
 			for(var i = 0; i < 25; i++){
 				 $("#jumpLink" + (i + 1)).css("font-weight","100");
 				if(stateOfButtons[i]){
