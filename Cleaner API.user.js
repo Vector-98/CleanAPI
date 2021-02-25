@@ -499,6 +499,7 @@ var RunSave = false;
 		};//end of hideAll function
 		function showAll(){
 			for(var i = 1; i < 26; i++){
+				$("#jumpLink" + (i)).css("font-weight","300");
 				if(stateOfButtons[i]){
 					singleClick(i);
 					toggle[i];	
@@ -543,10 +544,12 @@ var RunSave = false;
 			var count = 0;
 			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
 			for(var i = 0; i < 25; i++){
+				 $("#jumpLink" + (i + 1)).css("font-weight","100");
 				if(stateOfButtons[i]){
 					count++;
 				}
 			}
+			$("#jumpLink" + buttonNumber).css("font-weight","bolder");
 			if(count > 1){
 				if(!stateOfButtons[buttonNumber]){
 					showAll();
