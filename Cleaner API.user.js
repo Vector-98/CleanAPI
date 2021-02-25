@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.11
+// @version      1.3.12
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -251,7 +251,7 @@ var RunSave = false;
 
 				pre = $('#snumber-'+n).val()// auto upper case SN
 				post = pre.toUpperCase()
-				console.log(post)
+				//console.log(post)
 				$('#snumber-'+n).val(post)
 
 				var l4SN = $("<small id='Last4' onload='document.innerHTML(l4label)' style='display: block; line-height: normal;'> </small>").appendTo("#butt-"+ n)// +"-"+ CBI
@@ -306,7 +306,7 @@ var RunSave = false;
 				var DIbtn = $('<button type="button" class="diagbtn" id="DIinsert" onload="document.innerHTML(DIlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#diagnosed-by-" + di)
 				document.getElementById("DIinsert").innerHTML = DIlabel;
 				$("#DIinsert").attr("id", "DI-" + di);
-				console.log("diag name fill made")
+				//console.log("diag name fill made")
 			}
 		};//Create Diag name button for each line
 		for (var tn = 25; tn > 0; tn--) {
@@ -315,7 +315,7 @@ var RunSave = false;
 				var TNbtn = $('<button type="button" class="techbtn" id="TNinsert" onload="document.innerHTML(TNlabel)" style="background-color: white; border-radius: 8px; /*margin-top: -5px;*/"></button>').insertBefore("#tech-name-" + tn)
 				document.getElementById("TNinsert").innerHTML = TNlabel;
 				$("#TNinsert").attr("id", "TN-" + tn);
-				console.log("tech name fill made")
+				//console.log("tech name fill made")
 			}
 		};//Create Tech name button for each line
 		function toggle(value){//class to flip value
@@ -605,30 +605,31 @@ var RunSave = false;
 		})// revoves ' from testareas and inputs as you type
 
 		var Prsro
-            $('.RedText').css({"color":"crimson"})
-
-			//var perv = $('[id^=prev-serv]')
-			//var regexB = /(\w{3}\d{7})/
-			for(var u = 1; u <= 25; u++){
-                var sroIndexHold = 0;
-                var sroPrevIndex = 0;
-                var currentSRO = "";
-                var sroReplacement = "";
-                var sroHolder = $("#prev-serv-"+u).text();
-				$('#prev-serv-'+u).css({"color": "mediumblue", "cursor": "alias"});
-                //console.log(sroHolder);
-				if(sroHolder !== ''){
-                    while(sroIndexHold != -1){
-                        //sroPrevIndex = sroIndexHold;
-                        Prsro = sroHolder.slice(sroIndexHold,sroIndexHold+10);
-                        sroIndexHold = sroHolder.indexOf("SRO", sroIndexHold+3);
-                        sroReplacement = sroReplacement + '<a target="_blank" href="http://www.fireflycomputers.com/api-sro#' + Prsro + '">' + Prsro + '</a>,';
-                    }
-                    //console.log(sroReplacement);
-                    $('#prev-serv-'+u).text("");
-                    $('#prev-serv-'+u).append(sroReplacement);
+		//var perv = $('[id^=prev-serv]')
+		var regexB = /(\w{3}\d{7})/g
+		for(var u = 1; u <= 25; u++){
+			var sroIndexHold = 0;
+			var sroPrevIndex = 0;
+			var currentSRO = "";
+			var sroReplacement = "";
+			var sroHolder = $("#prev-serv-"+u).text();
+			var matchB = regexB.exec(sroHolder)
+			//console.log(sroHolder);
+			if(sroHolder !== ''){
+				while(sroIndexHold != -1){
+					//sroPrevIndex = sroIndexHold;
+					//console.log(matchB)
+					Prsro = sroHolder.slice(sroIndexHold,sroIndexHold+10);
+					sroIndexHold = sroHolder.indexOf("SRO", sroIndexHold+3);
+					sroReplacement = sroReplacement + '<a class="Pso-'+u+'" target="_blank" href="http://www.fireflycomputers.com/api-sro#'+ Prsro +'" style="color:mediumblue; cursor:alias">' + Prsro + '</a>,';
 				}
+				//console.log(sroReplacement);
+				$('#prev-serv-'+u).text("");
+				$('#prev-serv-'+u).append(sroReplacement);
+				$('.RedText').css({"color":"crimson"})
+				$('.Pso-'+u).css({"color": "mediumblue", "cursor": "alias"});
 			}
+		}
 
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
@@ -766,6 +767,7 @@ var RunSave = false;
 					return "Secondary Webcam";
 				case "webcam cable":
 				case "cam cbl":
+				case "camc":
 					return "Webcam Cable";
 				case "cable kit":
 					return "Cable Kit";
