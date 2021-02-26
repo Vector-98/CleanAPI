@@ -397,6 +397,9 @@ var RunSave = false;
 				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
 				partsLeft = partsNeeded.indexOf("{") + 1;
 				partsRight = partsNeeded.indexOf("}");
+				if(partsRight == -1){
+                    partsRight = 0;
+                }
 				partsNeeded = partsNeeded.slice(partsLeft,partsRight);
 				if(partsNeeded.length > 2){
 					partsNeeded = '<div>' + partsNeeded + '</div>';
