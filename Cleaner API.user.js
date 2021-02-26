@@ -56,39 +56,41 @@ var RunSave = false;
 		var SroLength = $("#sro-number").val().length
 		var SroNum = $("#sro-number").val()
 
-		if(SroLength == 1) {
-			var Pre1 = "SRO000000"
-			$("#sro-number").val(Pre1+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 2) {
-			var Pre2 = "SRO00000"
-			$("#sro-number").val(Pre2+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 3) {
-			var Pre3 = "SRO0000"
-			$("#sro-number").val(Pre3+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 4) {
-			var Pre4 = "SRO000"
-			$("#sro-number").val(Pre4+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 5) {
-			var Pre5 = "SRO00"
-			$("#sro-number").val(Pre5+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 6) {
-			var Pre6 = "SRO0"
-			$("#sro-number").val(Pre6+$("#sro-number").val())
-		}//end of IF
-		if(SroLength == 7) {
-			var Pre7 = "SRO"
-			$("#sro-number").val(Pre7+$("#sro-number").val())
-		}//end of IF
-		/* 		if(SroLength == 10){
-			$('#sro-submit').prop('disabled', false)
-		}else{
-			$('#sro-submit').prop('disabled', true)
-		} */
+			if(SroLength == 1) {
+				var Pre1 = "SRO000000"
+				$("#sro-number").val(Pre1+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 2) {
+				var Pre2 = "SRO00000"
+				$("#sro-number").val(Pre2+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 3) {
+				var Pre3 = "SRO0000"
+				$("#sro-number").val(Pre3+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 4) {
+				var Pre4 = "SRO000"
+				$("#sro-number").val(Pre4+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 5) {
+				var Pre5 = "SRO00"
+				$("#sro-number").val(Pre5+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 6) {
+				var Pre6 = "SRO0"
+				$("#sro-number").val(Pre6+$("#sro-number").val())
+				$("#sro-submit").click();
+			}//end of IF
+			if(SroLength == 7) {
+				var Pre7 = "SRO"
+				$("#sro-number").val(Pre7+$("#sro-number").val())
+				$("#sro-submit").click();
+			}
 	};
 
 	if(getCookie("techName") == "null" || getCookie("techName") == ""){
@@ -502,7 +504,7 @@ var RunSave = false;
 				$("#jumpLink" + (i)).css("font-weight","300");
 				if(stateOfButtons[i]){
 					singleClick(i);
-					toggle[i];	
+					toggle[i];
 				}
 			}
 		};
@@ -542,6 +544,7 @@ var RunSave = false;
 		};
 		function doubleClick(buttonNumber){
 			var count = 0;
+			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
 			var serialNumb = $('#snumber-'+ buttonNumber).val();
             if(serialNumb.length <= 11|| serialNumb.length == 15){// For LEN/HP
                 serialNumb = serialNumb.slice(-4);
@@ -550,7 +553,7 @@ var RunSave = false;
 			}
 			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber + " SN:" + serialNumb);
 			for(var i = 0; i < 25; i++){
-				 $("#jumpLink" + (i + 1)).css("font-weight","100");
+				$("#jumpLink" + (i + 1)).css("font-weight","100");
 				if(stateOfButtons[i]){
 					count++;
 				}
