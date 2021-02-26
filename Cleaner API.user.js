@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.12
+// @version      1.3.13
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -544,7 +544,7 @@ var RunSave = false;
 		};
 		function doubleClick(buttonNumber){
 			var count = 0;
-			$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
+			//$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
 			var serialNumb = $('#snumber-'+ buttonNumber).val();
             if(serialNumb.length <= 11|| serialNumb.length == 15){// For LEN/HP
                 serialNumb = serialNumb.slice(-4);
