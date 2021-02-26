@@ -466,8 +466,34 @@ var RunSave = false;
 			//console.log($(paidRepairCheck).is(":checked"));
 			//return $(paidRepairCheck).is(":checked");
 		};
+		
+		
+		$.fn.isInViewport = function () {
+        let elementTop = $(this).offset().top;
+        let elementBottom = elementTop + $(this).outerHeight();
+        let viewportTop = $(window).scrollTop();
+        let viewportBottom = viewportTop + $(window).height();
+        return elementBottom > viewportTop && elementTop < viewportBottom;
+        };
 
-
+        var prevLineNumber = -1;
+        var lineNumber = 0;
+        $(window).scroll(function () {
+            $('.diagnostics-notes').each(function(i, el){
+                if ($(this).isInViewport()) {
+                    //$(this).addClass('test');
+                    var lineNumber = $(this).attr('data-id');
+                    if(lineNumber != prevLineNumber){
+                        //console.log(lineNumber + " " + prevLineNumber);
+                        for(var z = 1; z < 26; z++){
+                            $("#jumpLink" + (z)).css("font-weight","100");
+                        }
+                        $("#jumpLink" + lineNumber).css("font-weight","bolder");
+                    }
+                    prevLineNumber = lineNumber;
+                }
+            })
+        });
 
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
