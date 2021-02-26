@@ -375,7 +375,14 @@ var RunSave = false;
 		});
 		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"></div>');
 		$("#key").hide();
-		$("a").hover(function(){
+		
+		let jumpLinks = ('<li><a id="placeholder"></a></li>');
+		let jumpLinkID = "jumpLink"+(1);
+		$("#placeholder").attr("id",jumpLinkID);
+		$("#"+jumpLinkID).attr("href","#paid-" + (1));
+		$("#jumpMenu").prepend(jumpLinks);
+		
+		$("[id^=jumpLink]").hover(function(){
 			var textHold = $(this).text();
 			var textLength = textHold.length;
 			var status = textHold.slice(textLength - 4);
@@ -445,11 +452,7 @@ var RunSave = false;
 			//return $(paidRepairCheck).is(":checked");
 		};
 
-		let jumpLinks = ('<li><a id="placeholder"></a></li>');
-		let jumpLinkID = "jumpLink"+(1);
-		$("#placeholder").attr("id",jumpLinkID);
-		$("#"+jumpLinkID).attr("href","#paid-" + (1));
-		$("#jumpMenu").prepend(jumpLinks);
+
 
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
