@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.13
+// @version      1.3.15
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -56,41 +56,41 @@ var RunSave = false;
 		var SroLength = $("#sro-number").val().length
 		var SroNum = $("#sro-number").val()
 
-			if(SroLength == 1) {
-				var Pre1 = "SRO000000"
-				$("#sro-number").val(Pre1+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 2) {
-				var Pre2 = "SRO00000"
-				$("#sro-number").val(Pre2+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 3) {
-				var Pre3 = "SRO0000"
-				$("#sro-number").val(Pre3+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 4) {
-				var Pre4 = "SRO000"
-				$("#sro-number").val(Pre4+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 5) {
-				var Pre5 = "SRO00"
-				$("#sro-number").val(Pre5+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 6) {
-				var Pre6 = "SRO0"
-				$("#sro-number").val(Pre6+$("#sro-number").val())
-				$("#sro-submit").click();
-			}//end of IF
-			if(SroLength == 7) {
-				var Pre7 = "SRO"
-				$("#sro-number").val(Pre7+$("#sro-number").val())
-				$("#sro-submit").click();
-			}
+		if(SroLength == 1) {
+			var Pre1 = "SRO000000"
+			$("#sro-number").val(Pre1+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 2) {
+			var Pre2 = "SRO00000"
+			$("#sro-number").val(Pre2+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 3) {
+			var Pre3 = "SRO0000"
+			$("#sro-number").val(Pre3+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 4) {
+			var Pre4 = "SRO000"
+			$("#sro-number").val(Pre4+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 5) {
+			var Pre5 = "SRO00"
+			$("#sro-number").val(Pre5+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 6) {
+			var Pre6 = "SRO0"
+			$("#sro-number").val(Pre6+$("#sro-number").val())
+			$("#sro-submit").click();
+		}//end of IF
+		if(SroLength == 7) {
+			var Pre7 = "SRO"
+			$("#sro-number").val(Pre7+$("#sro-number").val())
+			$("#sro-submit").click();
+		}
 	};
 
 	if(getCookie("techName") == "null" || getCookie("techName") == ""){
@@ -297,7 +297,7 @@ var RunSave = false;
 
 				let jumpLinkID = "jumpLink"+(n+1);
 				$("#placeholder").attr("id",jumpLinkID);
-				$("#"+jumpLinkID).attr("href","#paid-" + (n+1));
+				$("#"+jumpLinkID).attr({href:"#paid-" + (n+1), class:"jm"});
 				$("#jumpMenu").prepend(jumpLinks123);
 			}
 
@@ -373,50 +373,72 @@ var RunSave = false;
 				$("#jumpLink" + hold).css("color", "");
 			}
 		});
+
 		$("#jumpMenu").prepend('<div id="key" style="position:fixed; background-color:black; left:100px; top:136px; border:5px solid black; color:white;"></div>');
 		$("#key").hide();
-		$("a").hover(function(){
+
+		let jumpLinks = ('<li><a id="placeholder"></a></li>');
+		let jumpLinkID = "jumpLink"+(1);
+		$("#placeholder").attr("id",jumpLinkID);
+		$("#"+jumpLinkID).attr({href:"#paid-" + (n+1), class:"jm"});
+		$("#jumpMenu").prepend(jumpLinks);
+
+		$("[id^=jumpLink]").hover(function(){
 			var textHold = $(this).text();
 			var textLength = textHold.length;
 			var status = textHold.slice(textLength - 4);
 			var paidStatus = ""; //Adds a * if the unit is a paid repair
 			var partsNeeded = ""; //Holds list of parts
-			var partsLeft = 0; //Variable to hold index of {
+			/*var partsLeft = 0; //Variable to hold index of {
 			var partsRight = 0; //Variable to hold index of }
-			//console.log(textLength);
-			//console.log(status);
-
-			//console.log((this.id).slice(8));
+ 			console.log(textLength);
+			console.log(status);
+			console.log((this.id).slice(8)); */
 			var lineNumber = (this.id).slice(8);
-			//console.log(lineNumber);
 			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
-			//console.log(paidStatus);
+			var diagNotes = $("#diagnosed-notes-" + lineNumber).val();
+			var regex = /{([\s\S]+?)}/i; // search match beteen { }
+			var matchQ = regex.exec(diagNotes)
 
+			if(matchQ !== null && matchQ.length > 1){
+				partsNeeded = matchQ[1]
+			}
 
 			if(status == "iag*" || status == "Diag"){
-				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
+/* 				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
 				partsLeft = partsNeeded.indexOf("{") + 1;
 				partsRight = partsNeeded.indexOf("}");
+				if(partsRight == -1){
+                    partsRight = 0;
+                }
 				partsNeeded = partsNeeded.slice(partsLeft,partsRight);
+				console.log(partsNeeded.length)
+				console.log(partsLeft+"<||>"+partsRight)
+				console.log(partsNeeded.length); */
 				if(partsNeeded.length > 2){
 					partsNeeded = '<div>' + partsNeeded + '</div>';
-					//console.log(partsNeeded);
-				} else {
+				}
+				else {
 					partsNeeded = "";
 				}
+
 				paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
 				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
-			} else if(status == "RTS*" || status == " RTS"){
+			}
+			else if(status == "RTS*" || status == " RTS"){
 				$("#key").html(repairStatus + 'Ready to Ship</p>');
 				$("#key").show();
-			} else if(status == "hip*" || status == "Ship"){
+			}
+			else if(status == "hip*" || status == "Ship"){
 				$("#key").html(repairStatus + 'Shipped</p>');
 				$("#key").show();
 			}
+
 		}, function(){
 			$("#key").hide();
 		});
+
 		function checkPaidStatus(lineNumb){
 			/*
             paid-1
@@ -445,11 +467,7 @@ var RunSave = false;
 			//return $(paidRepairCheck).is(":checked");
 		};
 
-		let jumpLinks = ('<li><a id="placeholder"></a></li>');
-		let jumpLinkID = "jumpLink"+(1);
-		$("#placeholder").attr("id",jumpLinkID);
-		$("#"+jumpLinkID).attr("href","#paid-" + (1));
-		$("#jumpMenu").prepend(jumpLinks);
+
 
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
@@ -546,8 +564,8 @@ var RunSave = false;
 			var count = 0;
 			//$('title').text(SroNum.slice(5) + " - Line " + buttonNumber);
 			var serialNumb = $('#snumber-'+ buttonNumber).val();
-            if(serialNumb.length <= 11|| serialNumb.length == 15){// For LEN/HP
-                serialNumb = serialNumb.slice(-4);
+			if(serialNumb.length <= 11|| serialNumb.length == 15){// For LEN/HP
+				serialNumb = serialNumb.slice(-4);
 			}else{
 				serialNumb = serialNumb.slice(14,18); // for ACER
 			}
@@ -639,7 +657,7 @@ var RunSave = false;
 				$('#prev-serv-'+u).text("");
 				$('#prev-serv-'+u).append(sroReplacement);
 				$('.RedText').css({"color":"crimson"})
-				$('.Pso-'+u).css({"color": "mediumblue", "cursor": "alias"});
+				$('.Pso-'+u).css({"color": "mediumblue", "cursor": "crosshair"});
 			}
 		}
 
@@ -685,6 +703,7 @@ var RunSave = false;
 				case "LEN BASE ONLY":
 				case "LEN BASE + LEN EXT BASE":
 				case "LEN BASE + LEN EXTBASE":
+				case "LEN EXTBASE + LEN EXTBASE":
 				case "HP BASE":	//-----------------------// Start of HP Base warranties
 				case "HP BASE ONLY":
 				case "HP EXT BASE ONLY":
@@ -717,77 +736,104 @@ var RunSave = false;
 			}
 		};
 		function FixParts(PrMatch){
-			console.log('fixparts passed var>>'+PrMatch.toLowerCase())
+			//console.log('fixparts passed var>>'+PrMatch.toLowerCase())
 			switch(PrMatch.toLowerCase()){
 				case "batt":
 				case "bat":
 					return "Batt.";
+
 				case "mlb":
 				case "mb":
 					return "MLB";
+
 				case "lcd":
 					return "LCD";
+
 				case "lcdc":
 				case "lcd cbl":
 					return "LCD Cable";
+
+				case "palm":
+					return "Palmrest";
+
 				case "kb":
 					return "KB";
+
 				case "tpd":
 					return "TPD";
+
 				case "tpdc":
 				case "tpd cbl":
 					return "TPD Cable";
+
 				case "wc":
 				case "wifi":
 					return "WLAN";
+
 				case "dc-in":
 				case "dc jack":
 				case "dc":
 					return "DC Jack";
+
 				case "hdd":
 				case "ssd":
 				case "m.2":
 					return "HDD/SSD";
+
 				case "speakers":
 				case "spk":
 					return "Speakers";
+
 				case "button":
 				case "power button board":
 					return "Power Button Board";
+
 				case "usb board":
 				case "db":
 					return "USB Board";
+
 				case "db":
 				case "auido board":
 					return "Audio Board";
+
 				case "bezel":
 				case "bez":
 					return "LCD Bezel";
+
 				case "top":
 				case "top cover":
 					return "LCD Back Cover";
+
 				case "bottom case":
 				case "btm":
 					return "Bottom Chassis";
+
 				case "hinges":
 				case "hng":
 					return "Hinges";
+
 				case "webcam":
 				case "cam":
 					return "Webcam";
+
 				case "secondary webcam":
 					return "Secondary Webcam";
+
 				case "webcam cable":
 				case "cam cbl":
 				case "camc":
 					return "Webcam Cable";
+
 				case "cable kit":
 					return "Cable Kit";
+
 				case "ram":
 				case "RAM":
 					return "RAM";
+
 				case "click board":
 					return "Click Board";
+
 				case "adhesive":
 					return "LCD Adhesive Strip";
 				default:
@@ -959,7 +1005,7 @@ var RunSave = false;
 							//put that index in values array
 							//prt = part value
 							prt[v] = FixParts(PrMatch[v])
-							console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
+							//console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
 						}
 					}
 					catch(err){
