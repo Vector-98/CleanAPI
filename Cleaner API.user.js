@@ -882,6 +882,38 @@ var RunSave = false;
 					return'GEN-REPAIR';
 			}
 		}
+		function FixCause(FXCause){
+			switch(FXCause.toLowerCase()){
+				case "f":
+					return'Factory Defect';
+				case "lf":
+					return'Labor Fix';
+				case "d":
+					return'Dropped';
+				case "i":
+					return'Impact';
+				case "e":
+					return'E-Surge';
+				case "l":
+					return'Liquid';
+				case "ok":
+					return'Obj on KB';
+				case "oa":
+					return'Other ADP';
+				case "d":
+					return'DoA';
+				case "i":
+					return'Intentional';
+				case "c":
+					return'Cosmetic';
+				case "ci":
+					return'Customer Induced';
+				case "ti":
+					return'Tech Induced';
+				default:
+					return "";;
+			}
+		}
 		function autoHideLinesOnStartup(){
 			if(autoHideDoneLines == true){
 				showAll();
@@ -1006,10 +1038,7 @@ var RunSave = false;
 						SlModel = 'FuD'
 						model = FixModel(SlModel)
 					}
-					/* 					console.log(premodel+'line model pre slice')
-					var SlModel
-					var model
-					var modelTrim; */
+
 					var SroNum = $("#sro-number").val()
 					var Cust = $("#customer").val()
 					var SerNum = $("#snumber-" + i).val()
@@ -1019,6 +1048,8 @@ var RunSave = false;
 					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
 					var s = ""// space filler may not be needed but i did it anyway[V]
+					var dsc ="" //labeled space filler
+					//var cas = ""// cause
 					model = FixModel(SlModel)
 					try {
 						var regex = /{([\s\S]+?)}/i; // search match beteen { }
@@ -1029,7 +1060,6 @@ var RunSave = false;
 						for(var v = 0; v < PrMatch.length; v++) {
 							//find index of prtMatch in keys;
 							//put that index in values array
-							//prt = part value
 							prt[v] = FixParts(PrMatch[v])
 							//console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
 						}
@@ -1038,6 +1068,29 @@ var RunSave = false;
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
 					}
+					try {
+						var FXCause
+						var regexCA = /.([\S]){/i; // search match beteen { }
+						var matchCA = regexCA.exec(diagNotes) // find match in diag notes
+						var cas
+						console.log(matchCA[1])
+						FXCause = matchCA[1] //
+						//let ca = cas.push()// put matches in
+/* 						for(var vca = 0; vca < PrMatch.length; vca++) {
+							//find index of prtMatch in keys;
+							//put that index in values array
+							//prt[v] = FixParts(PrMatch[v])
+							//console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
+						} */
+						cas = FixCause(FXCause)
+					}catch(err){
+						FXCause = ''
+						cas = FixCause(FXCause)
+					}
+					/* 					console.log(premodel+'line model pre slice')
+					var SlModel
+					var model
+					var modelTrim; */
 					/* 					var regexA = /(^[^\s]+)/;
 					var matchA = regexA.exec(premodel)
 					/SlModel = matchA[1]
@@ -1052,19 +1105,19 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						modelTrim = model.replace('HP-CBK', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 					else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1072,7 +1125,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : LEN-', '');
 						modelTrim = model.replace('LEN-', '');
-						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1080,7 +1133,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : ACER-', '');
 						modelTrim = model.replace('ACER-', '');
-						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1088,7 +1141,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
 						modelTrim = model.replace('ASUS-CBK-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1096,7 +1149,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : DEL-', '');
 						modelTrim = model.replace('DEL-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1104,14 +1157,14 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
 						modelTrim = model.replace('GEN-REPAIR', 'MISSING MODEL');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = 'MISSING MODEL'
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, s, s, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 
 				}
