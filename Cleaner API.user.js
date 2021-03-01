@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.17
+// @version      1.3.18
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -1073,7 +1073,7 @@ var RunSave = false;
 					}
 					try {
 						var FXCause
-						var regexCA = /.([\S]){/i; // search match beteen { }
+						var regexCA = /([\S]){/i; // search match beteen { }
 						var matchCA = regexCA.exec(diagNotes) // find match in diag notes
 						var cas
 						console.log(matchCA[1])
