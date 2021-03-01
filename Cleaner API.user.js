@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.18
+// @version      1.3.19
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -405,7 +405,7 @@ var RunSave = false;
 			}
 
 			if(status == "iag*" || status == "Diag"){
-/* 				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
+				/* 				partsNeeded = $("#diagnosed-notes-" + lineNumber).text();
 				partsLeft = partsNeeded.indexOf("{") + 1;
 				partsRight = partsNeeded.indexOf("}");
 				if(partsRight == -1){
@@ -466,34 +466,34 @@ var RunSave = false;
 			//console.log($(paidRepairCheck).is(":checked"));
 			//return $(paidRepairCheck).is(":checked");
 		};
-		
-		
-		$.fn.isInViewport = function () {
-        let elementTop = $(this).offset().top;
-        let elementBottom = elementTop + $(this).outerHeight();
-        let viewportTop = $(window).scrollTop();
-        let viewportBottom = viewportTop + $(window).height();
-        return elementBottom > viewportTop && elementTop < viewportBottom;
-        };
 
-        var prevLineNumber = -1;
-        var lineNumber = 0;
-        $(window).scroll(function () {
-            $('.diagnostics-notes').each(function(i, el){
-                if ($(this).isInViewport()) {
-                    //$(this).addClass('test');
-                    var lineNumber = $(this).attr('data-id');
-                    if(lineNumber != prevLineNumber){
-                        //console.log(lineNumber + " " + prevLineNumber);
-                        for(var z = 1; z < 26; z++){
-                            $("#jumpLink" + (z)).css("font-weight","100");
-                        }
-                        $("#jumpLink" + lineNumber).css("font-weight","bolder");
-                    }
-                    prevLineNumber = lineNumber;
-                }
-            })
-        });
+
+		$.fn.isInViewport = function () {
+			let elementTop = $(this).offset().top;
+			let elementBottom = elementTop + $(this).outerHeight();
+			let viewportTop = $(window).scrollTop();
+			let viewportBottom = viewportTop + $(window).height();
+			return elementBottom > viewportTop && elementTop < viewportBottom;
+		};
+
+		var prevLineNumber = -1;
+		var lineNumber = 0;
+		$(window).scroll(function () {
+			$('.diagnostics-notes').each(function(i, el){
+				if ($(this).isInViewport()) {
+					//$(this).addClass('test');
+					var lineNumber = $(this).attr('data-id');
+					if(lineNumber != prevLineNumber){
+						//console.log(lineNumber + " " + prevLineNumber);
+						for(var z = 1; z < 26; z++){
+							$("#jumpLink" + (z)).css("font-weight","100");
+						}
+						$("#jumpLink" + lineNumber).css("font-weight","bolder");
+					}
+					prevLineNumber = lineNumber;
+				}
+			})
+		});
 
 		$("[id^=DI-]").on('click', function(){
 			if($("[id^=diagnosed-by-]").is(':disabled') === true){
@@ -702,7 +702,9 @@ var RunSave = false;
 
 				case "FF BASE":
 				case "FF EXT BASE":
+				case "FF EXT BASE ONLY":
 				case "FF BASE + FF EXT BASE":
+				case "FF EXT BASE + FF BASE":
 					return "FF-Base";
 
 				case "FF ADP":
@@ -890,6 +892,7 @@ var RunSave = false;
 				case "f":
 					return'Factory Defect';
 				case "lf":
+				case "la":
 					return'Labor Fix';
 				case "d":
 					return'Dropped';
@@ -1027,17 +1030,25 @@ var RunSave = false;
 					//console.log(CurIn)
 					//var model = modelsArray[CurIn-1].nextSibling.textContent;//var model = modelsArray[i-1].nextSibling.textContent; used with pre patched api with model on page between <br>
 					//var premodel = modelsArray[CurIn-1].textContent;
+					var diagNotes = $("#diagnosed-notes-" + i).val();
 					try{
 						var premodel = modelsArray[CurIn-1].textContent;
 						var SlModel
-						var model
+						var model // not model number more like make
+						var diagModel
 						var modelTrim;
 						var regexA = /(^[^\s]+)/;
+						var regexM = /\}(\w{4,10})\|/i
 						var matchA = regexA.exec(premodel)
+						var diagUp = diagNotes.toUpperCase()
+						var matchM = regexM.exec(diagUp)
 						SlModel = matchA[1]
+						diagModel = matchM[1]
 						model = FixModel(SlModel)
+
 					}
 					catch(err){
+						diagModel = ""
 						SlModel = 'FuD'
 						model = FixModel(SlModel)
 					}
@@ -1048,7 +1059,6 @@ var RunSave = false;
 					var fullWarrName = "#warranty-" + i;
 					var warranty = $("#warranty-" + i).val();
 					var location = $("#shelf-location").val();
-					var diagNotes = $("#diagnosed-notes-" + i).val();
 					var warrantyFixed;
 					var s = ""// space filler may not be needed but i did it anyway[V]
 					var dsc ="" //labeled space filler
@@ -1073,13 +1083,13 @@ var RunSave = false;
 					}
 					try {
 						var FXCause
-						var regexCA = /([\S]){/i; // search match beteen { }
+						var regexCA = /([fladielokct]{1,2}){/i; // search match in fron of up to 2 { }
 						var matchCA = regexCA.exec(diagNotes) // find match in diag notes
 						var cas
 						console.log(matchCA[1])
 						FXCause = matchCA[1] //
 						//let ca = cas.push()// put matches in
-/* 						for(var vca = 0; vca < PrMatch.length; vca++) {
+						/* 						for(var vca = 0; vca < PrMatch.length; vca++) {
 							//find index of prtMatch in keys;
 							//put that index in values array
 							//prt[v] = FixParts(PrMatch[v])
@@ -1105,23 +1115,25 @@ var RunSave = false;
 					}else{
 						warranty = $("#warranty-" + i).val();
 					}
+
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
 						modelTrim = model.replace('HP-CBK', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						// push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 					else if (model.includes("HP-PBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-PBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else if (model.includes("HP-EBK")) {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = model.replace('Model(Item) : HP-EBK-', '');
-						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						hpLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1129,7 +1141,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : LEN-', '');
 						modelTrim = model.replace('LEN-', '');
-						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						lenLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1137,7 +1149,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : ACER-', '');
 						modelTrim = model.replace('ACER-', '');
-						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						acerLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1145,7 +1157,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : ASUS-CBK-', '');
 						modelTrim = model.replace('ASUS-CBK-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1153,7 +1165,7 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : DEL-', '');
 						modelTrim = model.replace('DEL-', '');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
@@ -1161,14 +1173,15 @@ var RunSave = false;
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : GEN-REPAIR', 'MISSING MODEL');
 						modelTrim = model.replace('GEN-REPAIR', 'MISSING MODEL');
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 
 
 					}
 					else {
 						warrantyFixed = fixWarranty(warranty);
 						modelTrim = 'MISSING MODEL'
-						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, modelTrim, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
+						diagModel = 'MISSING MODEL'
+						dellLines.push([today, techName, SroNum, Cust, i, location, SerNum, diagModel, warrantyFixed, dsc, cas, prt[0], s, prt[1], s, prt[2], s, prt[3], s, prt[4]])
 					}
 
 				}
