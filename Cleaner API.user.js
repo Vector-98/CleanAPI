@@ -873,12 +873,15 @@ var RunSave = false;
 				case 'Lenovo':
 					return 'LEN-';
 				case 'Acer':
+				case 'ACER':
 					return'ACER-';
 				case 'Asus':
 					return'ASUS-CBK-';
 				case 'Dell':
 					return'DEL-';
 				case 'FuD':
+					return'GEN-REPAIR';
+				default :
 					return'GEN-REPAIR';
 			}
 		}
@@ -1063,7 +1066,7 @@ var RunSave = false;
 							prt[v] = FixParts(PrMatch[v])
 							//console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
 						}
-					}
+					}// diag parts import/export
 					catch(err){
 						//alert('missing parts to export in Line'+i+' diag notes try putting parts in like {mlb,kb,lcd} no spaces up to 5 parts')
 						console.log('missing parts in diag notes line'+i)
@@ -1083,7 +1086,8 @@ var RunSave = false;
 							//console.log(prt[v]+'<final exported part|||Pre matched parts>'+FixParts(PrMatch[v]))
 						} */
 						cas = FixCause(FXCause)
-					}catch(err){
+					}
+					catch(err){
 						FXCause = ''
 						cas = FixCause(FXCause)
 					}
