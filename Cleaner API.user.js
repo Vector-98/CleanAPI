@@ -405,6 +405,7 @@ var RunSave = false;
 			var lineNumber = (this.id).slice(8);
 			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
 			var diagNotes = $("#diagnosed-notes-" + lineNumber).val();
+			var cerealNumber = $("#snumber-" + lineNumber).val();
 			var regex = /{([\s\S]+?)}/i; // search match beteen { }
 			var matchQ = regex.exec(diagNotes)
 
@@ -431,15 +432,15 @@ var RunSave = false;
 				}
 
 				paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
-				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
+				$("#key").html(repairStatus + cerealNumber + ' - Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
 			}
 			else if(status == "RTS*" || status == " RTS"){
-				$("#key").html(repairStatus + 'Ready to Ship</p>');
+				$("#key").html(repairStatus + cerealNumber + ' - Ready to Ship</p>');
 				$("#key").show();
 			}
 			else if(status == "hip*" || status == "Ship"){
-				$("#key").html(repairStatus + 'Shipped</p>');
+				$("#key").html(repairStatus + cerealNumber + ' - Shipped</p>');
 				$("#key").show();
 			}
 
