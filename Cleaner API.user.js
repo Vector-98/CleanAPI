@@ -194,7 +194,9 @@ var RunSave = false;
 			console.log("SN and Warr save disabled")
 		}
 	});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-
+    waitForKeyElements("#sro-error", function () {
+        $('#sro-submit').prop("disabled", false);
+    })
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
