@@ -46,11 +46,18 @@ var RunSave = false;
 	}
 
 
+    var sroValueHolder = "";
 	$("#get-item").focusout(function() {
+        if($("#sro-number").val() != sroValueHolder){
 		AutoSro();
+        }
+        sroValueHolder = $("#sro-number").val();
 	});
 	$("#get-item").submit(function() {
+        if($("#sro-number").val() != sroValueHolder){
 		AutoSro();
+        }
+        sroValueHolder = $("#sro-number").val();
 	});
 	function AutoSro() {
 		var SroLength = $("#sro-number").val().length
