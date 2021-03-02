@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.19
+// @version      1.3.20
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -60,36 +60,43 @@ var RunSave = false;
 			var Pre1 = "SRO000000"
 			$("#sro-number").val(Pre1+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 2) {
 			var Pre2 = "SRO00000"
 			$("#sro-number").val(Pre2+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 3) {
 			var Pre3 = "SRO0000"
 			$("#sro-number").val(Pre3+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 4) {
 			var Pre4 = "SRO000"
 			$("#sro-number").val(Pre4+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 5) {
 			var Pre5 = "SRO00"
 			$("#sro-number").val(Pre5+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 6) {
 			var Pre6 = "SRO0"
 			$("#sro-number").val(Pre6+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 7) {
 			var Pre7 = "SRO"
 			$("#sro-number").val(Pre7+$("#sro-number").val())
 			$("#sro-submit").click();
+			$('#sro-submit').prop("disabled", true );
 		}
 	};
 
@@ -196,6 +203,7 @@ var RunSave = false;
 		$("[id^=diagnosed-notes-]").css({"width": "104%"})
 		$("[id^=out-]").css({"width": "100%"})
 		$("[id^=device-notes-]").css({"width": "104%"})
+		$('#sro-submit').prop("disabled", false);
 
 		preferencesEnabled = true;
 
@@ -690,6 +698,7 @@ var RunSave = false;
 		$("body > div.navbar-brand > a").removeAttr("href");
 		$('body > div.navbar-brand > a > img').removeAttr("alt");
 
+
 		//_______________________________________________________________________________________________________________________________________________________________________________________
 		$("#full-container").prepend('<div id="EXP"> <button type="button" class="glob" id="copy" style="background-color: white; border-radius: 8px" >Export</button> </div>') //Add export button
 		$("#EXP").append('<button type="button" class="glob" id="PrintBtn" style="background-color: white; border-radius: 8px" >Print</button>') //Add print BTN
@@ -888,7 +897,7 @@ var RunSave = false;
 			}
 		}
 		function FixCause(FXCause){
-			switch(FXCause.toLowerCase()){
+			switch(FXCause.toLowerCase()){ // only up to 2 char
 				case "f":
 					return'Factory Defect';
 				case "lf":
@@ -901,6 +910,7 @@ var RunSave = false;
 				case "e":
 					return'E-Surge';
 				case "l":
+				case "li":
 					return'Liquid';
 				case "ok":
 					return'Obj on KB';
