@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.20
+// @version      1.3.21
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -46,11 +46,18 @@ var RunSave = false;
 	}
 
 
+    var sroValueHolder = "";
 	$("#get-item").focusout(function() {
+        if($("#sro-number").val() != sroValueHolder){
 		AutoSro();
+        }
+        sroValueHolder = $("#sro-number").val();
 	});
 	$("#get-item").submit(function() {
+        if($("#sro-number").val() != sroValueHolder){
 		AutoSro();
+        }
+        sroValueHolder = $("#sro-number").val();
 	});
 	function AutoSro() {
 		var SroLength = $("#sro-number").val().length
@@ -59,45 +66,33 @@ var RunSave = false;
 		if(SroLength == 1) {
 			var Pre1 = "SRO000000"
 			$("#sro-number").val(Pre1+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 2) {
 			var Pre2 = "SRO00000"
 			$("#sro-number").val(Pre2+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 3) {
 			var Pre3 = "SRO0000"
 			$("#sro-number").val(Pre3+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 4) {
 			var Pre4 = "SRO000"
 			$("#sro-number").val(Pre4+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 5) {
 			var Pre5 = "SRO00"
 			$("#sro-number").val(Pre5+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 6) {
 			var Pre6 = "SRO0"
 			$("#sro-number").val(Pre6+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 7) {
 			var Pre7 = "SRO"
 			$("#sro-number").val(Pre7+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}
+		$("#sro-submit").click();
+		$('#sro-submit').prop("disabled", true );
 	};
 
 	if(getCookie("techName") == "null" || getCookie("techName") == ""){
@@ -194,7 +189,9 @@ var RunSave = false;
 			console.log("SN and Warr save disabled")
 		}
 	});/// Removes the "Are you sure you want to change the serial number?" pop up because its kinda a pain to deal with atm
-
+    waitForKeyElements("#sro-error", function () {
+        $('#sro-submit').prop("disabled", false);
+    })
 	waitForKeyElements("#full-container", function () {
 		$("[id^=snumber-]").css({"width": "112%","float":"left"}) // serial number width fix
 		$("[id^=warranty-]").css({"width": "123%","float":"left"}) // Warranty width fix
@@ -405,6 +402,7 @@ var RunSave = false;
 			var lineNumber = (this.id).slice(8);
 			var repairStatus = '<div id="key" style="position:fixed; background-color:black; left:100px; top:125px; border:5px solid black; color:white;"><p>';
 			var diagNotes = $("#diagnosed-notes-" + lineNumber).val();
+			var cerealNumber = $("#snumber-" + lineNumber).val();
 			var regex = /{([\s\S]+?)}/i; // search match beteen { }
 			var matchQ = regex.exec(diagNotes)
 
@@ -431,15 +429,15 @@ var RunSave = false;
 				}
 
 				paidStatus = '<div id="paidStatus">' + checkPaidStatus(lineNumber) + '</div></div>';//Returns text explaining paid status
-				$("#key").html(repairStatus + 'Diagnosed</p>' + partsNeeded + paidStatus);
+				$("#key").html(repairStatus + cerealNumber + ' - Diagnosed</p>' + partsNeeded + paidStatus);
 				$("#key").show();
 			}
 			else if(status == "RTS*" || status == " RTS"){
-				$("#key").html(repairStatus + 'Ready to Ship</p>');
+				$("#key").html(repairStatus + cerealNumber + ' - Ready to Ship</p>');
 				$("#key").show();
 			}
 			else if(status == "hip*" || status == "Ship"){
-				$("#key").html(repairStatus + 'Shipped</p>');
+				$("#key").html(repairStatus + cerealNumber + ' - Shipped</p>');
 				$("#key").show();
 			}
 
