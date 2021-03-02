@@ -59,45 +59,33 @@ var RunSave = false;
 		if(SroLength == 1) {
 			var Pre1 = "SRO000000"
 			$("#sro-number").val(Pre1+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 2) {
 			var Pre2 = "SRO00000"
 			$("#sro-number").val(Pre2+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 3) {
 			var Pre3 = "SRO0000"
 			$("#sro-number").val(Pre3+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 4) {
 			var Pre4 = "SRO000"
 			$("#sro-number").val(Pre4+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 5) {
 			var Pre5 = "SRO00"
 			$("#sro-number").val(Pre5+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 6) {
 			var Pre6 = "SRO0"
 			$("#sro-number").val(Pre6+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}//end of IF
 		if(SroLength == 7) {
 			var Pre7 = "SRO"
 			$("#sro-number").val(Pre7+$("#sro-number").val())
-			$("#sro-submit").click();
-			$('#sro-submit').prop("disabled", true );
 		}
+		$("#sro-submit").click();
+		$('#sro-submit').prop("disabled", true );
 	};
 
 	if(getCookie("techName") == "null" || getCookie("techName") == ""){
