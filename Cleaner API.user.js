@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.21
+// @version      1.3.22
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -59,6 +59,14 @@ var RunSave = false;
         }
         sroValueHolder = $("#sro-number").val();
 	});
+	var input = document.getElementById("sro-number");
+    input.addEventListener("keydown", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			AutoSro();
+		}
+    });
 	function AutoSro() {
 		var SroLength = $("#sro-number").val().length
 		var SroNum = $("#sro-number").val()
