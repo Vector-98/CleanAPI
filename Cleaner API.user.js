@@ -44,6 +44,12 @@ var RunSave = false;
 		$("#sro-number").val(sroHolder);
 		$("#sro-submit").click();
 	}
+	
+	jQuery("#sro-submit").click(function(e){
+        if(e.hasOwnProperty('originalEvent')) {
+            AutoSro();
+        }
+    });
 
 
     var sroValueHolder = "";
