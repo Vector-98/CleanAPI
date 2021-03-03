@@ -44,14 +44,7 @@ var RunSave = false;
 		$("#sro-number").val(sroHolder);
 		$("#sro-submit").click();
 	}
-	var input = document.getElementById("sro-number");
-    input.addEventListener("keydown", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            AutoSro();
-        }
-    });
+
 	jQuery("#sro-submit").click(function(e){
         if(e.hasOwnProperty('originalEvent')) {
             AutoSro();
