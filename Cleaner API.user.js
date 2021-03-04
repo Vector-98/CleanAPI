@@ -45,6 +45,12 @@ var RunSave = false;
 		$("#sro-submit").click();
 	}
 
+	jQuery("#sro-submit").click(function(e){
+        if(e.hasOwnProperty('originalEvent')) {
+            AutoSro();
+        }
+    });
+
 
     var sroValueHolder = "";
 	$("#get-item").focusout(function() {
@@ -494,7 +500,13 @@ var RunSave = false;
 		var lineNumber = 0;
 		$(window).scroll(function () {
 			$('.diagnostics-notes').each(function(i, el){
-				if ($(this).isInViewport()) {
+				if($('#paid-1').isInViewport() && $('#get-item').isInViewport()){
+                    for(var n = 1; n < 26; n++){
+                        $("#jumpLink" + (n)).css("font-weight","300");
+                    }
+                    prevLineNumber = -1;
+                }
+				else if ($(this).isInViewport()) {
 					//$(this).addClass('test');
 					var lineNumber = $(this).attr('data-id');
 					if(lineNumber != prevLineNumber){
