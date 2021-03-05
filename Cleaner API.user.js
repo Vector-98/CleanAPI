@@ -321,6 +321,8 @@ var RunSave = false;
 			}
 
 		};//Create line button for each line and add last 4 of SN plus other things ¯\_(ツ)_/¯
+		var jumpMenuSRO = ("<div style='color:#444444; font-weight:500;' id='jumpMenuSRO'>" + SroNum.slice(3) + "</div >");
+		$("#jumpMenu").prepend(jumpMenuSRO);
 		for (var di = 25; di > 0; di--) {
 			if($("#diagnosed-by-" + di).prop("type") == "text"){
 				var DIlabel = "Fill Diag Name";
