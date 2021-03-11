@@ -1150,6 +1150,11 @@ var RunSave = false;
 						warranty = $("#warranty-" + i).val();
 					}
 
+                    var modelHolder = document.getElementById("model-" + i).value.toUpperCase()
+                    if(diagModel.length == 0 && modelHolder.length > 0){
+                        diagModel = modelHolder;
+                    }
+					
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
