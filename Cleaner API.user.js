@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cleaner API
 // @namespace    http://tampermonkey.net/
-// @version      1.3.22
+// @version      1.3.23
 // @updateURL    https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @downloadURL  https://github.com/Vector-98/CleanAPI/raw/master/Cleaner%20API.user.js
 // @description  try to make things better for everyone
@@ -321,6 +321,8 @@ var RunSave = false;
 			}
 
 		};//Create line button for each line and add last 4 of SN plus other things ¯\_(ツ)_/¯
+		var jumpMenuSRO = ("<div style='color:#444444; font-weight:500;' id='jumpMenuSRO'>" + SroNum.slice(3) + "</div >");
+		$("#jumpMenu").prepend(jumpMenuSRO);
 		for (var di = 25; di > 0; di--) {
 			if($("#diagnosed-by-" + di).prop("type") == "text"){
 				var DIlabel = "Fill Diag Name";
@@ -472,9 +474,13 @@ var RunSave = false;
 			var quoteSentCheck = "#quote-sent-" + lineNumb;
 			var quoteApprovedCheck = "#quote-approved-" + lineNumb;
 			var repairDeclineCheck = "#repair-declined-" + lineNumb;
+			var reQuoteCheck = "#re-quote-" + lineNumb;
+			
 			if($(repairDeclineCheck).is(":checked")){
 				return "Paid Repair was declined.";
-			}else if ($(quoteApprovedCheck).is(":checked")){
+			}else if($(reQuoteCheck).is(":checked")){
+                return "Unit has gotten re-quoted, check submissions for status.";
+            }else if ($(quoteApprovedCheck).is(":checked")){
 				return "Paid Repair is approved, either waiting for parts or ready to be worked on.";
 			}else if ($(quoteSentCheck).is(":checked")){
 				return "Quote sent to customer, waiting on response.";
@@ -1144,6 +1150,11 @@ var RunSave = false;
 						warranty = $("#warranty-" + i).val();
 					}
 
+                    var modelHolder = document.getElementById("model-" + i).value.toUpperCase()
+                    if(diagModel.length == 0 && modelHolder.length > 0){
+                        diagModel = modelHolder;
+                    }
+					
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
 						//modelTrim = model.replace('Model(Item) : HP-CBK-', '');
