@@ -1077,12 +1077,12 @@ var RunSave = false;
 						var diagUp = diagNotes.toUpperCase()
 						var matchM = regexM.exec(diagUp)
 						SlModel = matchA[1]
-						diagModel = matchM[1]
+						//diagModel = matchM[1]
 						model = FixModel(SlModel)
 
 					}
 					catch(err){
-						diagModel = ""
+						//diagModel = ""
 						SlModel = 'FuD'
 						model = FixModel(SlModel)
 					}
@@ -1151,9 +1151,7 @@ var RunSave = false;
 					}
 
                     var modelHolder = document.getElementById("model-" + i).value.toUpperCase()
-                    if(diagModel.length == 0 && modelHolder.length > 0){
-                        diagModel = modelHolder;
-                    }
+                    diagModel = modelHolder;
 					
 					if (model.includes("HP-CBK") ) {
 						warrantyFixed = fixWarranty(warranty);
