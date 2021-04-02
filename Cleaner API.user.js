@@ -509,6 +509,7 @@ var RunSave = false;
 				if($('#paid-1').isInViewport() && $('#get-item').isInViewport()){
                     for(var n = 1; n < 26; n++){
                         $("#jumpLink" + (n)).css("font-weight","300");
+												$("#jumpLink" + (n)).css("font-size","17px");
                     }
                     prevLineNumber = -1;
                 }
@@ -519,8 +520,10 @@ var RunSave = false;
 						//console.log(lineNumber + " " + prevLineNumber);
 						for(var z = 1; z < 26; z++){
 							$("#jumpLink" + (z)).css("font-weight","100");
+							$("#jumpLink" + (z)).css("font-size","17px");
 						}
 						$("#jumpLink" + lineNumber).css("font-weight","bolder");
+						$("#jumpLink" + (lineNumber)).css("font-size","20px");
 					}
 					prevLineNumber = lineNumber;
 				}
